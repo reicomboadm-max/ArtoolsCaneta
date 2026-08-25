@@ -1,18 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
+import { Image } from 'astro:assets';
+
+import penIsolatedImg from '../assets/pen_isolated.png';
+import canetaImg from '../assets/caneta.png';
+import penRenderImg from '../assets/pen_render.png';
+import penPhotoImg from '../assets/pen_photo.jpeg';
 
 // Dados dos calibres da linha ARTOOLS Pigmentum
 const variants = [
-  { id: '0.05', name: '0.05 mm', tag: 'Micro', stock: 'Poucas Unidades', price: 'R$ 38,90', image: '/assets/img/caneta.png', desc: 'Microponta cirúrgica para hachuras microscópicas e nanodetalhes de precisão.', tip: '0.05mm', code: 'ART-PGM-005' },
-  { id: '0.1', name: '0.10 mm', tag: 'Mais Vendida', stock: 'Em Estoque', price: 'R$ 38,90', image: '/assets/img/pen_isolated.png', desc: 'O padrão internacional para plantas baixas, cotas e linework de arquitetura.', tip: '0.10mm', code: 'ART-PGM-010' },
-  { id: '0.2', name: '0.20 mm', tag: 'Precisão', stock: 'Em Estoque', price: 'R$ 38,90', image: '/assets/img/pen_render.png', desc: 'Linha guia e estruturação técnica com fluxo contínuo e sem sangramento.', tip: '0.20mm', code: 'ART-PGM-020' },
-  { id: '0.3', name: '0.30 mm', tag: 'Equilíbrio', stock: 'Em Estoque', price: 'R$ 38,90', image: '/assets/img/caneta.png', desc: 'Perfeita para rendering, concept design e documentação técnica expressiva.', tip: '0.30mm', code: 'ART-PGM-030' },
-  { id: '0.5', name: '0.50 mm', tag: 'Linha Mestra', stock: 'Em Estoque', price: 'R$ 38,90', image: '/assets/img/pen_isolated.png', desc: 'Linhas mestras e contorno primário de alto impacto com preto puro.', tip: '0.50mm', code: 'ART-PGM-050' },
-  { id: '0.8', name: '0.80 mm', tag: 'Alto Contraste', stock: 'Últimas 8 un.', price: 'R$ 42,90', image: '/assets/img/pen_render.png', desc: 'Preto profundo 2.4 DMAX para silhuetas dramáticas e cortes pesados.', tip: '0.80mm', code: 'ART-PGM-080' },
-  { id: '1.0', name: '1.00 mm', tag: 'Seção Pesada', stock: 'Em Estoque', price: 'R$ 42,90', image: '/assets/img/caneta.png', desc: 'Espessura máxima linear para pranchas executivas de grande formato.', tip: '1.00mm', code: 'ART-PGM-100' },
-  { id: 'br', name: 'Brush (BR)', tag: 'Pincel', stock: 'Lote Especial', price: 'R$ 49,90', image: '/assets/img/pen_photo.jpeg', desc: 'Cerdas sintéticas japonesas com memória elástica para modulação dinâmica.', tip: '0.2-3.5mm', code: 'ART-PGM-BR' },
-  { id: 'ch', name: 'Chisel (CH)', tag: 'Chanfrada', stock: 'Edição Especial', price: 'R$ 49,90', image: '/assets/img/pen_render.png', desc: 'Ponta chanfrada de 2.0mm para caligrafia arquitetônica e lettering técnico.', tip: '2.00mm', code: 'ART-PGM-CH' },
+  { id: '0.05', name: '0.05 mm', tag: 'Micro', stock: 'Poucas Unidades', price: 'R$ 38,90', image: canetaImg.src, desc: 'Microponta cirúrgica para hachuras microscópicas e nanodetalhes de precisão.', tip: '0.05mm', code: 'ART-PGM-005' },
+  { id: '0.1', name: '0.10 mm', tag: 'Mais Vendida', stock: 'Em Estoque', price: 'R$ 38,90', image: penIsolatedImg.src, desc: 'O padrão internacional para plantas baixas, cotas e linework de arquitetura.', tip: '0.10mm', code: 'ART-PGM-010' },
+  { id: '0.2', name: '0.20 mm', tag: 'Precisão', stock: 'Em Estoque', price: 'R$ 38,90', image: penRenderImg.src, desc: 'Linha guia e estruturação técnica com fluxo contínuo e sem sangramento.', tip: '0.20mm', code: 'ART-PGM-020' },
+  { id: '0.3', name: '0.30 mm', tag: 'Equilíbrio', stock: 'Em Estoque', price: 'R$ 38,90', image: canetaImg.src, desc: 'Perfeita para rendering, concept design e documentação técnica expressiva.', tip: '0.30mm', code: 'ART-PGM-030' },
+  { id: '0.5', name: '0.50 mm', tag: 'Linha Mestra', stock: 'Em Estoque', price: 'R$ 38,90', image: penIsolatedImg.src, desc: 'Linhas mestras e contorno primário de alto impacto com preto puro.', tip: '0.50mm', code: 'ART-PGM-050' },
+  { id: '0.8', name: '0.80 mm', tag: 'Alto Contraste', stock: 'Últimas 8 un.', price: 'R$ 42,90', image: penRenderImg.src, desc: 'Preto profundo 2.4 DMAX para silhuetas dramáticas e cortes pesados.', tip: '0.80mm', code: 'ART-PGM-080' },
+  { id: '1.0', name: '1.00 mm', tag: 'Seção Pesada', stock: 'Em Estoque', price: 'R$ 42,90', image: canetaImg.src, desc: 'Espessura máxima linear para pranchas executivas de grande formato.', tip: '1.00mm', code: 'ART-PGM-100' },
+  { id: 'br', name: 'Brush (BR)', tag: 'Pincel', stock: 'Lote Especial', price: 'R$ 49,90', image: penPhotoImg.src, desc: 'Cerdas sintéticas japonesas com memória elástica para modulação dinâmica.', tip: '0.2-3.5mm', code: 'ART-PGM-BR' },
+  { id: 'ch', name: 'Chisel (CH)', tag: 'Chanfrada', stock: 'Edição Especial', price: 'R$ 49,90', image: penRenderImg.src, desc: 'Ponta chanfrada de 2.0mm para caligrafia arquitetônica e lettering técnico.', tip: '2.00mm', code: 'ART-PGM-CH' },
 ];
 ---
 
@@ -55,11 +61,13 @@ const variants = [
                         </span>
                     </div>
 
-                    <!-- Imagem Principal -->
-                    <img 
+                    <!-- Imagem Principal Otimizada (Above the fold: Eager + High Priority) -->
+                    <Image 
                         id="main-product-image"
-                        src="/assets/img/pen_isolated.png" 
+                        src={penIsolatedImg} 
                         alt="ARTOOLS Pigmentum Caneta Técnica"
+                        loading="eager"
+                        fetchpriority="high"
                         class="max-h-72 sm:max-h-80 object-contain drop-shadow-md transition-all duration-300 group-hover:scale-105"
                     />
 
@@ -70,39 +78,39 @@ const variants = [
                     </div>
                 </div>
 
-                <!-- Miniaturas de Ângulo com Bordas Retas/Sutis -->
+                <!-- Miniaturas de Ângulo com Componente Image -->
                 <div class="grid grid-cols-4 gap-3">
                     <button 
                         type="button"
-                        onclick="changeGalleryImage('/assets/img/pen_isolated.png', this)"
+                        onclick={`changeGalleryImage('${penIsolatedImg.src}', this)`}
                         class="gallery-thumb active-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border-2 border-stone-900 dark:border-teal-400 p-2 flex items-center justify-center overflow-hidden transition-all"
                         aria-label="Ver imagem frontal"
                     >
-                        <img src="/assets/img/pen_isolated.png" alt="Miniatura isolada" class="max-h-full object-contain" />
+                        <Image src={penIsolatedImg} alt="Miniatura isolada" class="max-h-full object-contain" />
                     </button>
                     <button 
                         type="button"
-                        onclick="changeGalleryImage('/assets/img/caneta.png', this)"
+                        onclick={`changeGalleryImage('${canetaImg.src}', this)`}
                         class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
                         aria-label="Ver perfil lateral"
                     >
-                        <img src="/assets/img/caneta.png" alt="Miniatura lateral" class="max-h-full object-contain" />
+                        <Image src={canetaImg} alt="Miniatura lateral" class="max-h-full object-contain" />
                     </button>
                     <button 
                         type="button"
-                        onclick="changeGalleryImage('/assets/img/pen_render.png', this)"
+                        onclick={`changeGalleryImage('${penRenderImg.src}', this)`}
                         class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
                         aria-label="Ver render técnico"
                     >
-                        <img src="/assets/img/pen_render.png" alt="Miniatura render" class="max-h-full object-contain" />
+                        <Image src={penRenderImg} alt="Miniatura render" class="max-h-full object-contain" />
                     </button>
                     <button 
                         type="button"
-                        onclick="changeGalleryImage('/assets/img/pen_photo.jpeg', this)"
+                        onclick={`changeGalleryImage('${penPhotoImg.src}', this)`}
                         class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
                         aria-label="Ver foto macro"
                     >
-                        <img src="/assets/img/pen_photo.jpeg" alt="Miniatura macro" class="max-h-full object-cover" />
+                        <Image src={penPhotoImg} alt="Miniatura macro" class="max-h-full object-cover" />
                     </button>
                 </div>
 

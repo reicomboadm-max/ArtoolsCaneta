@@ -1,6 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Button from '../components/Button.astro';
+import { Image } from 'astro:assets';
+
+// Importação das imagens otimizadas de src/assets/
+import canetaImg from '../assets/caneta.png';
+import penIsolatedImg from '../assets/pen_isolated.png';
+import penRenderImg from '../assets/pen_render.png';
+import penPhotoImg from '../assets/pen_photo.jpeg';
 
 // Lista minimalista com as 9 canetas técnicas ARTOOLS Pigmentum
 const pens = [
@@ -9,7 +16,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum 0.05',
     tag: '0.05mm',
     badge: 'Ultra-Micro',
-    image: '/assets/img/caneta.png',
+    image: canetaImg,
     strokePreview: 'h-[1px] w-12 bg-stone-900 dark:bg-white',
     shortDesc: 'Microponta cirúrgica calibrada para hachuras e nanodetalhes técnicos.',
     price: 'R$ 38,90',
@@ -19,7 +26,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum 0.1',
     tag: '0.10mm',
     badge: 'Mais Vendida',
-    image: '/assets/img/pen_isolated.png',
+    image: penIsolatedImg,
     strokePreview: 'h-[1.5px] w-12 bg-stone-900 dark:bg-white',
     shortDesc: 'O padrão internacional para plantas baixas, cotas e linework arquitetônico.',
     price: 'R$ 38,90',
@@ -29,7 +36,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum 0.2',
     tag: '0.20mm',
     badge: 'Precisão',
-    image: '/assets/img/pen_render.png',
+    image: penRenderImg,
     strokePreview: 'h-[2px] w-12 bg-stone-900 dark:bg-white',
     shortDesc: 'Linha guia e estruturação técnica com fluxo estequiométrico contínuo.',
     price: 'R$ 38,90',
@@ -39,7 +46,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum 0.3',
     tag: '0.30mm',
     badge: 'Equilíbrio',
-    image: '/assets/img/caneta.png',
+    image: canetaImg,
     strokePreview: 'h-[2.5px] w-12 bg-stone-900 dark:bg-white',
     shortDesc: 'Ideal para rendering de design, ilustração vetorial e documentação.',
     price: 'R$ 38,90',
@@ -49,7 +56,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum 0.5',
     tag: '0.50mm',
     badge: 'Linha Mestra',
-    image: '/assets/img/pen_isolated.png',
+    image: penIsolatedImg,
     strokePreview: 'h-[3px] w-12 bg-stone-900 dark:bg-white',
     shortDesc: 'Traço marcante para contornos primários e hierarquias visuais fortes.',
     price: 'R$ 38,90',
@@ -59,7 +66,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum 0.8',
     tag: '0.80mm',
     badge: 'Alto Contraste',
-    image: '/assets/img/pen_render.png',
+    image: penRenderImg,
     strokePreview: 'h-[4px] w-12 bg-stone-900 dark:bg-white',
     shortDesc: 'Preto profundo 2.4 DMAX para silhuetas dramáticas e cortes pesados.',
     price: 'R$ 42,90',
@@ -69,7 +76,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum 1.0',
     tag: '1.00mm',
     badge: 'Seção Pesada',
-    image: '/assets/img/caneta.png',
+    image: canetaImg,
     strokePreview: 'h-[5px] w-12 bg-stone-900 dark:bg-white',
     shortDesc: 'Espessura máxima linear para pranchas e composições de grande formato.',
     price: 'R$ 42,90',
@@ -79,7 +86,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum Brush',
     tag: 'BR (0.2-3.5mm)',
     badge: 'Ponta Pincel',
-    image: '/assets/img/pen_photo.jpeg',
+    image: penPhotoImg,
     strokePreview: 'h-[5px] w-12 bg-gradient-to-r from-stone-900 to-transparent dark:from-white rounded-none',
     shortDesc: 'Cerdas sintéticas japonesas com memória para modulação dinâmica do traço.',
     price: 'R$ 49,90',
@@ -89,7 +96,7 @@ const pens = [
     title: 'ARTOOLS Pigmentum Chisel',
     tag: 'CH (2.0mm)',
     badge: 'Chanfrada',
-    image: '/assets/img/pen_render.png',
+    image: penRenderImg,
     strokePreview: 'h-[4px] w-12 bg-stone-900 dark:bg-white transform skew-x-12',
     shortDesc: 'Ponta chanfrada rígida para caligrafia arquitetônica e lettering técnico.',
     price: 'R$ 49,90',
@@ -116,7 +123,7 @@ const pens = [
         </div>
     </section>
 
-    <!-- Grid Minimalista com Imagens 100% Enquadradas Dentro dos Cards -->
+    <!-- Grid Minimalista com Componente <Image /> do Astro -->
     <section class="py-12 sm:py-16 px-6 sm:px-12 md:px-16 max-w-7xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pens.map((pen, index) => (
@@ -124,7 +131,7 @@ const pens = [
                     class="group relative rounded-lg bg-white dark:bg-[#141412] border border-stone-300 dark:border-stone-800 hover:border-stone-900 dark:hover:border-teal-400 flex flex-col justify-between overflow-hidden transition-all duration-300 shadow-sm"
                     id={`card-${pen.id}`}
                 >
-                    <!-- Imagem Ocupando Toda a Parte Superior com Enquadramento 100% Completo -->
+                    <!-- Imagem Ocupando Toda a Parte Superior -->
                     <div class="relative w-full h-64 bg-[#F4F4F0] dark:bg-[#191917] border-b border-stone-200 dark:border-stone-800 flex flex-col justify-between p-4 overflow-hidden">
                         
                         <!-- Telemetria do Topo -->
@@ -137,13 +144,14 @@ const pens = [
                             </span>
                         </div>
 
-                        <!-- Área da Imagem Centralizada e 100% Contida Dentro do Card -->
+                        <!-- Área da Imagem Otimizada com <Image /> -->
                         <a href={`/produto?calibre=${pen.id}`} class="flex-1 my-1 w-full flex items-center justify-center cursor-pointer p-2 overflow-hidden">
-                            <img 
+                            <Image 
                                 src={pen.image} 
                                 alt={pen.title}
                                 class="max-h-36 sm:max-h-40 max-w-full w-auto object-contain filter drop-shadow group-hover:scale-105 transition-transform duration-300"
-                                loading="lazy"
+                                loading={index < 3 ? "eager" : "lazy"}
+                                fetchpriority={index < 3 ? "high" : "auto"}
                             />
                         </a>
 

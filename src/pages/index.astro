@@ -2,6 +2,8 @@
 import Button from '../components/Button.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { Image } from 'astro:assets';
+import canetaImg from '../assets/caneta.png';
 ---
 
 <!DOCTYPE html>
@@ -604,28 +606,27 @@ import Footer from '../components/Footer.astro';
             </div>
         </section>
         <!-- ============================================================
-             NEW FOLD: CURSIVE MARQUEE (BLACK BG)
+             NEW FOLD: CURSIVE MARQUEE (SLIM BLACK RIBBON)
         ============================================================ -->
-        <section class="relative z-20 py-3 bg-stone-950 overflow-hidden border-y border-stone-800 flex items-center h-16 sm:h-20">
-            <div class="flex flex-nowrap whitespace-nowrap animate-marquee w-[200%]" style="font-family: 'Playfair Display', serif; font-style: italic; animation-duration: 40s;">
+        <section class="relative z-20 py-2 bg-stone-950 overflow-hidden border-y border-stone-800 flex items-center h-12 sm:h-14 select-none">
+            <div class="flex flex-nowrap whitespace-nowrap animate-marquee min-w-max" style="font-family: 'Playfair Display', serif; font-style: italic; animation-duration: 18s;">
                 <!-- Marquee Content 1 -->
-                <div class="flex flex-nowrap w-1/2 items-center text-2xl sm:text-3xl text-stone-300 font-light tracking-[0.15em] justify-around shrink-0">
-                    <span class="mx-6">Precisão Cirúrgica</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Tinta Pigmentada</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Engenharia Suíça</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Fluxo Contínuo</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Nanomolecular</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Polímero Aeroespacial</span>
+                <div class="flex flex-nowrap items-center text-lg sm:text-2xl text-stone-300 font-light tracking-[0.12em] gap-8 sm:gap-12 shrink-0 pr-8 sm:pr-12">
+                    <span>Precisão Cirúrgica</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Tinta Pigmentada</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Engenharia Suíça</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Fluxo Contínuo</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Nanomolecular</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Polímero Aeroespacial</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
                 </div>
                 <!-- Marquee Content 2 (Duplicated for seamless loop) -->
-                <div class="flex flex-nowrap w-1/2 items-center text-2xl sm:text-3xl text-stone-300 font-light tracking-[0.15em] justify-around shrink-0" aria-hidden="true">
-                    <span class="mx-6 text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Precisão Cirúrgica</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Tinta Pigmentada</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Engenharia Suíça</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Fluxo Contínuo</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Nanomolecular</span> <span class="text-teal-500 font-sans text-lg">•</span>
-                    <span class="mx-6">Polímero Aeroespacial</span>
+                <div class="flex flex-nowrap items-center text-lg sm:text-2xl text-stone-300 font-light tracking-[0.12em] gap-8 sm:gap-12 shrink-0 pr-8 sm:pr-12" aria-hidden="true">
+                    <span>Precisão Cirúrgica</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Tinta Pigmentada</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Engenharia Suíça</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Fluxo Contínuo</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Nanomolecular</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
+                    <span>Polímero Aeroespacial</span> <span class="text-teal-400 font-sans text-xs sm:text-sm">•</span>
                 </div>
             </div>
         </section>
@@ -753,10 +754,11 @@ import Footer from '../components/Footer.astro';
                             
                             <!-- 1. Studio Macro High-Res Product Image (caneta.png seamlessly blended) -->
                             <div id="media-photo-container" class="absolute inset-0 flex items-center justify-center transition-all duration-700 opacity-100 scale-100 p-2 sm:p-4">
-                                <img
-                                    src="./assets/img/caneta.png"
-                                    onerror="this.src='./assets/img/caneta.png'"
+                                <Image
+                                    src={canetaImg}
                                     alt="ARTOOLS Pigmentum 0.1 Instrumento de Alta Precisão"
+                                    loading="eager"
+                                    fetchpriority="high"
                                     class="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal scale-110 sm:scale-125 transform group-hover:scale-[1.30] transition-transform duration-700 pointer-events-none"
                                 />
                             </div>
@@ -1206,13 +1208,11 @@ import Footer from '../components/Footer.astro';
 
                 gsap.ticker.lagSmoothing(0);
             } catch (err) {
-                console.warn('Lenis scroll running in standard browser mode:', err);
+                console.warn('Lenis scroll running in standard mode:', err);
             }
 
-
             // -------------------------------------------------------------
-            // 2. High-Performance Canvas Image Buffer Engine
-            //    (Cortando o primeiro 1.0s de video2.mp4 conforme solicitado)
+            // Canvas & Video Elements for Hero 3D Spatial Canvas
             // -------------------------------------------------------------
             const canvas = document.getElementById('pen-canvas');
             const video = document.getElementById('pen-video-source');
@@ -1237,8 +1237,8 @@ import Footer from '../components/Footer.astro';
 
             // Frame Cache Array & 1-Second Start Offset
             const framesCache = [];
-            const TOTAL_BUFFER_FRAMES = 84;
-            const VIDEO_START_OFFSET = 1.0; // Pula o primeiro segundo de video2.mp4
+            const TOTAL_BUFFER_FRAMES = 36;
+            const VIDEO_START_OFFSET = 1.0; // Pula o primeiro 1.0s do vídeo da Hero
             let isCachingComplete = false;
             let videoDuration = 3.5;
             let targetProgress = 0;
@@ -1296,8 +1296,10 @@ import Footer from '../components/Footer.astro';
                     );
                     if (framesCache[frameIndex]) {
                         renderFrameToCanvas(framesCache[frameIndex]);
+                        return;
                     }
-                } else if (video && video.readyState >= 2) {
+                }
+                if (video && video.readyState >= 2) {
                     renderFrameToCanvas(video);
                 }
             }
@@ -1318,9 +1320,7 @@ import Footer from '../components/Footer.astro';
 
             video.addEventListener('seeked', () => {
                 isSeeking = false;
-                if (!isCachingComplete) {
-                    renderFrameToCanvas(video);
-                }
+                renderFrameToCanvas(video);
                 if (pendingSeekTime !== null) {
                     const nextTime = pendingSeekTime;
                     pendingSeekTime = null;
@@ -1328,17 +1328,25 @@ import Footer from '../components/Footer.astro';
                 }
             });
 
-            // Fast Background In-Memory Frame Extractor (Starting from 1.0s)
-            async function extractVideoFrames() {
+            function hideLoaderImmediately() {
+                if (videoLoader && videoLoader.style.display !== 'none') {
+                    videoLoader.style.opacity = '0';
+                    setTimeout(() => {
+                        videoLoader.style.display = 'none';
+                    }, 250);
+                }
+            }
+
+            // Fast Background In-Memory Frame Extractor (Non-blocking starting at 1.0s)
+            async function extractVideoFramesInBackground() {
                 videoDuration = video.duration || 3.5;
                 const offscreen = document.createElement('canvas');
                 const offCtx = offscreen.getContext('2d', { alpha: false });
                 
-                offscreen.width = video.videoWidth || 1280;
-                offscreen.height = video.videoHeight || 720;
+                offscreen.width = Math.min(video.videoWidth || 1280, 1280);
+                offscreen.height = Math.min(video.videoHeight || 720, 720);
 
-                let captured = 0;
-                const startTime = Math.min(VIDEO_START_OFFSET, videoDuration * 0.3);
+                const startTime = Math.min(VIDEO_START_OFFSET, Math.max(0, videoDuration - 1.0));
                 const endTime = videoDuration - 0.05;
                 const effectiveRange = Math.max(0.5, endTime - startTime);
 
@@ -1355,16 +1363,10 @@ import Footer from '../components/Footer.astro';
                                     framesCache[i] = bitmap;
                                 } else {
                                     const img = new Image();
-                                    img.src = offscreen.toDataURL('image/jpeg', 0.88);
+                                    img.src = offscreen.toDataURL('image/jpeg', 0.85);
                                     framesCache[i] = img;
                                 }
-                            } catch (e) {
-                                console.warn('Frame capture error at step', i, e);
-                            }
-                            captured++;
-                            const percent = Math.round((captured / TOTAL_BUFFER_FRAMES) * 100);
-                            if (loaderProgressBar) loaderProgressBar.style.width = `${percent}%`;
-                            if (loaderStatusText) loaderStatusText.innerText = `Otimizando frames: ${percent}%...`;
+                            } catch (e) {}
                             resolve();
                         };
                         video.addEventListener('seeked', onSeek, { once: true });
@@ -1373,15 +1375,6 @@ import Footer from '../components/Footer.astro';
                 }
 
                 isCachingComplete = true;
-
-                // Fade out loader immediately
-                if (videoLoader) {
-                    videoLoader.style.opacity = '0';
-                    setTimeout(() => {
-                        videoLoader.style.display = 'none';
-                    }, 400);
-                }
-
                 drawCurrentFrame();
             }
 
@@ -1390,11 +1383,15 @@ import Footer from '../components/Footer.astro';
                 resizeCanvas();
                 videoDuration = video.duration || 3.5;
 
+                // Mostra o vídeo a partir de 1.0s
+                hideLoaderImmediately();
+                safeSeekVideo(VIDEO_START_OFFSET);
+
                 ScrollTrigger.create({
                     trigger: '#scroll-hero-section',
                     start: 'top top',
                     end: 'bottom bottom',
-                    scrub: 0.5,
+                    scrub: 0.3,
                     onUpdate: (self) => {
                         targetProgress = self.progress;
 
@@ -1444,22 +1441,21 @@ import Footer from '../components/Footer.astro';
                     }
                 });
 
-                // Start async background frame extractor
-                extractVideoFrames();
+                // Start async background frame extractor without blocking
+                setTimeout(extractVideoFramesInBackground, 200);
             }
 
             if (video.readyState >= 1) {
                 initEngine();
             } else {
                 video.addEventListener('loadedmetadata', initEngine, { once: true });
-                video.addEventListener('loadeddata', () => {
-                    if (!isCachingComplete && framesCache.length === 0) initEngine();
-                }, { once: true });
-                video.addEventListener('canplay', () => {
-                    if (!isCachingComplete && framesCache.length === 0) initEngine();
-                }, { once: true });
+                video.addEventListener('loadeddata', initEngine, { once: true });
+                video.addEventListener('canplay', initEngine, { once: true });
                 video.load();
             }
+
+            // Fallback: se o loader ainda estiver visível após 300ms, fecha imediatamente
+            setTimeout(hideLoaderImmediately, 300);
 
             // 60-120 FPS Native RAF Render Loop with Damped Subpixel Lerp
             let isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1469,7 +1465,7 @@ import Footer from '../components/Footer.astro';
                     currentProgress += (targetProgress - currentProgress) * 0.16;
 
                     if (!isCachingComplete && videoDuration > 0) {
-                        const startTime = Math.min(VIDEO_START_OFFSET, videoDuration * 0.3);
+                        const startTime = Math.min(VIDEO_START_OFFSET, Math.max(0, videoDuration - 1.0));
                         const effectiveRange = Math.max(0.5, videoDuration - startTime);
                         const targetTime = startTime + (currentProgress * effectiveRange);
                         if (Math.abs(targetTime - lastDrawnTime) > 0.03) {
