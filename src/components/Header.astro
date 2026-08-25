@@ -6,122 +6,216 @@ const isCatalogo = pathname.startsWith('/pagina2');
 const isProduto = pathname.startsWith('/produto');
 ---
 
-<header id="main-header" class="relative z-50 border-b border-stone-300 dark:border-stone-800 sticky top-0 bg-[#EAEAE5]/90 dark:bg-[#10100E]/90 backdrop-blur-md transition-all duration-300">
-    <div class="flex justify-between items-center px-4 sm:px-6 md:px-10 py-3.5 md:py-4">
+<header id="main-header" class="relative z-50 border-b border-stone-300 dark:border-stone-800 sticky top-0 bg-[#EAEAE5]/95 dark:bg-[#10100E]/95 backdrop-blur-md transition-all duration-300">
+    <div class="flex justify-between items-center px-4 sm:px-6 md:px-10 py-3 md:py-3.5">
         
-        <!-- Left: Dynamic Navigation Links with Accurate Visual Page Indicator -->
-        <nav class="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Navegação Principal" id="main-nav">
-            <!-- 01. Início -->
-            <a 
-                href="/" 
-                data-nav-path="/"
-                class={`nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm px-1 ${
-                    isHome 
-                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
-                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
-                }`}
-            >
-                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
-                    isHome 
-                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
-                    : 'bg-stone-300 dark:bg-stone-700'
-                }`}></span>
-                01. Início
-            </a>
-
-            <!-- 02. Catálogo -->
-            <a 
-                href="/pagina2" 
-                data-nav-path="/pagina2"
-                class={`nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm px-1 ${
-                    isCatalogo 
-                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
-                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
-                }`}
-            >
-                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
-                    isCatalogo 
-                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
-                    : 'bg-stone-300 dark:bg-stone-700'
-                }`}></span>
-                02. Catálogo
-            </a>
-
-            <!-- 03. Detalhes -->
-            <a 
-                href="/produto" 
-                data-nav-path="/produto"
-                class={`nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm px-1 ${
-                    isProduto 
-                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
-                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
-                }`}
-            >
-                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
-                    isProduto 
-                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
-                    : 'bg-stone-300 dark:bg-stone-700'
-                }`}></span>
-                03. Detalhes
-            </a>
-        </nav>
-
-        <!-- Center: Logo Minimalista (Apenas Ícone e Nome) -->
-        <a href="/" class="flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm p-1" aria-label="ARTOOLS Pigmentum Início">
-            <iconify-icon class="text-xl text-stone-900 dark:text-teal-400 group-hover:rotate-12 transition-transform duration-300" icon="solar:pen-bold"></iconify-icon>
-            <span class="font-extrabold tracking-tighter text-lg font-display text-stone-900 dark:text-white leading-none">
+        <!-- Left: Logo Minimalista (Ícone + Nome) -->
+        <a href="/" class="flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm p-1 shrink-0" aria-label="ARTOOLS Pigmentum Início">
+            <svg class="w-5 h-5 text-stone-900 dark:text-teal-400 group-hover:rotate-12 transition-transform duration-300 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+                <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+                <path d="M2 2l7.586 7.586"></path>
+                <circle cx="11" cy="11" r="2"></circle>
+            </svg>
+            <span class="font-extrabold tracking-tighter text-base sm:text-lg font-display text-stone-900 dark:text-white leading-none">
                 ARTOOLS<span class="text-stone-500 dark:text-teal-400 font-normal">.PIGMENTUM</span>
             </span>
         </a>
 
-        <!-- Right: Actions & Theme Toggle -->
-        <div class="flex items-center gap-3 sm:gap-4">
-            
-            <!-- FPS Indicator -->
-            <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-stone-300 dark:border-stone-700 bg-white/60 dark:bg-stone-800/40 text-[10px] font-mono text-stone-700 dark:text-stone-300">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span id="fps-counter">60 FPS</span>
-            </div>
+        <!-- Center: Links Desktop (Opcional em telas grandes para acesso direto) -->
+        <nav class="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Navegação Principal">
+            <a 
+                href="/" 
+                class={`text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
+                    isHome 
+                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
+                }`}
+            >
+                <span class={`w-1.5 h-1.5 rounded-full ${isHome ? 'bg-stone-900 dark:bg-teal-400' : 'bg-stone-400'}`}></span>
+                01. Início
+            </a>
 
-            <!-- Theme Toggle Switch -->
-            <button id="theme-toggle" class="w-8 h-8 rounded-md border border-stone-300 dark:border-stone-700 bg-white/80 dark:bg-stone-800 flex items-center justify-center text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-teal-300 hover:border-stone-900 transition-all shadow-xs focus:outline-none focus:ring-1 focus:ring-stone-900" aria-label="Alternar tema claro e escuro" title="Alternar Modo Claro / Escuro">
+            <a 
+                href="/pagina2" 
+                class={`text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
+                    isCatalogo 
+                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
+                }`}
+            >
+                <span class={`w-1.5 h-1.5 rounded-full ${isCatalogo ? 'bg-stone-900 dark:bg-teal-400' : 'bg-stone-400'}`}></span>
+                02. Catálogo
+            </a>
+
+            <a 
+                href="/produto" 
+                class={`text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
+                    isProduto 
+                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
+                }`}
+            >
+                <span class={`w-1.5 h-1.5 rounded-full ${isProduto ? 'bg-stone-900 dark:bg-teal-400' : 'bg-stone-400'}`}></span>
+                03. Detalhes
+            </a>
+        </nav>
+
+        <!-- Right: Botão de Menu Minimalista & Sutil + Alternador de Tema -->
+        <div class="flex items-center gap-2 sm:gap-2.5">
+            
+            <!-- Alternador de Tema (Claro / Escuro) -->
+            <button 
+                id="theme-toggle" 
+                class="w-8 h-8 rounded-md border border-stone-300 dark:border-stone-700 bg-white/70 dark:bg-stone-800/70 flex items-center justify-center text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-teal-300 hover:border-stone-900 transition-all shadow-xs focus:outline-none" 
+                aria-label="Alternar tema claro e escuro" 
+                title="Alternar Modo Claro / Escuro"
+            >
                 <iconify-icon id="theme-icon" icon="solar:sun-2-linear" class="text-sm"></iconify-icon>
             </button>
 
-            <!-- Direct Header CTA Button -->
-            <a href="/produto" id="btn-header-buy" class="px-4 py-2 bg-stone-950 hover:bg-stone-800 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-200 text-white rounded-md text-xs font-mono tracking-wider uppercase flex items-center gap-1.5 shadow-sm transition-all">
-                Reservar
-            </a>
+            <!-- BOTÃO DE MENU MINIMALISTA E SUTIL NO CANTO SUPERIOR DIREITO -->
+            <button 
+                id="nav-menu-btn"
+                type="button"
+                onclick="window.toggleNavDropdown(event)"
+                class="px-3 py-1.5 rounded-md border border-stone-300 dark:border-stone-700 bg-white/70 dark:bg-stone-800/70 hover:bg-stone-900 hover:text-white hover:border-stone-900 dark:hover:bg-white dark:hover:text-stone-950 dark:hover:border-white text-stone-800 dark:text-stone-200 font-mono text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all cursor-pointer select-none shadow-xs font-semibold"
+                aria-label="Abrir Menu de Escolha"
+                aria-expanded="false"
+                aria-haspopup="true"
+            >
+                <svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+                <span>Menu</span>
+                <svg id="menu-arrow-icon" class="w-3 h-3 opacity-60 transition-transform duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- PAINEL DROPDOWN SUSPENSO DO MENU (Minimalista & Elegante) -->
+    <div 
+        id="nav-dropdown-menu" 
+        class="hidden absolute right-4 sm:right-6 md:right-10 top-[calc(100%+6px)] w-72 sm:w-80 rounded-lg bg-white dark:bg-[#141412] border border-stone-300 dark:border-stone-700 shadow-2xl p-3.5 transition-all duration-200 z-50"
+        role="menu"
+        aria-orientation="vertical"
+    >
+        <div class="space-y-2.5 text-left">
+            <div class="flex items-center justify-between border-b border-stone-200 dark:border-stone-800 pb-2 text-[10px] font-mono uppercase tracking-widest text-stone-500 dark:text-stone-400 font-bold">
+                <span>Navegação</span>
+                <span class="text-teal-600 dark:text-teal-400">ARTOOLS 2026</span>
+            </div>
+
+            <!-- Lista de Opções de Menu -->
+            <div class="space-y-1">
+                <!-- Opção 1: Início -->
+                <a 
+                    href="/" 
+                    class={`group block p-2.5 rounded-md transition-colors ${
+                        isHome 
+                        ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs' 
+                        : 'text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800/70'
+                    }`}
+                    role="menuitem"
+                >
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono tracking-wider flex items-center gap-2">
+                            <span class={`w-1.5 h-1.5 rounded-full ${isHome ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
+                            01. Início
+                        </span>
+                        <span class="text-[10px] font-mono opacity-70">Visão Geral →</span>
+                    </div>
+                </a>
+
+                <!-- Opção 2: Catálogo -->
+                <a 
+                    href="/pagina2" 
+                    class={`group block p-2.5 rounded-md transition-colors ${
+                        isCatalogo 
+                        ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs' 
+                        : 'text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800/70'
+                    }`}
+                    role="menuitem"
+                >
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono tracking-wider flex items-center gap-2">
+                            <span class={`w-1.5 h-1.5 rounded-full ${isCatalogo ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
+                            02. Catálogo
+                        </span>
+                        <span class="text-[10px] font-mono opacity-70">09 Canetas →</span>
+                    </div>
+                </a>
+
+                <!-- Opção 3: Detalhes -->
+                <a 
+                    href="/produto" 
+                    class={`group block p-2.5 rounded-md transition-colors ${
+                        isProduto 
+                        ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs' 
+                        : 'text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800/70'
+                    }`}
+                    role="menuitem"
+                >
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-mono tracking-wider flex items-center gap-2">
+                            <span class={`w-1.5 h-1.5 rounded-full ${isProduto ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
+                            03. Detalhes
+                        </span>
+                        <span class="text-[10px] font-mono opacity-70">Ficha Técnica →</span>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 </header>
 
 <script is:inline>
-    // Client-side visual page indicator sync
-    document.addEventListener('DOMContentLoaded', () => {
-        const path = window.location.pathname.replace(/\/$/, '') || '/';
-        const navLinks = document.querySelectorAll('#main-nav .nav-link');
+    // Função Global de Abertura / Fechamento do Menu no Topo Direito
+    window.toggleNavDropdown = function(e) {
+        if (e) e.stopPropagation();
+        const menu = document.getElementById('nav-dropdown-menu');
+        const btn = document.getElementById('nav-menu-btn');
+        const arrow = document.getElementById('menu-arrow-icon');
         
-        navLinks.forEach(link => {
-            const targetPath = link.getAttribute('data-nav-path');
-            const dot = link.querySelector('.nav-dot');
-            const isActive = (targetPath === '/' && path === '/') || (targetPath !== '/' && path.startsWith(targetPath));
+        if (!menu) return;
 
-            if (isActive) {
-                link.classList.add('text-stone-950', 'dark:text-teal-400', 'font-bold');
-                link.classList.remove('text-stone-600', 'dark:text-stone-400');
-                if (dot) {
-                    dot.classList.add('bg-stone-900', 'dark:bg-teal-400', 'ring-2', 'ring-stone-900/20', 'dark:ring-teal-400/30');
-                    dot.classList.remove('bg-stone-300', 'dark:bg-stone-700');
-                }
-            } else {
-                link.classList.remove('text-stone-950', 'dark:text-teal-400', 'font-bold');
-                link.classList.add('text-stone-600', 'dark:text-stone-400');
-                if (dot) {
-                    dot.classList.remove('bg-stone-900', 'dark:bg-teal-400', 'ring-2', 'ring-stone-900/20', 'dark:ring-teal-400/30');
-                    dot.classList.add('bg-stone-300', 'dark:bg-stone-700');
-                }
-            }
-        });
+        const isHidden = menu.classList.contains('hidden');
+        if (isHidden) {
+            menu.classList.remove('hidden');
+            if (btn) btn.setAttribute('aria-expanded', 'true');
+            if (arrow) arrow.style.transform = 'rotate(180deg)';
+        } else {
+            menu.classList.add('hidden');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+            if (arrow) arrow.style.transform = 'rotate(0deg)';
+        }
+    };
+
+    window.closeNavDropdown = function() {
+        const menu = document.getElementById('nav-dropdown-menu');
+        const btn = document.getElementById('nav-menu-btn');
+        const arrow = document.getElementById('menu-arrow-icon');
+        
+        if (menu) menu.classList.add('hidden');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+    };
+
+    // Fechar ao clicar fora
+    document.addEventListener('click', (e) => {
+        const menu = document.getElementById('nav-dropdown-menu');
+        const btn = document.getElementById('nav-menu-btn');
+        if (menu && !menu.contains(e.target) && btn && !btn.contains(e.target)) {
+            window.closeNavDropdown();
+        }
+    });
+
+    // Fechar com ESC
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') window.closeNavDropdown();
     });
 </script>
