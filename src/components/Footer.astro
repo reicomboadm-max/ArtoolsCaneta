@@ -1,64 +1,96 @@
 ---
 // Footer.astro
 ---
-        <footer class="relative z-10 py-16 px-6 sm:px-12 md:px-16 bg-[#EAEAE5] dark:bg-[#10100E] border-t border-stone-300 dark:border-stone-800 transition-colors">
+<footer class="relative z-10 py-16 px-6 sm:px-12 md:px-16 bg-[#EAEAE5] dark:bg-[#10100E] border-t border-stone-300 dark:border-stone-800 transition-colors">
+    
+    <div class="max-w-7xl mx-auto space-y-12">
+        
+        <!-- Top 3-Columns Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12 border-b border-stone-300 dark:border-stone-800 pb-12 items-start">
             
-            <div class="max-w-7xl mx-auto space-y-12">
-                
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 border-b border-stone-300 dark:border-stone-800 pb-12">
-                    
-                    <!-- Left Brand Bio -->
-                    <div class="md:col-span-5 space-y-4" data-reveal-fade>
-                        <div class="flex items-center gap-2.5">
-                            <div class="w-7 h-7 rounded-full bg-[#1C1917] text-white dark:bg-teal-400 dark:text-stone-950 flex items-center justify-center font-bold text-xs">
-                                0.1
-                            </div>
-                            <span class="font-bold tracking-tight text-lg font-display text-[#1C1917] dark:text-white">ARTOOLS // PIGMENTUM</span>
-                        </div>
-                        <p class="text-xs sm:text-sm text-[#57534E] dark:text-stone-400 max-w-sm leading-relaxed">
-                            Instrumentos de desenho técnico com calibração suíça. Desenvolvido sob as diretrizes estéticas e arquiteturais do Design System Thiago 2026.
-                        </p>
-                    </div>
-
-                    <!-- Center Navigation Links -->
-                    <div class="md:col-span-4 space-y-3" data-reveal-fade>
-                        <span class="text-xs font-mono uppercase tracking-widest text-[#1C1917] dark:text-white font-bold block">Navegação Arquitetural</span>
-                        <ul class="text-xs font-mono space-y-2 text-[#57534E] dark:text-stone-400">
-                            <li><a href="#scroll-hero-section" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">01 // Hero 3D Spatial Canvas</a></li>
-                            <li><a href="#video-showcase-section" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">02 // Haute Caliber & Topografia</a></li>
-                            <li><a href="#specs-section" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">03 // Dossier Arquitetônico 100% Estático</a></li>
-                            <li><a href="#cinema-glow-section" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">04 // Protocolo Vitalício & Glow Box</a></li>
-                            <li><a href="#pigment-section" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">05 // Prancheta Interativa de Traço</a></li>
-                        </ul>
-                    </div>
-
-                    <!-- Right Live Swiss Clock & Telemetry Status -->
-                    <div class="md:col-span-3 text-left md:text-right space-y-3" data-reveal-fade>
-                        <span class="text-xs font-mono uppercase tracking-widest text-[#1C1917] dark:text-white font-bold block">Telemetria & Fuso</span>
-                        <div class="text-xs font-mono text-[#57534E] dark:text-stone-400 space-y-1">
-                            <div id="live-swiss-clock" class="text-sm font-bold text-[#1C1917] dark:text-teal-400">
-                                GENÈVE --:--:-- CET
-                            </div>
-                            <div>PRECISION PROTOCOL: SYNCED 60 FPS</div>
-                            <div class="text-emerald-600 dark:text-emerald-400 font-semibold mt-1">● SISTEMA OPERACIONAL</div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- Bottom Copyright & Ghost Brand Signature -->
-                <div class="flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#78716C] dark:text-stone-500 gap-4">
-                    <div>© 2026 ARTOOLS PIGMENTUM. TODOS OS DIREITOS RESERVADOS.</div>
-                    <div class="uppercase tracking-wider">SWISS CALIBER SPECIFICATION // 0.1MM</div>
-                </div>
-
-                <!-- Massive Architectural Ghost Signature -->
-                <div class="text-center opacity-10 pointer-events-none select-none overflow-hidden" aria-hidden="true">
-                    <span class="text-7xl sm:text-9xl md:text-[13rem] font-bold leading-none tracking-tighter font-display whitespace-nowrap text-ghost text-[#1C1917] dark:text-white">
-                        PIGMENTUM.01
+            <!-- Coluna 1: Identidade & Resumo -->
+            <div class="md:col-span-5 space-y-3.5 text-left">
+                <div class="flex items-center gap-2.5">
+                    <iconify-icon class="text-xl text-[#1C1917] dark:text-teal-400" icon="solar:pen-bold"></iconify-icon>
+                    <span class="font-bold tracking-tight text-base font-display text-[#1C1917] dark:text-white">
+                        ARTOOLS<span class="text-stone-500 dark:text-teal-400 font-normal">.PIGMENTUM</span>
                     </span>
                 </div>
-
+                <p class="text-xs sm:text-sm text-[#57534E] dark:text-stone-400 max-w-sm leading-relaxed font-sans">
+                    Instrumentos de desenho técnico com calibração suíça. Desenvolvido sob diretrizes estéticas e arquiteturais de alta precisão.
+                </p>
             </div>
 
-        </footer>
+            <!-- Coluna 2: Navegação Rápida -->
+            <div class="md:col-span-4 space-y-3 text-left">
+                <span class="text-xs font-mono uppercase tracking-widest text-[#1C1917] dark:text-white font-bold block">
+                    Navegação do Projeto
+                </span>
+                <ul class="text-xs font-mono space-y-2 text-[#57534E] dark:text-stone-400">
+                    <li>
+                        <a href="/" class="hover:text-[#1C1917] dark:hover:text-teal-400 transition-colors flex items-center gap-1.5">
+                            <span class="text-stone-400">01.</span> Início // Visão Geral
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/pagina2" class="hover:text-[#1C1917] dark:hover:text-teal-400 transition-colors flex items-center gap-1.5">
+                            <span class="text-stone-400">02.</span> Catálogo // 09 Modelos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/produto" class="hover:text-[#1C1917] dark:hover:text-teal-400 transition-colors flex items-center gap-1.5">
+                            <span class="text-stone-400">03.</span> Detalhes // Especificações
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Coluna 3: Telemetria & Fuso Horário -->
+            <div class="md:col-span-3 text-left md:text-right space-y-3">
+                <span class="text-xs font-mono uppercase tracking-widest text-[#1C1917] dark:text-white font-bold block">
+                    Telemetria & Fuso
+                </span>
+                <div class="text-xs font-mono text-[#57534E] dark:text-stone-400 space-y-1.5">
+                    <div id="live-swiss-clock" class="text-sm font-bold font-mono text-[#1C1917] dark:text-teal-400">
+                        GENÈVE 12:00:00 CET
+                    </div>
+                    <div class="text-[11px]">PRECISION PROTOCOL // 60 FPS</div>
+                    <div class="inline-flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 text-[11px] font-semibold">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        SISTEMA OPERACIONAL
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Linha de Copyright & Especificação -->
+        <div class="flex flex-col sm:flex-row justify-between items-center text-xs font-mono text-[#78716C] dark:text-stone-500 gap-4">
+            <div>© 2026 ARTOOLS PIGMENTUM. TODOS OS DIREITOS RESERVADOS.</div>
+            <div class="uppercase tracking-wider text-[11px]">SWISS CALIBER SPECIFICATION // 0.1MM</div>
+        </div>
+
+        <!-- Marca d'Água Discreta e Minimalista: Portfólio -->
+        <div class="text-center pt-4 pb-2 select-none overflow-hidden" aria-hidden="true">
+            <span class="text-2xl sm:text-3xl md:text-4xl font-bold font-display uppercase tracking-[0.35em] text-stone-900/15 dark:text-white/10 transition-colors">
+                Portfólio
+            </span>
+        </div>
+
+    </div>
+
+</footer>
+
+<script is:inline>
+    // Live Geneva Clock Update
+    function updateSwissClock() {
+        const clockEl = document.getElementById('live-swiss-clock');
+        if (clockEl) {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('pt-BR', { timeZone: 'Europe/Zurich', hour12: false });
+            clockEl.textContent = `GENÈVE ${timeStr} CET`;
+        }
+    }
+    setInterval(updateSwissClock, 1000);
+    updateSwissClock();
+</script>
