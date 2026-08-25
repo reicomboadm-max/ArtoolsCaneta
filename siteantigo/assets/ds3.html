@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>DS-3 // Kinetic Swiss Studio & Brutalist White Design System</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS & Scripts -->
+    <link href="templates/digital-architect.aura.build/assets/css2_19fd9cc6b396.css" rel="stylesheet" onerror="this.onerror=null;" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.260.0/dist/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        obsidian: '#09090B',
+                        charcoal: '#18181B',
+                        concrete: '#FAFAFA',
+                        pure: '#FFFFFF',
+                        borderHairline: '#E4E4E7',
+                        acid: '#CCFF00',
+                        amberGlow: '#FFB800',
+                        swissBlue: '#0066FF',
+                        danger: '#FF334B',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 16s linear infinite',
+                        'marquee-left': 'marqueeLeft 28s linear infinite',
+                        'marquee-right': 'marqueeRight 28s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 3.5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        marqueeLeft: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        marqueeRight: {
+                            '0%': { transform: 'translateX(-50%)' },
+                            '100%': { transform: 'translateX(0%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4' },
+                            '50%': { opacity: '0.8' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ==========================================================================
+           DS3: SWISS KINETIC STUDIO TOKENS & HAIRLINE AESTHETICS
+           ========================================================================== */
+        :root {
+            --bg-canvas: #FAFAFA;
+            --bg-pure: #FFFFFF;
+            --text-main: #09090B;
+            --text-muted: #71717A;
+            --border-hairline: #E4E4E7;
+            --accent-acid: #CCFF00;
+            --accent-blue: #0066FF;
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Architectural Hairline Grid Background */
+        .hairline-grid {
+            background-size: 64px 64px;
+            background-image: 
+                linear-gradient(to right, rgba(9, 9, 11, 0.04) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(9, 9, 11, 0.04) 1px, transparent 1px);
+        }
+
+        /* Flashlight Effect */
+        .flashlight-target {
+            position: relative;
+        }
+        .flashlight-target::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), rgba(204, 255, 0, 0.12), transparent 50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .flashlight-target:hover::before {
+            opacity: 1;
+        }
+
+        /* Transparent Outline Lettering */
+        .outline-knockout {
+            -webkit-text-stroke: 1.5px rgba(9, 9, 11, 0.35);
+            color: transparent;
+            transition: all 0.3s ease;
+        }
+        .outline-knockout:hover {
+            -webkit-text-stroke: 1.5px #09090B;
+            color: rgba(9, 9, 11, 0.05);
+        }
+
+        /* Masked Text Reveal */
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+            display: block;
+        }
+        .reveal-active .text-reveal-content,
+        .active .text-reveal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Scroll Reveal Base */
+        .reveal {
+            opacity: 0;
+            transform: translateY(2rem);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Cursor */
+        #cursor-box {
+            width: 28px;
+            height: 28px;
+            border: 1.5px solid #09090B;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.2s, height 0.2s, background-color 0.2s, transform 0.06s ease-out;
+        }
+        #cursor-dot {
+            width: 4px;
+            height: 4px;
+            background: #09090B;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 10000;
+        }
+
+        /* Toast Notification */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 99999;
+        }
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen relative hairline-grid selection:bg-obsidian selection:text-white">
+
+    <!-- Custom Cursor -->
+    <div id="cursor-box" class="hidden md:block"></div>
+    <div id="cursor-dot" class="hidden md:block"></div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="px-6 py-3.5 rounded-full bg-obsidian text-white flex items-center gap-3 shadow-2xl border border-zinc-700">
+        <iconify-icon icon="solar:check-circle-bold" class="text-acid text-xl"></iconify-icon>
+        <span id="toast-text" class="text-xs font-mono tracking-wider uppercase">Token Copied</span>
+    </div>
+
+    <!-- Interactive Spec Modal -->
+    <div id="modal-spec" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-obsidian/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-400">
+        <div class="bg-white max-w-xl w-full p-8 rounded-3xl border border-zinc-300 shadow-2xl transform scale-95 transition-all duration-400" id="modal-box">
+            <div class="flex items-center justify-between pb-4 border-b border-zinc-200">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-obsidian"></span>
+                    <span class="text-xs font-mono uppercase tracking-widest text-obsidian font-bold">DS-3 Swiss Spec</span>
+                </div>
+                <button onclick="toggleModal(false)" class="w-8 h-8 rounded-full border border-zinc-300 flex items-center justify-center hover:bg-obsidian hover:text-white transition-colors">
+                    <iconify-icon icon="solar:close-circle-linear" class="text-xl"></iconify-icon>
+                </button>
+            </div>
+            <div class="py-6 space-y-4">
+                <h3 class="text-2xl font-bold tracking-tight text-obsidian">Kinetic Swiss Studio Matrix</h3>
+                <p class="text-sm text-zinc-600 font-body leading-relaxed">
+                    A brutalist light system governed by 1px hairlines, pure monochrome typography, mathematical grid alignments, and high-impact micro-motion.
+                </p>
+                <div class="grid grid-cols-2 gap-3 font-mono text-xs p-4 rounded-xl bg-zinc-100 border border-zinc-200">
+                    <div><span class="text-zinc-500">CONTRAST:</span> AAA 19.5:1</div>
+                    <div><span class="text-zinc-500">GRID:</span> 12-Col Hairline</div>
+                    <div><span class="text-zinc-500">PRIMARY:</span> Space Grotesk</div>
+                    <div><span class="text-zinc-500">CODE:</span> JetBrains Mono</div>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-zinc-200">
+                <button onclick="toggleModal(false)" class="px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider text-zinc-600 hover:text-zinc-900">Dismiss</button>
+                <button onclick="copyToken('DS3-SWISS-CORE', 'Spec Token Copied'); toggleModal(false);" class="px-6 py-2.5 rounded-full bg-obsidian text-white text-xs font-mono uppercase tracking-wider font-semibold shadow-lg hover:bg-zinc-800 transition-all">Copy Spec Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Wrapper -->
+    <div class="max-w-[1440px] mx-auto border-x border-zinc-300 relative bg-[#FAFAFA] shadow-2xl">
+        
+        <!-- Architectural Grid Guides -->
+        <div class="absolute inset-0 pointer-events-none grid grid-cols-1 md:grid-cols-12 gap-0 z-0 h-full w-full">
+            <div class="hidden md:block md:col-span-3 border-r border-zinc-200 h-full"></div>
+            <div class="hidden md:block md:col-span-6 border-r border-zinc-200 h-full"></div>
+            <div class="hidden md:block md:col-span-3 h-full"></div>
+        </div>
+
+        <!-- ==========================================================================
+             STICKY HEADER / NAVIGATION
+             ========================================================================== -->
+        <header class="relative z-50 border-b border-zinc-300 sticky top-0 bg-[#FAFAFA]/90 backdrop-blur-md">
+            <div class="flex justify-between items-center px-6 md:px-10 py-5">
+                <div class="flex items-center gap-8">
+                    <a href="#hero" class="text-xs font-mono tracking-widest uppercase font-bold text-obsidian flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 bg-obsidian"></span>
+                        <span>DS-3 // SWISS.KINETIC</span>
+                    </a>
+                    <nav class="hidden md:flex items-center gap-8">
+                        <a href="#typography" class="text-xs font-mono tracking-widest uppercase text-zinc-600 hover:text-obsidian transition-colors">01. Typography</a>
+                        <a href="#colors" class="text-xs font-mono tracking-widest uppercase text-zinc-600 hover:text-obsidian transition-colors">02. Colors</a>
+                        <a href="#components" class="text-xs font-mono tracking-widest uppercase text-zinc-600 hover:text-obsidian transition-colors">03. UI Kit</a>
+                        <a href="#icons" class="text-xs font-mono tracking-widest uppercase text-zinc-600 hover:text-obsidian transition-colors">04. Vectors</a>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleModal(true)" class="px-4 py-2 rounded-full border border-zinc-300 text-xs font-mono uppercase tracking-widest hover:bg-obsidian hover:text-white transition-all">
+                        Spec Sheet
+                    </button>
+                    <a href="#components" class="px-5 py-2.5 rounded-full bg-obsidian hover:bg-zinc-800 text-white font-mono text-xs uppercase tracking-wider font-semibold shadow-md transition-all">
+                        Components &rarr;
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==========================================================================
+             1. FIRST FOLD: HERO SHOWCASE OF CAPABILITIES
+             ========================================================================== -->
+        <section id="hero" class="relative z-10 grid grid-cols-1 lg:grid-cols-12 border-b border-zinc-300 min-h-[920px]">
+            
+            <!-- Left Hero -->
+            <div class="col-span-1 lg:col-span-8 p-8 md:p-14 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-zinc-300 bg-white relative overflow-hidden">
+                
+                <!-- Watermark Knockout -->
+                <div class="absolute right-[-2rem] top-1/3 text-6xl md:text-9xl font-extrabold outline-knockout opacity-25 select-none pointer-events-none tracking-tighter">
+                    STUDIO.DS3
+                </div>
+
+                <!-- Status Bar -->
+                <div class="relative z-10 flex flex-wrap items-center gap-3">
+                    <span class="px-3.5 py-1.5 rounded-full bg-zinc-100 border border-zinc-300 text-obsidian text-xs font-mono uppercase tracking-wider font-bold">
+                        Swiss Precision V3.0
+                    </span>
+                    <span class="px-3.5 py-1.5 rounded-full bg-acid/20 border border-acid text-obsidian text-xs font-mono uppercase tracking-wider font-bold">
+                        AAA Contrast 19.5:1
+                    </span>
+                </div>
+
+                <!-- Hero Title -->
+                <div class="relative z-10 my-12">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-obsidian leading-[0.95] mb-6">
+                        <span class="text-reveal-wrapper">
+                            <span class="text-reveal-content text-obsidian">Kinetic Swiss</span>
+                        </span>
+                        <br/>
+                        <span class="text-reveal-wrapper">
+                            <span class="text-reveal-content outline-knockout" style="transition-delay: 0.2s;">
+                                Studio Grid
+                            </span>
+                        </span>
+                    </h1>
+
+                    <p class="text-zinc-600 max-w-xl text-base md:text-lg font-body leading-relaxed mb-10">
+                        High-contrast Swiss architectural typography constructed on pure white surfaces, reinforced by tactile spring physics and 1px hairline structural frames.
+                    </p>
+
+                    <!-- Interactive Spotlight Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl">
+                        
+                        <div class="flashlight-target p-5 rounded-2xl bg-zinc-50 border border-zinc-300 hover:border-obsidian transition-all group cursor-pointer" onclick="copyToken('12-Column Swiss Grid', 'Copied')">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-mono text-zinc-500 uppercase font-bold">LAYOUT</span>
+                                <iconify-icon icon="solar:grid-linear" class="text-xl text-obsidian"></iconify-icon>
+                            </div>
+                            <div class="text-2xl font-bold text-obsidian tracking-tight">12-Col Hairline</div>
+                            <span class="text-xs text-zinc-500 font-mono mt-1 block">Pixel-Perfect Metric Grid</span>
+                        </div>
+
+                        <div class="flashlight-target p-5 rounded-2xl bg-zinc-50 border border-zinc-300 hover:border-obsidian transition-all group cursor-pointer" onclick="copyToken('19.5:1 Super Contrast', 'Copied')">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-mono text-zinc-500 uppercase font-bold">OPTICAL GRADE</span>
+                                <iconify-icon icon="solar:shield-check-linear" class="text-xl text-obsidian"></iconify-icon>
+                            </div>
+                            <div class="text-2xl font-bold text-obsidian tracking-tight">19.5 : 1 Ratio</div>
+                            <span class="text-xs text-zinc-500 font-mono mt-1 block">Zero Optical Fatigue</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- CTA Row -->
+                <div class="relative z-10 flex flex-wrap items-center gap-4 pt-6 border-t border-zinc-200">
+                    <a href="#components" class="px-8 py-4 rounded-full bg-obsidian hover:bg-zinc-800 text-white text-xs font-mono uppercase tracking-widest font-semibold flex items-center gap-3 shadow-xl transition-all hover:scale-105">
+                        <span>Explore UI Specification</span>
+                        <iconify-icon icon="solar:arrow-right-linear" class="text-base"></iconify-icon>
+                    </a>
+                    <button onclick="copyToken(':root { --bg: #FAFAFA; --text: #09090B; }', 'Root Tokens Copied')" class="px-6 py-4 rounded-full bg-zinc-100 hover:bg-zinc-200 text-obsidian text-xs font-mono uppercase tracking-widest font-medium border border-zinc-300 transition-all flex items-center gap-2">
+                        <iconify-icon icon="solar:copy-linear" class="text-base"></iconify-icon>
+                        <span>Copy Code Tokens</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Hero: Metric Stats Column -->
+            <div class="col-span-1 lg:col-span-4 p-8 md:p-12 flex flex-col justify-between bg-zinc-50">
+                <div>
+                    <div class="flex items-center justify-between pb-4 border-b border-zinc-200 mb-8">
+                        <span class="text-xs font-mono uppercase tracking-widest text-obsidian font-bold">METRIC ARCHITECTURE</span>
+                        <span class="text-xs font-mono text-zinc-400">SYS // 03</span>
+                    </div>
+
+                    <!-- Metric Stack -->
+                    <div class="space-y-6">
+                        <div class="p-6 rounded-2xl bg-white border border-zinc-300 shadow-sm hover:border-obsidian transition-colors">
+                            <span class="text-xs font-mono uppercase text-zinc-500 block mb-1">DESIGN TOKEN DENSITY</span>
+                            <div class="text-4xl font-bold text-obsidian">120+</div>
+                            <span class="text-xs font-mono text-zinc-500 mt-2 block">Typography, Shadows, Bounds</span>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-white border border-zinc-300 shadow-sm hover:border-obsidian transition-colors">
+                            <span class="text-xs font-mono uppercase text-zinc-500 block mb-1">INTERACTIVE HOVER STATES</span>
+                            <div class="text-4xl font-bold text-obsidian">Spring 0.16s</div>
+                            <span class="text-xs font-mono text-zinc-500 mt-2 block">Cubic Expo Easing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-8 border-t border-zinc-200">
+                    <span class="text-xs font-mono uppercase text-zinc-500 block mb-2">COLOR ROLES</span>
+                    <div class="flex gap-2">
+                        <div class="h-6 flex-1 rounded bg-obsidian" title="#09090B"></div>
+                        <div class="h-6 flex-1 rounded bg-zinc-400" title="#A1A1AA"></div>
+                        <div class="h-6 flex-1 rounded bg-zinc-200 border border-zinc-300" title="#E4E4E7"></div>
+                        <div class="h-6 flex-1 rounded bg-acid" title="#CCFF00"></div>
+                        <div class="h-6 flex-1 rounded bg-swissBlue" title="#0066FF"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==========================================================================
+             DUAL MARQUEE STRIPS
+             ========================================================================== -->
+        <div class="border-b border-zinc-300 bg-obsidian text-white py-3 select-none overflow-hidden">
+            <div class="flex whitespace-nowrap animate-marquee-left">
+                <div class="flex items-center gap-8 text-xs font-mono uppercase tracking-widest font-semibold px-4">
+                    <span>KINETIC SWISS STUDIO</span>
+                    <span class="text-acid">&bull;</span>
+                    <span>1PX HAIRLINE BORDERS</span>
+                    <span class="text-acid">&bull;</span>
+                    <span>MATHEMATICAL RATIOS</span>
+                    <span class="text-acid">&bull;</span>
+                    <span>PURE MONOCHROME</span>
+                    <span class="text-acid">&bull;</span>
+                    <span>ACCESSIBILITY AAA</span>
+                    <span class="text-acid">&bull;</span>
+                </div>
+                <div class="flex items-center gap-8 text-xs font-mono uppercase tracking-widest font-semibold px-4">
+                    <span>KINETIC SWISS STUDIO</span>
+                    <span class="text-acid">&bull;</span>
+                    <span>1PX HAIRLINE BORDERS</span>
+                    <span class="text-acid">&bull;</span>
+                    <span>MATHEMATICAL RATIOS</span>
+                    <span class="text-acid">&bull;</span>
+                    <span>PURE MONOCHROME</span>
+                    <span class="text-acid">&bull;</span>
+                    <span>ACCESSIBILITY AAA</span>
+                    <span class="text-acid">&bull;</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================================
+             2. TYPOGRAPHY SYSTEM
+             ========================================================================== -->
+        <section id="typography" class="relative z-10 border-b border-zinc-300">
+            <!-- Header -->
+            <div class="p-8 md:p-12 border-b border-zinc-300 bg-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-zinc-500 mb-2 font-bold">
+                        <span class="px-2 py-0.5 rounded bg-zinc-200 text-obsidian">01</span>
+                        <span>Swiss Typographic Hierarchy</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-obsidian">Typography Architecture</h2>
+                </div>
+                <p class="text-sm font-mono text-zinc-600 max-w-md">
+                    Space Grotesk (Editorial Headers) + Inter (Reading Body) + JetBrains Mono (Technical Spec).
+                </p>
+            </div>
+
+            <!-- Typography Hierarchy Table -->
+            <div class="divide-y divide-zinc-200 bg-white">
+                
+                <!-- H1 Display -->
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hover:bg-zinc-50 transition-colors">
+                    <div class="lg:col-span-3 font-mono text-xs text-zinc-500 space-y-1">
+                        <span class="font-bold text-obsidian block text-sm">H1 Display (.text-6xl / .text-7xl)</span>
+                        <div>Size: 72px / 4.5rem | Weight: 700 (Bold)</div>
+                        <div>Line: 1.05 | Tracking: -0.04em</div>
+                    </div>
+                    <div class="lg:col-span-9">
+                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-obsidian">
+                            Monumental Structure
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- H2 Section Title -->
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hover:bg-zinc-50 transition-colors">
+                    <div class="lg:col-span-3 font-mono text-xs text-zinc-500 space-y-1">
+                        <span class="font-bold text-obsidian block text-sm">H2 Subtitle (.text-4xl / .text-5xl)</span>
+                        <div>Size: 44px / 2.75rem | Weight: 600 (SemiBold)</div>
+                    </div>
+                    <div class="lg:col-span-9">
+                        <h2 class="text-3xl md:text-5xl font-semibold tracking-tight text-obsidian">
+                            Mathematical Baseline Grid
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- H3 Component Title -->
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hover:bg-zinc-50 transition-colors">
+                    <div class="lg:col-span-3 font-mono text-xs text-zinc-500 space-y-1">
+                        <span class="font-bold text-obsidian block text-sm">H3 Subsection (.text-2xl / .text-3xl)</span>
+                        <div>Size: 28px / 1.75rem | Weight: 600</div>
+                    </div>
+                    <div class="lg:col-span-9">
+                        <h3 class="text-2xl md:text-3xl font-semibold text-obsidian">
+                            Brutalist Light Elevation
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Body Text Scale -->
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hover:bg-zinc-50 transition-colors">
+                    <div class="lg:col-span-3 font-mono text-xs text-zinc-500 space-y-1">
+                        <span class="font-bold text-obsidian block text-sm">Body Text (Inter)</span>
+                        <div>body-lg: 18px / 1.6</div>
+                        <div>body: 16px / 1.6</div>
+                    </div>
+                    <div class="lg:col-span-9 space-y-3 font-body">
+                        <p class="text-lg text-obsidian leading-relaxed">
+                            <span class="font-mono text-xs text-zinc-400 mr-2">[body-lg]</span>
+                            Modern brutalism strips away unnecessary ornament, emphasizing pure structural clarity and rhythmic spacing.
+                        </p>
+                        <p class="text-base text-zinc-700 leading-relaxed">
+                            <span class="font-mono text-xs text-zinc-400 mr-2">[body]</span>
+                            Inter 400 at 16px with 160% line height guarantees maximum reading endurance across dense design documentation.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Live Font Slider -->
+            <div class="p-8 bg-zinc-50 border-t border-zinc-300">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
+                    <span class="text-xs font-mono uppercase tracking-widest text-obsidian font-bold">Interactive Scale Slider</span>
+                    <div class="flex items-center gap-4">
+                        <input type="range" min="16" max="64" value="28" class="w-48 accent-obsidian cursor-pointer" oninput="document.getElementById('font-box-3').style.fontSize = this.value + 'px'; document.getElementById('val-3').innerText = this.value + 'px';">
+                        <span id="val-3" class="text-xs font-mono font-bold text-obsidian w-12">28px</span>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-white border border-zinc-300 shadow-inner">
+                    <p id="font-box-3" class="font-bold text-obsidian outline-none" contenteditable="true">
+                        High-contrast Swiss typography configured for pure clarity...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             3. COLOR SYSTEM & CONTRAST MATRIX
+             ========================================================================== -->
+        <section id="colors" class="relative z-10 border-b border-zinc-300">
+            <!-- Header -->
+            <div class="p-8 md:p-12 border-b border-zinc-300 bg-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-zinc-500 mb-2 font-bold">
+                        <span class="px-2 py-0.5 rounded bg-zinc-200 text-obsidian">02</span>
+                        <span>Chromatic Palette</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-obsidian">Monochrome & Safety Accents</h2>
+                </div>
+                <p class="text-sm font-mono text-zinc-600 max-w-md">
+                    Click any card to copy the corresponding CSS design token.
+                </p>
+            </div>
+
+            <!-- Color Palette Grid -->
+            <div class="p-8 md:p-12 bg-white grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Swatch 1: Obsidian Jet -->
+                <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-300 hover:border-obsidian hover:shadow-xl transition-all cursor-pointer group" onclick="copyToken('#09090B', 'Obsidian Copied')">
+                    <div class="h-32 rounded-xl bg-[#09090B] mb-4 p-3 flex flex-col justify-between text-white shadow-md">
+                        <span class="text-[10px] font-mono uppercase font-bold">PRIMARY INK</span>
+                        <span class="text-[10px] font-mono text-acid">AAA / 19.5:1</span>
+                    </div>
+                    <h4 class="font-bold text-obsidian text-base">Obsidian Black</h4>
+                    <p class="text-xs text-zinc-500 font-mono mt-1">HEX: #09090B | RGB(9, 9, 11)</p>
+                    <p class="text-xs text-zinc-500 font-mono">HSL: 240°, 10%, 4%</p>
+                    <div class="mt-4 pt-3 border-t border-zinc-200 flex items-center justify-between text-xs font-mono text-obsidian">
+                        <span>--text-obsidian</span>
+                        <iconify-icon icon="solar:copy-linear" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                    </div>
+                </div>
+
+                <!-- Swatch 2: Concrete Canvas -->
+                <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-300 hover:border-obsidian hover:shadow-xl transition-all cursor-pointer group" onclick="copyToken('#FAFAFA', 'Concrete Copied')">
+                    <div class="h-32 rounded-xl bg-[#FAFAFA] border border-zinc-300 mb-4 p-3 flex flex-col justify-between text-obsidian shadow-inner">
+                        <span class="text-[10px] font-mono uppercase font-bold">CANVAS BG</span>
+                        <span class="text-[10px] font-mono text-zinc-500">BASE 0</span>
+                    </div>
+                    <h4 class="font-bold text-obsidian text-base">Concrete White</h4>
+                    <p class="text-xs text-zinc-500 font-mono mt-1">HEX: #FAFAFA | RGB(250, 250, 250)</p>
+                    <p class="text-xs text-zinc-500 font-mono">HSL: 0°, 0%, 98%</p>
+                    <div class="mt-4 pt-3 border-t border-zinc-200 flex items-center justify-between text-xs font-mono text-obsidian">
+                        <span>--bg-canvas</span>
+                        <iconify-icon icon="solar:copy-linear" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                    </div>
+                </div>
+
+                <!-- Swatch 3: Acid Lime -->
+                <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-300 hover:border-obsidian hover:shadow-xl transition-all cursor-pointer group" onclick="copyToken('#CCFF00', 'Acid Lime Copied')">
+                    <div class="h-32 rounded-xl bg-[#CCFF00] mb-4 p-3 flex flex-col justify-between text-obsidian shadow-md">
+                        <span class="text-[10px] font-mono uppercase font-bold">HIGH-VIS ACCENT</span>
+                        <span class="text-[10px] font-mono text-obsidian font-bold">AA / 14.2:1</span>
+                    </div>
+                    <h4 class="font-bold text-obsidian text-base">Acid High-Vis</h4>
+                    <p class="text-xs text-zinc-500 font-mono mt-1">HEX: #CCFF00 | RGB(204, 255, 0)</p>
+                    <p class="text-xs text-zinc-500 font-mono">HSL: 72°, 100%, 50%</p>
+                    <div class="mt-4 pt-3 border-t border-zinc-200 flex items-center justify-between text-xs font-mono text-obsidian">
+                        <span>--accent-acid</span>
+                        <iconify-icon icon="solar:copy-linear" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                    </div>
+                </div>
+
+                <!-- Swatch 4: International Blue -->
+                <div class="p-5 rounded-2xl bg-zinc-50 border border-zinc-300 hover:border-obsidian hover:shadow-xl transition-all cursor-pointer group" onclick="copyToken('#0066FF', 'Blue Copied')">
+                    <div class="h-32 rounded-xl bg-[#0066FF] mb-4 p-3 flex flex-col justify-between text-white shadow-md">
+                        <span class="text-[10px] font-mono uppercase font-bold">SWISS BLUE</span>
+                        <span class="text-[10px] font-mono text-white">AAA / 4.8:1</span>
+                    </div>
+                    <h4 class="font-bold text-obsidian text-base">International Blue</h4>
+                    <p class="text-xs text-zinc-500 font-mono mt-1">HEX: #0066FF | RGB(0, 102, 255)</p>
+                    <p class="text-xs text-zinc-500 font-mono">HSL: 216°, 100%, 50%</p>
+                    <div class="mt-4 pt-3 border-t border-zinc-200 flex items-center justify-between text-xs font-mono text-obsidian">
+                        <span>--accent-blue</span>
+                        <iconify-icon icon="solar:copy-linear" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             4. UI COMPONENTS SYSTEM
+             ========================================================================== -->
+        <section id="components" class="relative z-10 border-b border-zinc-300">
+            <!-- Header -->
+            <div class="p-8 md:p-12 border-b border-zinc-300 bg-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-zinc-500 mb-2 font-bold">
+                        <span class="px-2 py-0.5 rounded bg-zinc-200 text-obsidian">03</span>
+                        <span>Interactive Components</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-obsidian">Swiss Component Kit</h2>
+                </div>
+                <p class="text-sm font-mono text-zinc-600 max-w-md">
+                    Full UI specifications with spring hover physics, brutalist buttons, and tactile form controls.
+                </p>
+            </div>
+
+            <!-- Bento Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 bg-white">
+                
+                <!-- Left Col -->
+                <div class="lg:col-span-6 p-8 md:p-12 space-y-12">
+                    
+                    <!-- BUTTONS -->
+                    <div>
+                        <h3 class="text-lg font-bold text-obsidian tracking-tight mb-6 pb-2 border-b border-zinc-200 flex items-center gap-2">
+                            <iconify-icon icon="solar:cursor-bold-duotone" class="text-zinc-600"></iconify-icon>
+                            Button Variants & Spring States
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Solid Obsidian Button -->
+                            <button class="px-6 py-3.5 rounded-full bg-obsidian hover:bg-zinc-800 text-white font-mono text-xs uppercase tracking-wider font-semibold shadow-md hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2">
+                                <span>Solid Obsidian</span>
+                                <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                            </button>
+
+                            <!-- Acid High-Vis Button -->
+                            <button class="px-6 py-3.5 rounded-full bg-acid hover:bg-[#b8e600] text-obsidian font-mono text-xs uppercase tracking-wider font-bold shadow-md hover:scale-105 transition-transform flex items-center justify-center gap-2">
+                                <iconify-icon icon="solar:bolt-linear"></iconify-icon>
+                                <span>Acid Action</span>
+                            </button>
+
+                            <!-- Outline Hairline Button -->
+                            <button class="px-6 py-3.5 rounded-full bg-white hover:bg-zinc-100 text-obsidian border border-zinc-400 font-mono text-xs uppercase tracking-wider font-semibold transition-all flex items-center justify-center gap-2">
+                                <span>Hairline Outline</span>
+                            </button>
+
+                            <!-- International Blue Button -->
+                            <button class="px-6 py-3.5 rounded-full bg-swissBlue hover:bg-blue-700 text-white font-mono text-xs uppercase tracking-wider font-semibold transition-all flex items-center justify-center gap-2">
+                                <iconify-icon icon="solar:shield-check-linear"></iconify-icon>
+                                <span>Swiss Blue</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- INPUTS -->
+                    <div>
+                        <h3 class="text-lg font-bold text-obsidian tracking-tight mb-6 pb-2 border-b border-zinc-200 flex items-center gap-2">
+                            <iconify-icon icon="solar:pen-bold-duotone" class="text-zinc-600"></iconify-icon>
+                            Form Inputs & Controls
+                        </h3>
+
+                        <div class="space-y-4">
+                            <div class="relative">
+                                <iconify-icon icon="solar:magnifer-linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-400 text-lg"></iconify-icon>
+                                <input type="text" placeholder="Search parameters, tokens, scales..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-300 text-obsidian text-sm placeholder:text-zinc-400 focus:outline-none focus:border-obsidian focus:ring-2 focus:ring-obsidian/10 transition-all">
+                            </div>
+
+                            <div class="relative">
+                                <input type="text" value="swiss.layout.standard" class="w-full px-4 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-300 text-obsidian text-sm font-mono focus:outline-none pr-10">
+                                <iconify-icon icon="solar:check-circle-bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-600 text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Col -->
+                <div class="lg:col-span-6 p-8 md:p-12 space-y-12">
+                    
+                    <!-- CARDS -->
+                    <div>
+                        <h3 class="text-lg font-bold text-obsidian tracking-tight mb-6 pb-2 border-b border-zinc-200 flex items-center gap-2">
+                            <iconify-icon icon="solar:card-2-bold-duotone" class="text-zinc-600"></iconify-icon>
+                            Elevation & Hairline Cards
+                        </h3>
+
+                        <div class="space-y-4">
+                            <div class="p-6 rounded-3xl bg-zinc-50 border border-zinc-300 hover:border-obsidian transition-all group">
+                                <div class="flex items-center justify-between mb-3">
+                                    <span class="px-3 py-1 rounded-full bg-zinc-200 text-obsidian text-xs font-mono uppercase font-bold">
+                                        CARD // 01
+                                    </span>
+                                    <iconify-icon icon="solar:stars-minimalistic-bold-duotone" class="text-2xl text-zinc-400 group-hover:text-obsidian transition-colors"></iconify-icon>
+                                </div>
+                                <h4 class="text-xl font-bold text-obsidian mb-2">Tactile Precision Border</h4>
+                                <p class="text-sm text-zinc-600 font-body leading-relaxed mb-4">
+                                    Clean neutral elevation optimized for light backgrounds with micro-inset shadows and bold structural frames.
+                                </p>
+                                <div class="flex items-center justify-between pt-3 border-t border-zinc-200 text-xs font-mono text-zinc-500">
+                                    <span>border: 1px solid #E4E4E7</span>
+                                    <button onclick="copyToken('.swiss-card', 'CSS Copied')" class="text-obsidian font-bold hover:underline">Copy CSS &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BADGES & MODAL TRIGGER -->
+                    <div>
+                        <h3 class="text-lg font-bold text-obsidian tracking-tight mb-4 pb-2 border-b border-zinc-200 flex items-center gap-2">
+                            <iconify-icon icon="solar:tag-bold-duotone" class="text-zinc-600"></iconify-icon>
+                            Badges & Actions
+                        </h3>
+
+                        <div class="flex flex-wrap gap-3 items-center">
+                            <span class="px-3.5 py-1.5 rounded-full text-xs font-mono uppercase bg-zinc-100 border border-zinc-300 text-obsidian font-bold">
+                                Hairline 1px
+                            </span>
+                            <span class="px-3.5 py-1.5 rounded-full text-xs font-mono uppercase bg-acid text-obsidian font-bold">
+                                High-Vis
+                            </span>
+                            <button onclick="toggleModal(true)" class="px-4 py-1.5 rounded-full bg-obsidian text-white text-xs font-mono uppercase hover:bg-zinc-800 transition-all">
+                                Open Modal &uarr;
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             5. CURATED ICONOGRAPHY SHOWCASE
+             ========================================================================== -->
+        <section id="icons" class="relative z-10 border-b border-zinc-300">
+            <div class="p-8 md:p-12 border-b border-zinc-300 bg-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-zinc-500 mb-2 font-bold">
+                        <span class="px-2 py-0.5 rounded bg-zinc-200 text-obsidian">04</span>
+                        <span>Vector Glyphs</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-obsidian">Curated Icon Library</h2>
+                </div>
+                <p class="text-sm font-mono text-zinc-600 max-w-md">
+                    24px line glyphs with animated hover spins, spring scale dynamics, and click-to-copy tokens.
+                </p>
+            </div>
+
+            <div class="p-8 md:p-12 bg-zinc-50 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                
+                <div class="p-6 rounded-2xl bg-white border border-zinc-300 flex flex-col items-center justify-center gap-3 group hover:border-obsidian hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:atom-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:atom-bold-duotone" class="text-3xl text-obsidian group-hover:rotate-180 transition-transform duration-700"></iconify-icon>
+                    <span class="text-[11px] font-mono text-zinc-500">atom</span>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-zinc-300 flex flex-col items-center justify-center gap-3 group hover:border-obsidian hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:box-minimalistic-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:box-minimalistic-bold-duotone" class="text-3xl text-obsidian group-hover:scale-125 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-zinc-500">box</span>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-zinc-300 flex flex-col items-center justify-center gap-3 group hover:border-obsidian hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:scanner-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:scanner-bold-duotone" class="text-3xl text-obsidian group-hover:scale-125 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-zinc-500">scanner</span>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-zinc-300 flex flex-col items-center justify-center gap-3 group hover:border-obsidian hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:shield-check-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:shield-check-bold-duotone" class="text-3xl text-obsidian group-hover:rotate-12 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-zinc-500">shield</span>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-zinc-300 flex flex-col items-center justify-center gap-3 group hover:border-obsidian hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:cup-star-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:cup-star-bold-duotone" class="text-3xl text-obsidian group-hover:scale-125 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-zinc-500">cup-star</span>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white border border-zinc-300 flex flex-col items-center justify-center gap-3 group hover:border-obsidian hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:tuning-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:tuning-bold-duotone" class="text-3xl text-obsidian group-hover:rotate-45 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-zinc-500">tuning</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             FOOTER
+             ========================================================================== -->
+        <footer class="p-8 md:p-12 bg-white text-obsidian flex flex-col md:flex-row items-center justify-between gap-6 border-t border-zinc-300">
+            <div class="flex items-center gap-3">
+                <span class="w-3 h-3 bg-obsidian"></span>
+                <span class="font-bold tracking-tight text-sm">AURA DS-3 // KINETIC SWISS STUDIO</span>
+            </div>
+            <div class="text-xs font-mono text-zinc-500 flex items-center gap-6">
+                <span>1px Hairlines + Monochrome</span>
+                <span>•</span>
+                <span>Space Grotesk & Inter</span>
+                <span>•</span>
+                <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="hover:text-obsidian font-bold uppercase">&uarr; Return to Top</button>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Mouse Box & Dot
+        const cursorBox = document.getElementById('cursor-box');
+        const cursorDot = document.getElementById('cursor-dot');
+
+        window.addEventListener('mousemove', (e) => {
+            const { clientX: x, clientY: y } = e;
+            if (cursorDot) cursorDot.style.transform = `translate(${x}px, ${y}px)`;
+            if (cursorBox) cursorBox.style.transform = `translate(${x}px, ${y}px)`;
+            document.documentElement.style.setProperty('--mouse-x', `${x}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${y}px`);
+        });
+
+        // Trigger Reveal on load
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('reveal-active');
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        });
+
+        // Copy Token Utility
+        function copyToken(token, message = 'Token Copied') {
+            navigator.clipboard.writeText(token).then(() => {
+                const toast = document.getElementById('toast');
+                const toastText = document.getElementById('toast-text');
+                if (toast && toastText) {
+                    toastText.innerText = `${message}: ${token}`;
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 3000);
+                }
+            });
+        }
+
+        // Modal Handler
+        function toggleModal(show) {
+            const modal = document.getElementById('modal-spec');
+            const box = document.getElementById('modal-box');
+            if (show) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100', 'pointer-events-auto');
+                box.classList.remove('scale-95');
+                box.classList.add('scale-100');
+            } else {
+                modal.classList.remove('opacity-100', 'pointer-events-auto');
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                box.classList.remove('scale-100');
+                box.classList.add('scale-95');
+            }
+        }
+    </script>
+</body>
+</html>

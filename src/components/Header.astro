@@ -1,0 +1,127 @@
+---
+// Header.astro
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isHome = pathname === '/';
+const isCatalogo = pathname.startsWith('/pagina2');
+const isProduto = pathname.startsWith('/produto');
+---
+
+<header id="main-header" class="relative z-50 border-b border-stone-300 dark:border-stone-800 sticky top-0 bg-[#EAEAE5]/90 dark:bg-[#10100E]/90 backdrop-blur-md transition-all duration-300">
+    <div class="flex justify-between items-center px-4 sm:px-6 md:px-10 py-3.5 md:py-4">
+        
+        <!-- Left: Dynamic Navigation Links with Accurate Visual Page Indicator -->
+        <nav class="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Navegação Principal" id="main-nav">
+            <!-- 01. Início -->
+            <a 
+                href="/" 
+                data-nav-path="/"
+                class={`nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm px-1 ${
+                    isHome 
+                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
+                }`}
+            >
+                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
+                    isHome 
+                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
+                    : 'bg-stone-300 dark:bg-stone-700'
+                }`}></span>
+                01. Início
+            </a>
+
+            <!-- 02. Catálogo -->
+            <a 
+                href="/pagina2" 
+                data-nav-path="/pagina2"
+                class={`nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm px-1 ${
+                    isCatalogo 
+                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
+                }`}
+            >
+                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
+                    isCatalogo 
+                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
+                    : 'bg-stone-300 dark:bg-stone-700'
+                }`}></span>
+                02. Catálogo
+            </a>
+
+            <!-- 03. Detalhes -->
+            <a 
+                href="/produto" 
+                data-nav-path="/produto"
+                class={`nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm px-1 ${
+                    isProduto 
+                    ? 'text-stone-950 dark:text-teal-400 font-bold' 
+                    : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
+                }`}
+            >
+                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
+                    isProduto 
+                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
+                    : 'bg-stone-300 dark:bg-stone-700'
+                }`}></span>
+                03. Detalhes
+            </a>
+        </nav>
+
+        <!-- Center: Logo Minimalista (Apenas Ícone e Nome) -->
+        <a href="/" class="flex items-center gap-2 group cursor-pointer focus:outline-none focus:ring-1 focus:ring-stone-900 rounded-sm p-1" aria-label="ARTOOLS Pigmentum Início">
+            <iconify-icon class="text-xl text-stone-900 dark:text-teal-400 group-hover:rotate-12 transition-transform duration-300" icon="solar:pen-bold"></iconify-icon>
+            <span class="font-extrabold tracking-tighter text-lg font-display text-stone-900 dark:text-white leading-none">
+                ARTOOLS<span class="text-stone-500 dark:text-teal-400 font-normal">.PIGMENTUM</span>
+            </span>
+        </a>
+
+        <!-- Right: Actions & Theme Toggle -->
+        <div class="flex items-center gap-3 sm:gap-4">
+            
+            <!-- FPS Indicator -->
+            <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-stone-300 dark:border-stone-700 bg-white/60 dark:bg-stone-800/40 text-[10px] font-mono text-stone-700 dark:text-stone-300">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="fps-counter">60 FPS</span>
+            </div>
+
+            <!-- Theme Toggle Switch -->
+            <button id="theme-toggle" class="w-8 h-8 rounded-md border border-stone-300 dark:border-stone-700 bg-white/80 dark:bg-stone-800 flex items-center justify-center text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-teal-300 hover:border-stone-900 transition-all shadow-xs focus:outline-none focus:ring-1 focus:ring-stone-900" aria-label="Alternar tema claro e escuro" title="Alternar Modo Claro / Escuro">
+                <iconify-icon id="theme-icon" icon="solar:sun-2-linear" class="text-sm"></iconify-icon>
+            </button>
+
+            <!-- Direct Header CTA Button -->
+            <a href="/produto" id="btn-header-buy" class="px-4 py-2 bg-stone-950 hover:bg-stone-800 dark:bg-white dark:text-stone-950 dark:hover:bg-stone-200 text-white rounded-md text-xs font-mono tracking-wider uppercase flex items-center gap-1.5 shadow-sm transition-all">
+                Reservar
+            </a>
+        </div>
+    </div>
+</header>
+
+<script is:inline>
+    // Client-side visual page indicator sync
+    document.addEventListener('DOMContentLoaded', () => {
+        const path = window.location.pathname.replace(/\/$/, '') || '/';
+        const navLinks = document.querySelectorAll('#main-nav .nav-link');
+        
+        navLinks.forEach(link => {
+            const targetPath = link.getAttribute('data-nav-path');
+            const dot = link.querySelector('.nav-dot');
+            const isActive = (targetPath === '/' && path === '/') || (targetPath !== '/' && path.startsWith(targetPath));
+
+            if (isActive) {
+                link.classList.add('text-stone-950', 'dark:text-teal-400', 'font-bold');
+                link.classList.remove('text-stone-600', 'dark:text-stone-400');
+                if (dot) {
+                    dot.classList.add('bg-stone-900', 'dark:bg-teal-400', 'ring-2', 'ring-stone-900/20', 'dark:ring-teal-400/30');
+                    dot.classList.remove('bg-stone-300', 'dark:bg-stone-700');
+                }
+            } else {
+                link.classList.remove('text-stone-950', 'dark:text-teal-400', 'font-bold');
+                link.classList.add('text-stone-600', 'dark:text-stone-400');
+                if (dot) {
+                    dot.classList.remove('bg-stone-900', 'dark:bg-teal-400', 'ring-2', 'ring-stone-900/20', 'dark:ring-teal-400/30');
+                    dot.classList.add('bg-stone-300', 'dark:bg-stone-700');
+                }
+            }
+        });
+    });
+</script>

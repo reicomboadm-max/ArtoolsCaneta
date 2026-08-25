@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>DS-2 // Luminescent Glass & Bio-Teal Design System</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- CSS & Scripts -->
+    <link href="templates/digital-architect.aura.build/assets/css2_19fd9cc6b396.css" rel="stylesheet" onerror="this.onerror=null;" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.260.0/dist/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        lumen: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                            950: '#042f2e',
+                        },
+                        pure: '#FFFFFF',
+                        canvas: '#F8FAF9',
+                        surface: '#EFF4F2',
+                        obsidian: '#091316',
+                        charcoal: '#162227',
+                    },
+                    animation: {
+                        'spin-slow': 'spin 14s linear infinite',
+                        'marquee': 'marquee 30s linear infinite',
+                        'float': 'float 5s ease-in-out infinite',
+                        'float-delayed': 'float 5s ease-in-out 2.5s infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                        'draw': 'draw 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.45', transform: 'scale(1)' },
+                            '50%': { opacity: '0.85', transform: 'scale(1.12)' },
+                        },
+                        draw: {
+                            'to': { strokeDashoffset: '0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* ==========================================================================
+           DS2: LUMINESCENT GLASS & BIO-TEAL TOKENS
+           ========================================================================== */
+        :root {
+            --bg-canvas: #F8FAF9;
+            --bg-pure: #FFFFFF;
+            --bg-card: rgba(255, 255, 255, 0.7);
+            --border-glass: rgba(20, 184, 166, 0.2);
+            --border-grid: rgba(9, 19, 22, 0.08);
+            --text-main: #091316;
+            --text-muted: #52676E;
+            --teal-glow: rgba(45, 212, 191, 0.4);
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-canvas);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient Lighting Blobs (Glass-Green-Effect Inspired) */
+        .ambient-light-1 {
+            position: fixed;
+            top: -120px;
+            left: 10%;
+            width: 650px;
+            height: 650px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(45, 212, 191, 0.18) 0%, rgba(20, 184, 166, 0.08) 45%, transparent 70%);
+            filter: blur(90px);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseGlow 8s ease-in-out infinite alternate;
+        }
+
+        .ambient-light-2 {
+            position: fixed;
+            bottom: -150px;
+            right: 5%;
+            width: 750px;
+            height: 750px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.12) 0%, rgba(45, 212, 191, 0.1) 40%, transparent 70%);
+            filter: blur(100px);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseGlow 12s ease-in-out infinite alternate-reverse;
+        }
+
+        /* Glass Elevation & Frosted Backdrop */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 20px 40px -15px rgba(13, 148, 136, 0.07), 0 0 0 1px rgba(20, 184, 166, 0.12);
+        }
+
+        .glass-panel-dark {
+            background: rgba(9, 19, 22, 0.88);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(45, 212, 191, 0.25);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 25px rgba(45, 212, 191, 0.15);
+        }
+
+        .glow-border {
+            border: 1px solid rgba(45, 212, 191, 0.4);
+            box-shadow: 0 0 15px rgba(45, 212, 191, 0.2);
+        }
+
+        /* Outline Knockout Typography */
+        .outline-text {
+            -webkit-text-stroke: 1.5px rgba(9, 19, 22, 0.4);
+            color: transparent;
+            transition: all 0.4s ease;
+        }
+        .outline-text:hover {
+            -webkit-text-stroke: 1.5px #0d9488;
+            color: rgba(20, 184, 166, 0.08);
+        }
+
+        .outline-text-white {
+            -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.8);
+            color: transparent;
+        }
+
+        /* Masked Text Reveal */
+        .text-reveal-wrapper {
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: bottom;
+        }
+        .text-reveal-content {
+            transform: translateY(110%);
+            opacity: 0;
+            transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease;
+            display: block;
+        }
+        .reveal-active .text-reveal-content,
+        .active .text-reveal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Scroll Trigger Reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(2rem);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 3D Tilt Card Container */
+        .card-tilt-wrap {
+            perspective: 1000px;
+        }
+        .card-tilt {
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+            transform-style: preserve-3d;
+        }
+
+        /* Glowing Cursor */
+        #cursor-ring {
+            width: 32px;
+            height: 32px;
+            border: 1.5px solid rgba(13, 148, 136, 0.7);
+            border-radius: 9999px;
+            box-shadow: 0 0 20px rgba(45, 212, 191, 0.35);
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            transition: width .2s, height .2s, transform .07s ease-out;
+            z-index: 9999;
+        }
+
+        #cursor-dot {
+            width: 6px;
+            height: 6px;
+            background: #0d9488;
+            border-radius: 9999px;
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+        }
+
+        /* SVG Path Drawing */
+        .path-draw {
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: draw 2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Toast */
+        #toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 99999;
+        }
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen relative selection:bg-teal-600 selection:text-white">
+
+    <!-- Ambient Glow Lights -->
+    <div class="ambient-light-1"></div>
+    <div class="ambient-light-2"></div>
+
+    <!-- Custom Cursor -->
+    <div id="cursor-ring" class="hidden md:block"></div>
+    <div id="cursor-dot" class="hidden md:block"></div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="glass-panel-dark px-6 py-3.5 rounded-full flex items-center gap-3 text-white">
+        <iconify-icon icon="solar:check-circle-bold" class="text-teal-400 text-xl"></iconify-icon>
+        <span id="toast-text" class="text-xs font-mono tracking-wider uppercase">Token Copied</span>
+    </div>
+
+    <!-- Interactive Spec Modal -->
+    <div id="modal-spec" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-obsidian/50 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-400">
+        <div class="glass-panel max-w-xl w-full p-8 rounded-3xl border border-teal-500/30 shadow-2xl transform scale-95 transition-all duration-400" id="modal-content">
+            <div class="flex items-center justify-between pb-4 border-b border-teal-500/20">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 rounded-full bg-teal-500 animate-ping"></span>
+                    <span class="text-xs font-mono uppercase tracking-widest text-teal-800 font-bold">DS-2 System Architecture</span>
+                </div>
+                <button onclick="toggleModal(false)" class="w-8 h-8 rounded-full border border-teal-500/30 flex items-center justify-center hover:bg-teal-600 hover:text-white transition-colors">
+                    <iconify-icon icon="solar:close-circle-linear" class="text-xl"></iconify-icon>
+                </button>
+            </div>
+            <div class="py-6 space-y-4">
+                <h3 class="text-2xl font-bold font-display tracking-tight text-obsidian">Luminescent Bio-Teal Glassmorphism</h3>
+                <p class="text-sm text-stone-600 leading-relaxed">
+                    Designed for ultra-modern digital products, SaaS dashboards, and cyber-architectural interfaces with layered depth, specular glass borders, and reactive hover physics.
+                </p>
+                <div class="grid grid-cols-2 gap-3 font-mono text-xs p-4 rounded-2xl bg-white/80 border border-teal-500/20">
+                    <div><span class="text-teal-700 font-bold">ACCESSIBILITY:</span> WCAG AAA</div>
+                    <div><span class="text-teal-700 font-bold">BASE BLUR:</span> 20px - 24px</div>
+                    <div><span class="text-teal-700 font-bold">CANVAS:</span> #F8FAF9 Ice White</div>
+                    <div><span class="text-teal-700 font-bold">HIGHLIGHT:</span> #14B8A6 Teal</div>
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-3 pt-4 border-t border-teal-500/20">
+                <button onclick="toggleModal(false)" class="px-5 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider text-stone-600 hover:text-stone-900">Dismiss</button>
+                <button onclick="copyToken('DS2-LUMEN-SPEC', 'Spec Token Copied'); toggleModal(false);" class="px-6 py-2.5 rounded-full bg-teal-600 hover:bg-teal-500 text-white text-xs font-mono uppercase tracking-wider font-semibold shadow-lg shadow-teal-500/30 transition-all">Copy Spec Tokens</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-[1440px] mx-auto border-x border-teal-900/10 relative bg-[#F8FAF9]/90 shadow-2xl">
+        
+        <!-- Architectural Grid Lines Overlay -->
+        <div class="absolute inset-0 pointer-events-none grid grid-cols-1 md:grid-cols-12 gap-0 z-0 h-full w-full">
+            <div class="hidden md:block md:col-span-3 border-r border-teal-900/5 h-full"></div>
+            <div class="hidden md:block md:col-span-6 border-r border-teal-900/5 h-full"></div>
+            <div class="hidden md:block md:col-span-3 h-full"></div>
+        </div>
+
+        <!-- ==========================================================================
+             STICKY HEADER / NAVIGATION
+             ========================================================================== -->
+        <header class="relative z-50 border-b border-teal-900/10 sticky top-0 bg-[#F8FAF9]/80 backdrop-blur-xl">
+            <div class="flex justify-between items-center px-6 md:px-10 py-5">
+                <div class="flex items-center gap-8">
+                    <a href="#hero" class="text-xs font-mono tracking-widest uppercase font-bold text-obsidian flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-teal-600 to-emerald-400 p-0.5 shadow-md shadow-teal-500/20 flex items-center justify-center">
+                            <iconify-icon icon="solar:shield-check-bold" class="text-white text-sm"></iconify-icon>
+                        </div>
+                        <span>DS-2 // LUMEN.GLASS</span>
+                    </a>
+                    <nav class="hidden md:flex items-center gap-8">
+                        <a href="#typography" class="text-xs font-mono tracking-widest uppercase text-stone-600 hover:text-teal-700 transition-colors">01. Typography</a>
+                        <a href="#colors" class="text-xs font-mono tracking-widest uppercase text-stone-600 hover:text-teal-700 transition-colors">02. Colors</a>
+                        <a href="#components" class="text-xs font-mono tracking-widest uppercase text-stone-600 hover:text-teal-700 transition-colors">03. UI Components</a>
+                        <a href="#charts" class="text-xs font-mono tracking-widest uppercase text-stone-600 hover:text-teal-700 transition-colors">04. Vectors & Motion</a>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleModal(true)" class="px-4 py-2 rounded-full border border-teal-500/40 text-xs font-mono uppercase tracking-widest text-teal-800 bg-teal-50/50 hover:bg-teal-600 hover:text-white transition-all shadow-sm">
+                        Spec Modal
+                    </button>
+                    <a href="#components" class="px-5 py-2.5 rounded-full bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-500 hover:to-emerald-500 text-white font-mono text-xs uppercase tracking-wider font-semibold shadow-lg shadow-teal-500/25 transition-all">
+                        UI Kit &rarr;
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ==========================================================================
+             1. FIRST FOLD: HERO SHOWCASE OF CAPABILITIES
+             ========================================================================== -->
+        <section id="hero" class="relative z-10 grid grid-cols-1 lg:grid-cols-12 border-b border-teal-900/10 min-h-[920px]">
+            
+            <!-- Left Hero: Masked Title & Interactive Glass Architecture -->
+            <div class="col-span-1 lg:col-span-8 p-8 md:p-14 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-teal-900/10 relative overflow-hidden bg-gradient-to-b from-white/90 via-[#F4F8F7]/80 to-[#EAF2F0]/80">
+                
+                <!-- Background Giant Transparent Watermark Text -->
+                <div class="absolute right-0 top-1/4 text-7xl md:text-9xl font-extrabold font-display outline-text opacity-15 select-none pointer-events-none tracking-tighter">
+                    LUMINESCENT
+                </div>
+
+                <!-- Top Status Badge Row -->
+                <div class="relative z-10 flex flex-wrap items-center gap-3">
+                    <span class="px-4 py-1.5 rounded-full bg-teal-600/10 border border-teal-500/30 text-teal-800 text-xs font-mono uppercase tracking-wider font-semibold flex items-center gap-2 backdrop-blur-md">
+                        <span class="w-2 h-2 rounded-full bg-teal-500 animate-ping"></span>
+                        Bio-Lumen Interface
+                    </span>
+                    <span class="px-4 py-1.5 rounded-full bg-white/80 border border-stone-200 text-stone-700 text-xs font-mono uppercase tracking-wider backdrop-blur-md shadow-sm">
+                        Frosted Glass 20px
+                    </span>
+                </div>
+
+                <!-- Hero Title & Text Reveal -->
+                <div class="relative z-10 my-12">
+                    <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold font-display tracking-tight text-obsidian leading-[0.95] mb-6">
+                        <span class="text-reveal-wrapper">
+                            <span class="text-reveal-content text-obsidian">Luminescent</span>
+                        </span>
+                        <br/>
+                        <span class="text-reveal-wrapper">
+                            <span class="text-reveal-content text-transparent bg-clip-text bg-gradient-to-r from-teal-600 via-teal-500 to-emerald-600" style="transition-delay: 0.2s;">
+                                Glass Depth
+                            </span>
+                        </span>
+                    </h1>
+
+                    <p class="text-stone-600 max-w-xl text-base md:text-lg leading-relaxed mb-10 font-normal">
+                        A pristine light-aesthetic design system uniting frosted glass elevation, iridescent teal micro-glows, and precision typographic hierarchy.
+                    </p>
+
+                    <!-- Interactive Glass Card Preview Stack in Hero -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl card-tilt-wrap">
+                        
+                        <!-- Floating Glass Metric 1 -->
+                        <div class="glass-panel p-5 rounded-2xl border border-teal-500/30 hover:scale-105 transition-transform duration-300 group cursor-pointer" onclick="copyToken('99.99% Latency', 'Copied')">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[11px] font-mono text-teal-800 font-bold uppercase">CLOUD METRICS</span>
+                                <iconify-icon icon="solar:server-square-bold-duotone" class="text-xl text-teal-600 group-hover:rotate-12 transition-transform"></iconify-icon>
+                            </div>
+                            <div class="text-3xl font-extrabold text-obsidian tracking-tight font-display">0.42 ms</div>
+                            <span class="text-xs text-stone-500 font-mono mt-1 block">Sub-millisecond Glass Sync</span>
+                        </div>
+
+                        <!-- Floating Glass Metric 2 -->
+                        <div class="glass-panel p-5 rounded-2xl border border-teal-500/30 hover:scale-105 transition-transform duration-300 group cursor-pointer" onclick="copyToken('WCAG AAA 16.4:1', 'Copied')">
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="text-[11px] font-mono text-teal-800 font-bold uppercase">CONTRAST GRADE</span>
+                                <iconify-icon icon="solar:shield-check-bold-duotone" class="text-xl text-teal-600 group-hover:scale-110 transition-transform"></iconify-icon>
+                            </div>
+                            <div class="text-3xl font-extrabold text-obsidian tracking-tight font-display">16.4 : 1</div>
+                            <span class="text-xs text-stone-500 font-mono mt-1 block">WCAG AAA Certified Light</span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Bottom CTA Bar -->
+                <div class="relative z-10 flex flex-wrap items-center gap-4 pt-6 border-t border-teal-900/10">
+                    <a href="#components" class="px-8 py-4 rounded-full bg-obsidian hover:bg-charcoal text-white text-xs font-mono uppercase tracking-widest font-semibold flex items-center gap-3 shadow-xl hover:shadow-teal-500/20 transition-all hover:scale-105">
+                        <span>Inspect Component Matrix</span>
+                        <iconify-icon icon="solar:arrow-right-linear" class="text-base"></iconify-icon>
+                    </a>
+                    <button onclick="copyToken('--bg-canvas: #F8FAF9;', 'CSS Root Token Copied')" class="px-6 py-4 rounded-full glass-panel hover:bg-white text-obsidian text-xs font-mono uppercase tracking-widest font-medium transition-all flex items-center gap-2">
+                        <iconify-icon icon="solar:copy-linear" class="text-base text-teal-600"></iconify-icon>
+                        <span>Copy Tokens CSS</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Hero: Live Dynamic Graphic Showcase & 3D Interactive Card -->
+            <div class="col-span-1 lg:col-span-4 p-8 md:p-12 flex flex-col justify-between bg-gradient-to-b from-[#F2F7F5] to-[#E5EFEA]">
+                
+                <div>
+                    <div class="flex items-center justify-between pb-4 border-b border-teal-900/10 mb-8">
+                        <span class="text-xs font-mono uppercase tracking-widest text-teal-800 font-bold">SYSTEM // LIVE VIEW</span>
+                        <span class="w-2 h-2 rounded-full bg-teal-500 animate-ping"></span>
+                    </div>
+
+                    <!-- 3D Tilt Card with Specular Reflection -->
+                    <div class="glass-panel p-6 rounded-3xl border border-teal-500/40 shadow-2xl relative overflow-hidden group hover:border-teal-500 transition-all duration-500 animate-float">
+                        <!-- Top Bar inside Card -->
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-400 flex items-center justify-center text-white shadow-md shadow-teal-500/30">
+                                    <i data-lucide="zap" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-obsidian">Lumen Engine</h4>
+                                    <span class="text-[10px] font-mono text-teal-700">ACTIVE v2.4</span>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-[10px] font-mono uppercase bg-teal-500/20 text-teal-900 font-bold">
+                                100% Green
+                            </span>
+                        </div>
+
+                        <!-- Live SVG Chart Path Draw -->
+                        <div class="h-36 w-full rounded-xl bg-white/70 border border-teal-500/20 p-4 mb-4 flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-[10px] font-mono text-stone-500">
+                                <span>THROUGHPUT GRAPH</span>
+                                <span class="text-teal-700 font-bold">+34.8%</span>
+                            </div>
+                            <svg class="w-full h-20" viewBox="0 0 200 80">
+                                <defs>
+                                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="#14B8A6" stop-opacity="0.3"/>
+                                        <stop offset="100%" stop-color="#14B8A6" stop-opacity="0.0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 0 60 Q 40 40, 80 50 T 140 20 T 200 10 L 200 80 L 0 80 Z" fill="url(#chartGrad)" />
+                                <path d="M 0 60 Q 40 40, 80 50 T 140 20 T 200 10" fill="none" stroke="#0D9488" stroke-width="3" class="path-draw" />
+                            </svg>
+                        </div>
+
+                        <div class="flex items-center justify-between text-xs font-mono text-stone-600">
+                            <span>FPS: 60.0</span>
+                            <span class="text-teal-700 font-bold">ZERO DROPPED FRAMES</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Ticker Bottom -->
+                <div class="mt-8 pt-6 border-t border-teal-900/10 space-y-4">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-stone-500 uppercase">FROSTED GLASS BLUR</span>
+                        <span class="text-obsidian font-bold">24px Backdrop</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="text-stone-500 uppercase">SPECULAR HIGHLIGHT</span>
+                        <span class="text-teal-700 font-bold">#2DD4BF Teal</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             CONTINUOUS MARQUEE BAR
+             ========================================================================== -->
+        <div class="border-b border-teal-900/10 overflow-hidden py-4 bg-white/70 select-none backdrop-blur-md">
+            <div class="flex whitespace-nowrap animate-marquee">
+                <div class="flex items-center gap-8 text-xs font-mono uppercase tracking-widest text-teal-900 font-semibold px-4">
+                    <span>LUMINESCENT GLASS MORPHISM</span>
+                    <span class="text-teal-400">&bull;</span>
+                    <span>BIO-TEAL PRECISION TOKENS</span>
+                    <span class="text-teal-400">&bull;</span>
+                    <span>WCAG AAA COMPLIANT</span>
+                    <span class="text-teal-400">&bull;</span>
+                    <span>ANIMATED SVG CHARTS</span>
+                    <span class="text-teal-400">&bull;</span>
+                    <span>3D PERSPECTIVE TILT CARDS</span>
+                    <span class="text-teal-400">&bull;</span>
+                </div>
+                <div class="flex items-center gap-8 text-xs font-mono uppercase tracking-widest text-teal-900 font-semibold px-4">
+                    <span>LUMINESCENT GLASS MORPHISM</span>
+                    <span class="text-teal-400">&bull;</span>
+                    <span>BIO-TEAL PRECISION TOKENS</span>
+                    <span class="text-teal-400">&bull;</span>
+                    <span>WCAG AAA COMPLIANT</span>
+                    <span class="text-teal-400">&bull;</span>
+                    <span>ANIMATED SVG CHARTS</span>
+                    <span class="text-teal-400">&bull;</span>
+                    <span>3D PERSPECTIVE TILT CARDS</span>
+                    <span class="text-teal-400">&bull;</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================================================
+             2. TYPOGRAPHY SYSTEM
+             ========================================================================== -->
+        <section id="typography" class="relative z-10 border-b border-teal-900/10">
+            <!-- Header -->
+            <div class="p-8 md:p-12 border-b border-teal-900/10 bg-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-teal-700 font-bold mb-2">
+                        <span class="px-2.5 py-0.5 rounded bg-teal-100 text-teal-800">01</span>
+                        <span>Typographic Architecture</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold font-display tracking-tight text-obsidian">Typography Scales & Specs</h2>
+                </div>
+                <p class="text-sm font-mono text-stone-600 max-w-md">
+                    Plus Jakarta Sans (Primary UI) paired with Syne (Monumental Editorial Display) & JetBrains Mono (Technical Spec).
+                </p>
+            </div>
+
+            <!-- Typography Hierarchy Table -->
+            <div class="divide-y divide-teal-900/10 bg-[#FAFBFB]">
+                
+                <!-- H1 Display -->
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hover:bg-white transition-colors">
+                    <div class="lg:col-span-3 font-mono text-xs text-stone-500 space-y-1">
+                        <span class="font-bold text-obsidian block text-sm">H1 Display (.text-6xl / .text-7xl)</span>
+                        <div>Size: 72px / 4.5rem | Weight: 800 (Syne)</div>
+                        <div>Line: 1.0 | Tracking: -0.04em</div>
+                    </div>
+                    <div class="lg:col-span-9">
+                        <h1 class="text-4xl md:text-6xl lg:text-7xl font-extrabold font-display tracking-tight text-obsidian">
+                            Luminescent Systems
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- H2 Section Title -->
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hover:bg-white transition-colors">
+                    <div class="lg:col-span-3 font-mono text-xs text-stone-500 space-y-1">
+                        <span class="font-bold text-obsidian block text-sm">H2 Header (.text-4xl / .text-5xl)</span>
+                        <div>Size: 44px / 2.75rem | Weight: 700 (Syne)</div>
+                        <div>Line: 1.15 | Tracking: -0.03em</div>
+                    </div>
+                    <div class="lg:col-span-9">
+                        <h2 class="text-3xl md:text-5xl font-bold font-display tracking-tight text-obsidian">
+                            Frosted Ambient Interfaces
+                        </h2>
+                    </div>
+                </div>
+
+                <!-- H3 Component Title -->
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hover:bg-white transition-colors">
+                    <div class="lg:col-span-3 font-mono text-xs text-stone-500 space-y-1">
+                        <span class="font-bold text-obsidian block text-sm">H3 Subsection (.text-2xl / .text-3xl)</span>
+                        <div>Size: 28px / 1.75rem | Weight: 600</div>
+                    </div>
+                    <div class="lg:col-span-9">
+                        <h3 class="text-2xl md:text-3xl font-bold text-obsidian">
+                            Modular Tokens & Elevation Physics
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Body Text Scale -->
+                <div class="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center hover:bg-white transition-colors">
+                    <div class="lg:col-span-3 font-mono text-xs text-stone-500 space-y-1">
+                        <span class="font-bold text-obsidian block text-sm">Body Scales (Plus Jakarta Sans)</span>
+                        <div>body-lg: 18px / 1.6</div>
+                        <div>body: 16px / 1.6</div>
+                        <div>body-sm: 14px / 1.5</div>
+                    </div>
+                    <div class="lg:col-span-9 space-y-3">
+                        <p class="text-lg text-obsidian leading-relaxed">
+                            <span class="font-mono text-xs text-teal-700 font-bold mr-2">[body-lg]</span>
+                            Hyper-crisp typography styled on light alabaster backgrounds to deliver unprecedented optical reading comfort and high accessibility.
+                        </p>
+                        <p class="text-base text-stone-700 leading-relaxed">
+                            <span class="font-mono text-xs text-teal-700 font-bold mr-2">[body]</span>
+                            Standard paragraph typography using 16px with 160% line height, perfectly tuned for long-form documentation and interactive user interfaces.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Interactive Live Typography Slider -->
+            <div class="p-8 bg-white border-t border-teal-900/10">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
+                    <span class="text-xs font-mono uppercase tracking-widest text-teal-800 font-bold">Live Font Size Tester</span>
+                    <div class="flex items-center gap-4">
+                        <input type="range" min="16" max="64" value="26" class="w-48 accent-teal-600 cursor-pointer" oninput="document.getElementById('font-preview-box').style.fontSize = this.value + 'px'; document.getElementById('val-font').innerText = this.value + 'px';">
+                        <span id="val-font" class="text-xs font-mono font-bold text-teal-800 w-12">26px</span>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-[#F8FAF9] border border-teal-500/20">
+                    <p id="font-preview-box" class="font-display font-bold text-obsidian outline-none" contenteditable="true">
+                        Dynamic luminescent typography with fluid clamp calculations...
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             3. COLOR SYSTEM & SEMANTIC TOKENS
+             ========================================================================== -->
+        <section id="colors" class="relative z-10 border-b border-teal-900/10">
+            <!-- Header -->
+            <div class="p-8 md:p-12 border-b border-teal-900/10 bg-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-teal-700 font-bold mb-2">
+                        <span class="px-2.5 py-0.5 rounded bg-teal-100 text-teal-800">02</span>
+                        <span>Chromatic Palette</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold font-display tracking-tight text-obsidian">Color Architecture & Contrast Matrix</h2>
+                </div>
+                <p class="text-sm font-mono text-stone-600 max-w-md">
+                    Click any swatch to copy HEX / RGB / HSL token directly to clipboard.
+                </p>
+            </div>
+
+            <!-- Color Palette Grid -->
+            <div class="p-8 md:p-12 bg-[#FAFBFB] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Swatch 1: Bio-Teal Accent -->
+                <div class="glass-panel p-5 rounded-2xl border border-teal-500/30 hover:shadow-xl transition-all cursor-pointer group" onclick="copyToken('#14B8A6', 'Teal Hex Copied')">
+                    <div class="h-32 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 mb-4 p-3 flex flex-col justify-between text-white shadow-lg shadow-teal-500/25">
+                        <span class="text-[10px] font-mono uppercase font-bold">PRIMARY ACCENT</span>
+                        <span class="text-[10px] font-mono">AAA / 5.2:1</span>
+                    </div>
+                    <h4 class="font-bold text-obsidian text-base">Bio-Lumen Teal</h4>
+                    <p class="text-xs text-stone-500 font-mono mt-1">HEX: #14B8A6 | RGB(20, 184, 166)</p>
+                    <p class="text-xs text-stone-500 font-mono">HSL: 173°, 80%, 40%</p>
+                    <div class="mt-4 pt-3 border-t border-teal-500/10 flex items-center justify-between text-xs font-mono text-teal-800">
+                        <span>--accent-teal</span>
+                        <iconify-icon icon="solar:copy-linear" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                    </div>
+                </div>
+
+                <!-- Swatch 2: Ice White Canvas -->
+                <div class="glass-panel p-5 rounded-2xl border border-teal-500/30 hover:shadow-xl transition-all cursor-pointer group" onclick="copyToken('#F8FAF9', 'Canvas Hex Copied')">
+                    <div class="h-32 rounded-xl bg-[#F8FAF9] border border-teal-500/20 mb-4 p-3 flex flex-col justify-between text-obsidian shadow-inner">
+                        <span class="text-[10px] font-mono uppercase font-bold">ICE CANVAS</span>
+                        <span class="text-[10px] font-mono text-stone-500">BASE 0</span>
+                    </div>
+                    <h4 class="font-bold text-obsidian text-base">Ice Alabaster</h4>
+                    <p class="text-xs text-stone-500 font-mono mt-1">HEX: #F8FAF9 | RGB(248, 250, 249)</p>
+                    <p class="text-xs text-stone-500 font-mono">HSL: 150°, 14%, 98%</p>
+                    <div class="mt-4 pt-3 border-t border-teal-500/10 flex items-center justify-between text-xs font-mono text-teal-800">
+                        <span>--bg-canvas</span>
+                        <iconify-icon icon="solar:copy-linear" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                    </div>
+                </div>
+
+                <!-- Swatch 3: Obsidian Core Text -->
+                <div class="glass-panel p-5 rounded-2xl border border-teal-500/30 hover:shadow-xl transition-all cursor-pointer group" onclick="copyToken('#091316', 'Obsidian Hex Copied')">
+                    <div class="h-32 rounded-xl bg-[#091316] mb-4 p-3 flex flex-col justify-between text-white shadow-md">
+                        <span class="text-[10px] font-mono uppercase font-bold text-teal-300">OBSIDIAN INK</span>
+                        <span class="text-[10px] font-mono text-teal-400">AAA / 18.2:1</span>
+                    </div>
+                    <h4 class="font-bold text-obsidian text-base">Obsidian Teal-Black</h4>
+                    <p class="text-xs text-stone-500 font-mono mt-1">HEX: #091316 | RGB(9, 19, 22)</p>
+                    <p class="text-xs text-stone-500 font-mono">HSL: 194°, 42%, 6%</p>
+                    <div class="mt-4 pt-3 border-t border-teal-500/10 flex items-center justify-between text-xs font-mono text-teal-800">
+                        <span>--text-obsidian</span>
+                        <iconify-icon icon="solar:copy-linear" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                    </div>
+                </div>
+
+                <!-- Swatch 4: Pure White Elevation -->
+                <div class="glass-panel p-5 rounded-2xl border border-teal-500/30 hover:shadow-xl transition-all cursor-pointer group" onclick="copyToken('#FFFFFF', 'Pure White Copied')">
+                    <div class="h-32 rounded-xl bg-white border border-teal-500/30 mb-4 p-3 flex flex-col justify-between text-obsidian shadow-sm">
+                        <span class="text-[10px] font-mono uppercase font-bold text-teal-700">ELEVATION 01</span>
+                        <span class="text-[10px] font-mono text-stone-500">SURFACE</span>
+                    </div>
+                    <h4 class="font-bold text-obsidian text-base">Pure Frosted Surface</h4>
+                    <p class="text-xs text-stone-500 font-mono mt-1">HEX: #FFFFFF | RGB(255, 255, 255)</p>
+                    <p class="text-xs text-stone-500 font-mono">HSL: 0°, 0%, 100%</p>
+                    <div class="mt-4 pt-3 border-t border-teal-500/10 flex items-center justify-between text-xs font-mono text-teal-800">
+                        <span>--bg-surface</span>
+                        <iconify-icon icon="solar:copy-linear" class="group-hover:scale-125 transition-transform"></iconify-icon>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             4. UI COMPONENTS SYSTEM (INTERACTIVE WITH ANIMATIONS)
+             ========================================================================== -->
+        <section id="components" class="relative z-10 border-b border-teal-900/10">
+            <!-- Header -->
+            <div class="p-8 md:p-12 border-b border-teal-900/10 bg-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-teal-700 font-bold mb-2">
+                        <span class="px-2.5 py-0.5 rounded bg-teal-100 text-teal-800">03</span>
+                        <span>Interactive Components</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold font-display tracking-tight text-obsidian">Luminescent Component Kit</h2>
+                </div>
+                <p class="text-sm font-mono text-stone-600 max-w-md">
+                    Full UI specifications with spring hover states, floating glow badges, and specular glass forms.
+                </p>
+            </div>
+
+            <!-- Bento Grid of UI Components -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-teal-900/10 bg-[#FAFBFB]">
+                
+                <!-- Col Left: Buttons & Inputs -->
+                <div class="lg:col-span-6 p-8 md:p-12 space-y-12">
+                    
+                    <!-- BUTTONS -->
+                    <div>
+                        <h3 class="text-lg font-bold text-obsidian tracking-tight mb-6 pb-2 border-b border-teal-900/10 flex items-center gap-2">
+                            <iconify-icon icon="solar:cursor-bold-duotone" class="text-teal-600"></iconify-icon>
+                            Button Variants & Luminescent Actions
+                        </h3>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Primary Teal Glow Button -->
+                            <button class="px-6 py-3.5 rounded-full bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-500 hover:to-emerald-500 text-white font-mono text-xs uppercase tracking-wider font-semibold shadow-lg shadow-teal-500/30 hover:shadow-teal-500/50 hover:scale-105 transition-all flex items-center justify-center gap-2">
+                                <span>Bio-Lumen Primary</span>
+                                <iconify-icon icon="solar:bolt-linear"></iconify-icon>
+                            </button>
+
+                            <!-- Obsidian Monolith Button -->
+                            <button class="px-6 py-3.5 rounded-full bg-obsidian hover:bg-charcoal text-white font-mono text-xs uppercase tracking-wider font-semibold shadow-md hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                                <span>Obsidian Solid</span>
+                                <iconify-icon icon="solar:arrow-right-linear"></iconify-icon>
+                            </button>
+
+                            <!-- Frosted Glass Button -->
+                            <button class="px-6 py-3.5 rounded-full glass-panel hover:bg-white text-obsidian border border-teal-500/40 font-mono text-xs uppercase tracking-wider font-semibold shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2">
+                                <iconify-icon icon="solar:shield-check-linear" class="text-teal-600"></iconify-icon>
+                                <span>Frosted Glass</span>
+                            </button>
+
+                            <!-- Pulse Ping Button -->
+                            <button class="px-6 py-3.5 rounded-full bg-teal-50 border border-teal-500/40 text-teal-800 font-mono text-xs uppercase tracking-wider font-semibold hover:bg-teal-100 transition-all flex items-center justify-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-teal-500 animate-ping"></span>
+                                <span>Live Status</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- FORM INPUTS -->
+                    <div>
+                        <h3 class="text-lg font-bold text-obsidian tracking-tight mb-6 pb-2 border-b border-teal-900/10 flex items-center gap-2">
+                            <iconify-icon icon="solar:pen-bold-duotone" class="text-teal-600"></iconify-icon>
+                            Inputs & Form Controls
+                        </h3>
+
+                        <div class="space-y-4">
+                            <!-- Search with Icon -->
+                            <div class="relative">
+                                <iconify-icon icon="solar:magnifer-linear" class="absolute left-4 top-1/2 -translate-y-1/2 text-teal-600 text-lg"></iconify-icon>
+                                <input type="text" placeholder="Search tokens, components, icons..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl glass-panel border border-teal-500/30 text-obsidian text-sm placeholder:text-stone-400 focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 transition-all shadow-sm">
+                            </div>
+
+                            <!-- Validated Success Input -->
+                            <div class="relative">
+                                <input type="text" value="systems.architecture.aura" class="w-full px-4 py-3.5 rounded-2xl bg-white border border-emerald-500/50 text-emerald-800 text-sm font-mono focus:outline-none shadow-sm pr-10">
+                                <iconify-icon icon="solar:check-circle-bold" class="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500 text-lg"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Col Right: Glass Cards, Badges & Tooltips -->
+                <div class="lg:col-span-6 p-8 md:p-12 space-y-12">
+                    
+                    <!-- GLASS CARDS -->
+                    <div>
+                        <h3 class="text-lg font-bold text-obsidian tracking-tight mb-6 pb-2 border-b border-teal-900/10 flex items-center gap-2">
+                            <iconify-icon icon="solar:card-2-bold-duotone" class="text-teal-600"></iconify-icon>
+                            Frosted Glass Elevation Cards
+                        </h3>
+
+                        <div class="space-y-4">
+                            <div class="glass-panel p-6 rounded-3xl border border-teal-500/30 shadow-lg hover:shadow-2xl transition-all duration-300 group">
+                                <div class="flex items-center justify-between mb-4">
+                                    <span class="px-3 py-1 rounded-full bg-teal-500/10 text-teal-800 text-xs font-mono uppercase font-bold">
+                                        ELEVATION // 02
+                                    </span>
+                                    <iconify-icon icon="solar:stars-minimalistic-bold-duotone" class="text-2xl text-teal-500 group-hover:rotate-45 transition-transform"></iconify-icon>
+                                </div>
+                                <h4 class="text-xl font-bold font-display text-obsidian mb-2">Specular Edge Reflection</h4>
+                                <p class="text-sm text-stone-600 leading-relaxed mb-4">
+                                    Dual-layer border with outer diffuse shadow and high-frequency backdrop blur creating hyper-clean spatial depth.
+                                </p>
+                                <div class="flex items-center justify-between pt-3 border-t border-teal-500/10 text-xs font-mono text-stone-500">
+                                    <span>backdrop-filter: blur(20px)</span>
+                                    <button onclick="copyToken('.glass-panel', 'CSS Copied')" class="text-teal-700 font-bold hover:underline">Copy CSS &rarr;</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BADGES & TOOLTIPS -->
+                    <div>
+                        <h3 class="text-lg font-bold text-obsidian tracking-tight mb-4 pb-2 border-b border-teal-900/10 flex items-center gap-2">
+                            <iconify-icon icon="solar:tag-bold-duotone" class="text-teal-600"></iconify-icon>
+                            Badges & Tooltips
+                        </h3>
+
+                        <div class="flex flex-wrap gap-3 items-center">
+                            <span class="px-3.5 py-1.5 rounded-full text-xs font-mono uppercase bg-teal-500/15 border border-teal-500/40 text-teal-800 font-bold flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-teal-500 animate-ping"></span>
+                                Live Cluster
+                            </span>
+                            <span class="px-3.5 py-1.5 rounded-full text-xs font-mono uppercase bg-obsidian text-white font-semibold">
+                                WCAG AAA
+                            </span>
+                            <button onclick="toggleModal(true)" class="px-4 py-1.5 rounded-full glass-panel border border-teal-500/30 text-xs font-mono uppercase text-teal-800 hover:bg-teal-600 hover:text-white transition-all">
+                                Open Modal &uarr;
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             5. CURATED ICONOGRAPHY SHOWCASE
+             ========================================================================== -->
+        <section id="charts" class="relative z-10 border-b border-teal-900/10">
+            <div class="p-8 md:p-12 border-b border-teal-900/10 bg-white flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div>
+                    <div class="flex items-center gap-3 text-xs font-mono uppercase tracking-widest text-teal-700 font-bold mb-2">
+                        <span class="px-2.5 py-0.5 rounded bg-teal-100 text-teal-800">04</span>
+                        <span>Lucide & Solar Icon Vectors</span>
+                    </div>
+                    <h2 class="text-3xl md:text-5xl font-bold font-display tracking-tight text-obsidian">Iconography Library</h2>
+                </div>
+                <p class="text-sm font-mono text-stone-600 max-w-md">
+                    24px line glyphs with animated hover spins, spring scale dynamics, and click-to-copy tokens.
+                </p>
+            </div>
+
+            <div class="p-8 md:p-12 bg-[#FAFBFB] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                
+                <div class="glass-panel p-6 rounded-2xl border border-teal-500/20 flex flex-col items-center justify-center gap-3 group hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:server-square-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:server-square-bold-duotone" class="text-3xl text-teal-600 group-hover:scale-125 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-stone-600">server-sq</span>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-teal-500/20 flex flex-col items-center justify-center gap-3 group hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:shield-check-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:shield-check-bold-duotone" class="text-3xl text-teal-600 group-hover:rotate-12 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-stone-600">shield-check</span>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-teal-500/20 flex flex-col items-center justify-center gap-3 group hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:bolt-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:bolt-bold-duotone" class="text-3xl text-teal-600 group-hover:scale-125 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-stone-600">bolt-lumen</span>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-teal-500/20 flex flex-col items-center justify-center gap-3 group hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:tuning-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:tuning-bold-duotone" class="text-3xl text-teal-600 group-hover:rotate-45 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-stone-600">tuning</span>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-teal-500/20 flex flex-col items-center justify-center gap-3 group hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:cup-star-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:cup-star-bold-duotone" class="text-3xl text-teal-600 group-hover:scale-125 transition-transform"></iconify-icon>
+                    <span class="text-[11px] font-mono text-stone-600">cup-star</span>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-teal-500/20 flex flex-col items-center justify-center gap-3 group hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer" onclick="copyToken('solar:refresh-circle-bold-duotone', 'Icon Copied')">
+                    <iconify-icon icon="solar:refresh-circle-bold-duotone" class="text-3xl text-teal-600 group-hover:rotate-180 transition-transform duration-500"></iconify-icon>
+                    <span class="text-[11px] font-mono text-stone-600">refresh-sync</span>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================================================
+             FOOTER
+             ========================================================================== -->
+        <footer class="p-8 md:p-12 bg-white text-obsidian flex flex-col md:flex-row items-center justify-between gap-6 border-t border-teal-900/10">
+            <div class="flex items-center gap-3">
+                <div class="w-6 h-6 rounded-md bg-teal-600 flex items-center justify-center text-white text-xs font-bold font-mono">
+                    DS2
+                </div>
+                <span class="font-bold tracking-tight text-sm font-display">AURA DS-2 // LUMINESCENT GLASS</span>
+            </div>
+            <div class="text-xs font-mono text-stone-500 flex items-center gap-6">
+                <span>Tailwind + Glassmorphism</span>
+                <span>•</span>
+                <span>Bio-Teal Accent Palette</span>
+                <span>•</span>
+                <button onclick="window.scrollTo({top:0, behavior:'smooth'})" class="hover:text-teal-700 font-bold uppercase">&uarr; Top</button>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // Custom Mouse Ring & Dot
+        const cursorRing = document.getElementById('cursor-ring');
+        const cursorDot = document.getElementById('cursor-dot');
+
+        window.addEventListener('mousemove', (e) => {
+            const { clientX: x, clientY: y } = e;
+            if (cursorDot) cursorDot.style.transform = `translate(${x}px, ${y}px)`;
+            if (cursorRing) cursorRing.style.transform = `translate(${x}px, ${y}px)`;
+            document.documentElement.style.setProperty('--mouse-x', `${x}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${y}px`);
+        });
+
+        // Trigger Reveal on load
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('reveal-active');
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        });
+
+        // Copy Token Utility
+        function copyToken(token, message = 'Token Copied') {
+            navigator.clipboard.writeText(token).then(() => {
+                const toast = document.getElementById('toast');
+                const toastText = document.getElementById('toast-text');
+                if (toast && toastText) {
+                    toastText.innerText = `${message}: ${token}`;
+                    toast.classList.add('show');
+                    setTimeout(() => toast.classList.remove('show'), 3000);
+                }
+            });
+        }
+
+        // Modal Handler
+        function toggleModal(show) {
+            const modal = document.getElementById('modal-spec');
+            const content = document.getElementById('modal-content');
+            if (show) {
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modal.classList.add('opacity-100', 'pointer-events-auto');
+                content.classList.remove('scale-95');
+                content.classList.add('scale-100');
+            } else {
+                modal.classList.remove('opacity-100', 'pointer-events-auto');
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                content.classList.remove('scale-100');
+                content.classList.add('scale-95');
+            }
+        }
+    </script>
+</body>
+</html>

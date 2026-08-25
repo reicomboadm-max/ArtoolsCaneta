@@ -1,0 +1,451 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+
+// Dados dos calibres da linha ARTOOLS Pigmentum
+const variants = [
+  { id: '0.05', name: '0.05 mm', tag: 'Micro', stock: 'Poucas Unidades', price: 'R$ 38,90', image: '/assets/img/caneta.png', desc: 'Microponta cirúrgica para hachuras microscópicas e nanodetalhes de precisão.', tip: '0.05mm', code: 'ART-PGM-005' },
+  { id: '0.1', name: '0.10 mm', tag: 'Mais Vendida', stock: 'Em Estoque', price: 'R$ 38,90', image: '/assets/img/pen_isolated.png', desc: 'O padrão internacional para plantas baixas, cotas e linework de arquitetura.', tip: '0.10mm', code: 'ART-PGM-010' },
+  { id: '0.2', name: '0.20 mm', tag: 'Precisão', stock: 'Em Estoque', price: 'R$ 38,90', image: '/assets/img/pen_render.png', desc: 'Linha guia e estruturação técnica com fluxo contínuo e sem sangramento.', tip: '0.20mm', code: 'ART-PGM-020' },
+  { id: '0.3', name: '0.30 mm', tag: 'Equilíbrio', stock: 'Em Estoque', price: 'R$ 38,90', image: '/assets/img/caneta.png', desc: 'Perfeita para rendering, concept design e documentação técnica expressiva.', tip: '0.30mm', code: 'ART-PGM-030' },
+  { id: '0.5', name: '0.50 mm', tag: 'Linha Mestra', stock: 'Em Estoque', price: 'R$ 38,90', image: '/assets/img/pen_isolated.png', desc: 'Linhas mestras e contorno primário de alto impacto com preto puro.', tip: '0.50mm', code: 'ART-PGM-050' },
+  { id: '0.8', name: '0.80 mm', tag: 'Alto Contraste', stock: 'Últimas 8 un.', price: 'R$ 42,90', image: '/assets/img/pen_render.png', desc: 'Preto profundo 2.4 DMAX para silhuetas dramáticas e cortes pesados.', tip: '0.80mm', code: 'ART-PGM-080' },
+  { id: '1.0', name: '1.00 mm', tag: 'Seção Pesada', stock: 'Em Estoque', price: 'R$ 42,90', image: '/assets/img/caneta.png', desc: 'Espessura máxima linear para pranchas executivas de grande formato.', tip: '1.00mm', code: 'ART-PGM-100' },
+  { id: 'br', name: 'Brush (BR)', tag: 'Pincel', stock: 'Lote Especial', price: 'R$ 49,90', image: '/assets/img/pen_photo.jpeg', desc: 'Cerdas sintéticas japonesas com memória elástica para modulação dinâmica.', tip: '0.2-3.5mm', code: 'ART-PGM-BR' },
+  { id: 'ch', name: 'Chisel (CH)', tag: 'Chanfrada', stock: 'Edição Especial', price: 'R$ 49,90', image: '/assets/img/pen_render.png', desc: 'Ponta chanfrada de 2.0mm para caligrafia arquitetônica e lettering técnico.', tip: '2.00mm', code: 'ART-PGM-CH' },
+];
+---
+
+<Layout title="ARTOOLS Pigmentum // Especificações do Instrumento" description="Especificações detalhadas, calibração suíça e aviso de disponibilidade da caneta técnica ARTOOLS Pigmentum.">
+    
+    <!-- Navegação Breadcrumb Minimalista -->
+    <nav class="pt-8 pb-4 px-6 sm:px-12 md:px-16 max-w-7xl mx-auto border-b border-stone-300 dark:border-stone-800" aria-label="Breadcrumb">
+        <ol class="flex items-center gap-2 text-xs font-mono text-[#78716C] dark:text-stone-400">
+            <li>
+                <a href="/" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">01. INÍCIO</a>
+            </li>
+            <li>/</li>
+            <li>
+                <a href="/pagina2" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">02. CATÁLOGO</a>
+            </li>
+            <li>/</li>
+            <li class="text-[#1C1917] dark:text-teal-400 font-semibold" aria-current="page">
+                03. ESPECIFICAÇÕES & AVISO
+            </li>
+        </ol>
+    </nav>
+
+    <!-- Main Stage com Design Minimalista Arquitetônico -->
+    <main class="py-10 sm:py-16 px-6 sm:px-12 md:px-16 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 xl:gap-14 items-start">
+            
+            <!-- Coluna Esquerda: Palco da Imagem Principal & Miniaturas -->
+            <div class="lg:col-span-7 space-y-4">
+                
+                <!-- Card Principal da Foto (Bordas sóbrias rounded-lg) -->
+                <div class="relative rounded-lg bg-white dark:bg-[#141412] border border-stone-300 dark:border-stone-800 p-8 sm:p-12 overflow-hidden shadow-sm flex items-center justify-center min-h-[360px] sm:min-h-[440px] group">
+                    
+                    <!-- Telemetria Superior -->
+                    <div class="absolute top-4 left-4 flex items-center gap-2">
+                        <span class="px-2.5 py-1 rounded-sm bg-stone-900 text-white dark:bg-white dark:text-stone-950 text-[10px] font-mono font-bold tracking-wider uppercase">
+                            SWISS CALIBER
+                        </span>
+                        <span class="px-2 py-1 rounded-sm bg-[#F2F2EE] dark:bg-[#1C1C1A] text-stone-700 dark:text-stone-300 text-[10px] font-mono border border-stone-300 dark:border-stone-700">
+                            DIN 15
+                        </span>
+                    </div>
+
+                    <!-- Imagem Principal -->
+                    <img 
+                        id="main-product-image"
+                        src="/assets/img/pen_isolated.png" 
+                        alt="ARTOOLS Pigmentum Caneta Técnica"
+                        class="max-h-72 sm:max-h-80 object-contain drop-shadow-md transition-all duration-300 group-hover:scale-105"
+                    />
+
+                    <!-- Telemetria Inferior -->
+                    <div class="absolute bottom-4 right-4 text-right font-mono text-[10px] text-stone-400 dark:text-stone-500">
+                        <span>ESTRUTURA AEROESPACIAL</span>
+                        <div class="font-bold text-[#1C1917] dark:text-stone-300">TOLERÂNCIA ±0.002mm</div>
+                    </div>
+                </div>
+
+                <!-- Miniaturas de Ângulo com Bordas Retas/Sutis -->
+                <div class="grid grid-cols-4 gap-3">
+                    <button 
+                        type="button"
+                        onclick="changeGalleryImage('/assets/img/pen_isolated.png', this)"
+                        class="gallery-thumb active-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border-2 border-stone-900 dark:border-teal-400 p-2 flex items-center justify-center overflow-hidden transition-all"
+                        aria-label="Ver imagem frontal"
+                    >
+                        <img src="/assets/img/pen_isolated.png" alt="Miniatura isolada" class="max-h-full object-contain" />
+                    </button>
+                    <button 
+                        type="button"
+                        onclick="changeGalleryImage('/assets/img/caneta.png', this)"
+                        class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
+                        aria-label="Ver perfil lateral"
+                    >
+                        <img src="/assets/img/caneta.png" alt="Miniatura lateral" class="max-h-full object-contain" />
+                    </button>
+                    <button 
+                        type="button"
+                        onclick="changeGalleryImage('/assets/img/pen_render.png', this)"
+                        class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
+                        aria-label="Ver render técnico"
+                    >
+                        <img src="/assets/img/pen_render.png" alt="Miniatura render" class="max-h-full object-contain" />
+                    </button>
+                    <button 
+                        type="button"
+                        onclick="changeGalleryImage('/assets/img/pen_photo.jpeg', this)"
+                        class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
+                        aria-label="Ver foto macro"
+                    >
+                        <img src="/assets/img/pen_photo.jpeg" alt="Miniatura macro" class="max-h-full object-cover" />
+                    </button>
+                </div>
+
+                <!-- Painel com 3 Pilares Técnicos -->
+                <div class="grid grid-cols-3 gap-3 pt-2">
+                    <div class="p-3.5 rounded-md bg-white dark:bg-[#141412] border border-stone-300 dark:border-stone-800 space-y-1">
+                        <div class="text-[10px] font-mono uppercase tracking-wider text-[#78716C] dark:text-stone-400 font-bold">DENSIDADE</div>
+                        <div class="text-sm font-bold font-display text-[#1C1917] dark:text-white">2.4 DMAX</div>
+                        <p class="text-[10px] text-stone-500 dark:text-stone-400">Preto puro absoluto.</p>
+                    </div>
+                    <div class="p-3.5 rounded-md bg-white dark:bg-[#141412] border border-stone-300 dark:border-stone-800 space-y-1">
+                        <div class="text-[10px] font-mono uppercase tracking-wider text-[#78716C] dark:text-stone-400 font-bold">SECAGEM</div>
+                        <div class="text-sm font-bold font-display text-[#1C1917] dark:text-white">0.3 Segundos</div>
+                        <p class="text-[10px] text-stone-500 dark:text-stone-400">À prova de solventes.</p>
+                    </div>
+                    <div class="p-3.5 rounded-md bg-white dark:bg-[#141412] border border-stone-300 dark:border-stone-800 space-y-1">
+                        <div class="text-[10px] font-mono uppercase tracking-wider text-[#78716C] dark:text-stone-400 font-bold">DURABILIDADE</div>
+                        <div class="text-sm font-bold font-display text-[#1C1917] dark:text-white">100+ Anos UV</div>
+                        <p class="text-[10px] text-stone-500 dark:text-stone-400">Padrão arquivístico ISO.</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Coluna Direita: Informações, Seletor de Calibre e Botão Avise-me -->
+            <div class="lg:col-span-5 space-y-6 text-left">
+                
+                <!-- Cabeçalho do Produto -->
+                <div class="space-y-2.5 border-b border-stone-300 dark:border-stone-800 pb-5">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[11px] font-mono uppercase tracking-widest text-[#78716C] dark:text-stone-400 font-bold" id="product-sku">
+                            COD: ART-PGM-010
+                        </span>
+                        <span id="product-stock-badge" class="px-2 py-0.5 rounded-sm bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-mono border border-emerald-500/30 font-semibold">
+                            Em Estoque
+                        </span>
+                    </div>
+
+                    <h1 id="product-title" class="text-2xl sm:text-3xl font-bold font-display tracking-tight text-[#1C1917] dark:text-white">
+                        ARTOOLS Pigmentum 0.1
+                    </h1>
+
+                    <p id="product-short-desc" class="text-[#57534E] dark:text-stone-400 text-xs sm:text-sm leading-relaxed font-sans">
+                        O padrão internacional para plantas baixas, cotas e linework de arquitetura. Forjada com ponta em aço cirúrgico e núcleo capilar suíço.
+                    </p>
+
+                    <!-- Preço -->
+                    <div class="pt-1 flex items-baseline gap-3 font-mono">
+                        <span id="product-price" class="text-2xl font-bold text-[#1C1917] dark:text-white">
+                            R$ 38,90
+                        </span>
+                        <span class="text-xs text-stone-500">
+                            unidade avulsa
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Seletor de Calibres Minimalista -->
+                <div class="space-y-2.5">
+                    <div class="flex items-center justify-between text-xs font-mono">
+                        <span class="font-bold text-[#1C1917] dark:text-white">Calibre Selecionado:</span>
+                        <span id="selected-calibre-label" class="text-stone-500 dark:text-teal-400 font-semibold">0.10 mm (Mais Vendida)</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2">
+                        {variants.map((v) => (
+                            <button
+                                type="button"
+                                class={`variant-btn px-3 py-2 rounded-md border text-xs font-mono text-left transition-all ${
+                                    v.id === '0.1' 
+                                    ? 'bg-[#1C1917] text-white border-[#1C1917] dark:bg-white dark:text-stone-950 dark:border-white shadow-sm' 
+                                    : 'bg-white dark:bg-[#181816] text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-800 hover:border-stone-900 dark:hover:border-stone-500'
+                                }`}
+                                data-calibre-id={v.id}
+                                onclick={`selectCalibre('${v.id}', '${v.name}', '${v.tag}', '${v.stock}', '${v.price}', '${v.image}', '${v.desc}', '${v.code}')`}
+                            >
+                                <div class="font-bold">{v.name}</div>
+                                <div class="text-[10px] opacity-70 truncate">{v.tag}</div>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- Box de Ação com Botão Avise-me -->
+                <div class="p-5 rounded-lg bg-white dark:bg-[#141412] border border-stone-300 dark:border-stone-800 space-y-3.5">
+                    <div class="text-xs font-mono text-[#57534E] dark:text-stone-400">
+                        Disponibilidade técnica e reposição de lotes calibrados:
+                    </div>
+
+                    <div class="space-y-2">
+                        <!-- Botão Principal Avise-me com Button.astro -->
+                        <Button
+                            variant="primary"
+                            shape="square"
+                            size="md"
+                            class="w-full justify-center gap-2 font-mono text-xs uppercase tracking-wider font-bold"
+                            onclick="openNotifyModal()"
+                        >
+                            <iconify-icon icon="solar:bell-bold" class="text-sm"></iconify-icon>
+                            Avise-me Disponibilidade
+                        </Button>
+
+                        <Button
+                            href="/pagina2"
+                            variant="outline"
+                            shape="square"
+                            size="sm"
+                            class="w-full justify-center gap-2 font-mono text-xs uppercase"
+                        >
+                            ← Voltar ao Catálogo Completo
+                        </Button>
+                    </div>
+                </div>
+
+                <!-- Tabela de Especificações Técnicas -->
+                <div class="space-y-2">
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-[#78716C] dark:text-stone-400 font-bold block">
+                        Ficha Técnica Certificada
+                    </span>
+
+                    <div class="rounded-md border border-stone-300 dark:border-stone-800 divide-y divide-stone-200 dark:divide-stone-800 text-xs font-mono bg-white dark:bg-[#141412]">
+                        <div class="p-2.5 px-3.5 flex justify-between">
+                            <span class="text-stone-500">Núcleo / Ponta:</span>
+                            <span class="font-bold text-[#1C1917] dark:text-white">Aço Cirúrgico DIN 15</span>
+                        </div>
+                        <div class="p-2.5 px-3.5 flex justify-between">
+                            <span class="text-stone-500">Tinta:</span>
+                            <span class="font-bold text-[#1C1917] dark:text-white">Pigmentum™ Carbon Black</span>
+                        </div>
+                        <div class="p-2.5 px-3.5 flex justify-between">
+                            <span class="text-stone-500">Chassi:</span>
+                            <span class="font-bold text-[#1C1917] dark:text-white">Polímero Anodizado Mate</span>
+                        </div>
+                        <div class="p-2.5 px-3.5 flex justify-between">
+                            <span class="text-stone-500">Calibração:</span>
+                            <span class="font-bold text-teal-600 dark:text-teal-400">±0.002mm Suíça</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Avise-me Minimalista -->
+    <div id="notify-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs hidden items-center justify-center p-4 transition-opacity duration-200 opacity-0" role="dialog" aria-modal="true" aria-labelledby="notify-modal-title">
+        <div class="bg-white dark:bg-[#141412] border border-stone-300 dark:border-stone-700 rounded-lg max-w-md w-full p-6 sm:p-7 shadow-2xl space-y-4 text-left" id="notify-modal-box">
+            
+            <div class="flex items-start justify-between border-b border-stone-200 dark:border-stone-800 pb-3">
+                <div>
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-[#78716C] dark:text-stone-400 font-bold block">
+                        ALERTA DE DISPONIBILIDADE
+                    </span>
+                    <h2 id="notify-modal-title" class="text-base font-bold font-display text-[#1C1917] dark:text-white">
+                        Avise-me quando chegar
+                    </h2>
+                </div>
+                <button onclick="closeNotifyModal()" class="text-stone-500 hover:text-stone-900 dark:hover:text-white text-sm font-mono p-1" aria-label="Fechar formulário">
+                    [X]
+                </button>
+            </div>
+
+            <p class="text-xs text-[#57534E] dark:text-stone-400 leading-relaxed font-sans">
+                Informe seus dados para receber notificação assim que o lote de <strong id="notify-pen-name" class="text-[#1C1917] dark:text-white">ARTOOLS Pigmentum 0.1</strong> estiver disponível.
+            </p>
+
+            <form id="notify-form" onsubmit="handleNotifySubmit(event)" class="space-y-3">
+                <div class="space-y-1">
+                    <label for="notify-name" class="text-[10px] font-mono uppercase text-stone-500 dark:text-stone-400 font-semibold">1. Nome</label>
+                    <input 
+                        type="text" 
+                        id="notify-name" 
+                        required 
+                        placeholder="Seu nome completo"
+                        class="w-full px-3.5 py-2 rounded-md border border-stone-300 dark:border-stone-700 bg-[#F7F7F4] dark:bg-[#1C1C1A] text-xs font-mono text-stone-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-stone-900 dark:focus:ring-white"
+                    />
+                </div>
+
+                <div class="space-y-1">
+                    <label for="notify-phone" class="text-[10px] font-mono uppercase text-stone-500 dark:text-stone-400 font-semibold">2. Telefone</label>
+                    <input 
+                        type="tel" 
+                        id="notify-phone" 
+                        required
+                        placeholder="(00) 00000-0000"
+                        class="w-full px-3.5 py-2 rounded-md border border-stone-300 dark:border-stone-700 bg-[#F7F7F4] dark:bg-[#1C1C1A] text-xs font-mono text-stone-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-stone-900 dark:focus:ring-white"
+                    />
+                </div>
+
+                <div class="space-y-1">
+                    <label for="notify-email" class="text-[10px] font-mono uppercase text-stone-500 dark:text-stone-400 font-semibold">3. E-mail</label>
+                    <input 
+                        type="email" 
+                        id="notify-email" 
+                        required 
+                        placeholder="seuemail@dominio.com"
+                        class="w-full px-3.5 py-2 rounded-md border border-stone-300 dark:border-stone-700 bg-[#F7F7F4] dark:bg-[#1C1C1A] text-xs font-mono text-stone-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-stone-900 dark:focus:ring-white"
+                    />
+                </div>
+
+                <div id="notify-success-msg" class="hidden p-2.5 rounded-md bg-emerald-500/10 border border-emerald-500/30 text-emerald-700 dark:text-emerald-400 text-xs font-mono text-center">
+                    ✓ Cadastro registrado com sucesso!
+                </div>
+
+                <div class="pt-2 flex gap-2">
+                    <Button 
+                        type="submit"
+                        variant="primary" 
+                        size="sm" 
+                        shape="square" 
+                        class="w-full justify-center font-mono text-xs uppercase font-bold"
+                    >
+                        Confirmar Cadastro
+                    </Button>
+                    <Button 
+                        type="button"
+                        variant="outline" 
+                        size="sm" 
+                        shape="square" 
+                        class="w-24 justify-center font-mono text-xs uppercase"
+                        onclick="closeNotifyModal()"
+                    >
+                        Fechar
+                    </Button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Scripts de Controle -->
+    <script is:inline>
+        let currentPenName = 'ARTOOLS Pigmentum 0.1';
+
+        function changeGalleryImage(src, buttonElement) {
+            const mainImg = document.getElementById('main-product-image');
+            if (mainImg && src) {
+                mainImg.style.opacity = '0.3';
+                setTimeout(() => {
+                    mainImg.src = src;
+                    mainImg.style.opacity = '1';
+                }, 100);
+            }
+
+            document.querySelectorAll('.gallery-thumb').forEach(el => {
+                el.classList.remove('border-stone-900', 'dark:border-teal-400', 'border-2');
+                el.classList.add('border', 'border-stone-300', 'dark:border-stone-800');
+            });
+
+            if (buttonElement) {
+                buttonElement.classList.remove('border', 'border-stone-300', 'dark:border-stone-800');
+                buttonElement.classList.add('border-2', 'border-stone-900', 'dark:border-teal-400');
+            }
+        }
+
+        function selectCalibre(id, name, tag, stock, price, image, desc, code) {
+            currentPenName = `ARTOOLS Pigmentum ${name}`;
+            
+            const titleEl = document.getElementById('product-title');
+            const priceEl = document.getElementById('product-price');
+            const descEl = document.getElementById('product-short-desc');
+            const stockEl = document.getElementById('product-stock-badge');
+            const labelEl = document.getElementById('selected-calibre-label');
+            const skuEl = document.getElementById('product-sku');
+            const notifyNameEl = document.getElementById('notify-pen-name');
+
+            if (titleEl) titleEl.textContent = `ARTOOLS Pigmentum ${name}`;
+            if (priceEl) priceEl.textContent = price;
+            if (descEl) descEl.textContent = desc;
+            if (stockEl) stockEl.textContent = stock;
+            if (labelEl) labelEl.textContent = `${name} (${tag})`;
+            if (skuEl && code) skuEl.textContent = `COD: ${code}`;
+            if (notifyNameEl) notifyNameEl.textContent = `ARTOOLS Pigmentum ${name}`;
+
+            if (image) changeGalleryImage(image);
+
+            document.querySelectorAll('.variant-btn').forEach(btn => {
+                btn.className = 'variant-btn px-3 py-2 rounded-md border text-xs font-mono text-left transition-all bg-white dark:bg-[#181816] text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-800 hover:border-stone-900 dark:hover:border-stone-500';
+            });
+
+            const activeBtn = document.querySelector(`[data-calibre-id="${id}"]`);
+            if (activeBtn) {
+                activeBtn.className = 'variant-btn px-3 py-2 rounded-md border text-xs font-mono text-left transition-all bg-[#1C1917] text-white border-[#1C1917] dark:bg-white dark:text-stone-950 dark:border-white shadow-sm';
+            }
+        }
+
+        // Leitura automática do query param ?calibre=...
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const calibreParam = urlParams.get('calibre');
+            if (calibreParam) {
+                const targetBtn = document.querySelector(`[data-calibre-id="${calibreParam}"]`);
+                if (targetBtn) {
+                    targetBtn.click();
+                }
+            }
+        });
+
+        function openNotifyModal() {
+            const modal = document.getElementById('notify-modal');
+            const notifyNameEl = document.getElementById('notify-pen-name');
+            if (notifyNameEl) notifyNameEl.textContent = currentPenName;
+
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                }, 10);
+            }
+        }
+
+        function closeNotifyModal() {
+            const modal = document.getElementById('notify-modal');
+            if (modal) {
+                modal.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    document.getElementById('notify-success-msg')?.classList.add('hidden');
+                }, 200);
+            }
+        }
+
+        function handleNotifySubmit(e) {
+            e.preventDefault();
+            const successMsg = document.getElementById('notify-success-msg');
+            if (successMsg) {
+                successMsg.classList.remove('hidden');
+                setTimeout(() => {
+                    closeNotifyModal();
+                    alert(`✓ Aviso cadastrado! Notificaremos você assim que o produto ${currentPenName} estiver liberado.`);
+                }, 1000);
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeNotifyModal();
+        });
+
+        document.getElementById('notify-modal')?.addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeNotifyModal();
+        });
+    </script>
+
+</Layout>

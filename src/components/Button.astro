@@ -1,0 +1,60 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  shape?: 'pill' | 'rounded' | 'square';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  class?: string;
+  onclick?: string;
+  [x: string]: any;
+}
+
+const { 
+  href, 
+  variant = 'primary', 
+  shape = 'pill', 
+  size = 'md',
+  class: className = '',
+  onclick,
+  ...rest 
+} = Astro.props;
+
+// Base classes
+let baseClasses = "inline-flex items-center justify-center font-medium transition-all focus:outline-none focus:ring-2 hover:-translate-y-0.5 active:scale-95";
+
+// Variant classes
+const variantClasses = {
+  primary: "bg-[#1C1917] hover:bg-stone-800 text-white shadow-lg focus:ring-stone-900",
+  secondary: "bg-white hover:bg-stone-100 border border-stone-300 text-[#1C1917] shadow-sm focus:ring-stone-400",
+  outline: "bg-transparent hover:bg-stone-200/60 dark:hover:bg-stone-800/60 border border-[#1C1917] dark:border-white text-[#1C1917] dark:text-white",
+  ghost: "text-stone-600 dark:text-stone-400 hover:text-stone-900 bg-transparent shadow-none"
+};
+
+// Shape classes
+const shapeClasses = {
+  pill: "rounded-full",
+  rounded: "rounded-md",
+  square: "rounded-sm"
+};
+
+// Size classes
+const sizeClasses = {
+  xs: "px-3 py-1 text-[10px]",
+  sm: "px-5 py-2.5 text-xs",
+  md: "px-7 sm:px-8 py-3.5 text-xs sm:text-sm",
+  lg: "px-8 sm:px-10 py-4 text-xs font-mono tracking-widest uppercase font-bold"
+};
+
+const finalClasses = `${baseClasses} ${variantClasses[variant]} ${shapeClasses[shape]} ${sizeClasses[size]} ${className}`;
+
+const Element = href ? 'a' : 'button';
+---
+
+<Element 
+  href={href} 
+  class={finalClasses} 
+  onclick={onclick}
+  {...rest}
+>
+  <slot />
+</Element>
