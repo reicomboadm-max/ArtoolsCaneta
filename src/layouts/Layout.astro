@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
 	title?: string;
@@ -19,6 +20,7 @@ const { title = "ARTOOLS Pigmentum", description = "Instrumentos de desenho téc
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <ClientRouter />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -82,15 +84,15 @@ const { title = "ARTOOLS Pigmentum", description = "Instrumentos de desenho téc
     <script is:inline src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
 </head>
 <body class="bg-[#EAEAE5] dark:bg-[#10100E] text-stone-900 dark:text-stone-100 min-h-screen flex flex-col font-sans transition-colors duration-300">
-    <Header />
+    <Header transition:persist />
     <div class="flex-grow">
         <slot />
     </div>
     <Footer />
 
     <script is:inline>
-        // Theme toggle logic
-        document.addEventListener('DOMContentLoaded', () => {
+        // Theme toggle logic compatível com ClientRouter
+        function setupTheme() {
             const themeToggle = document.getElementById('theme-toggle');
             const themeIcon = document.getElementById('theme-icon');
             
@@ -103,7 +105,8 @@ const { title = "ARTOOLS Pigmentum", description = "Instrumentos de desenho téc
                 if (themeIcon) themeIcon.setAttribute('icon', 'solar:sun-2-linear');
             }
 
-            if (themeToggle) {
+            if (themeToggle && !themeToggle._hasThemeListener) {
+                themeToggle._hasThemeListener = true;
                 themeToggle.addEventListener('click', () => {
                     if (document.documentElement.classList.contains('dark')) {
                         document.documentElement.classList.remove('dark');
@@ -116,7 +119,11 @@ const { title = "ARTOOLS Pigmentum", description = "Instrumentos de desenho téc
                     }
                 });
             }
-        });
+        }
+
+        setupTheme();
+        document.addEventListener('DOMContentLoaded', setupTheme);
+        document.addEventListener('astro:page-load', setupTheme);
     </script>
 </body>
 </html>

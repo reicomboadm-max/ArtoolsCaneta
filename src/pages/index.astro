@@ -2,8 +2,10 @@
 import Button from '../components/Button.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import TextType from '../components/TextType.astro';
 import { Image } from 'astro:assets';
 import canetaImg from '../assets/caneta.png';
+import { ClientRouter } from 'astro:transitions';
 ---
 
 <!DOCTYPE html>
@@ -13,6 +15,7 @@ import canetaImg from '../assets/caneta.png';
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <title>ARTOOLS Pigmentum // A caneta mais tecnológica do mundo</title>
     <meta name="description" content="Descubra a ARTOOLS Pigmentum 0.1. A caneta mais tecnológica do mundo. Precisão cirúrgica, tinta pigmentada de alta fidelidade e ergonomia arquitetural." />
+    <ClientRouter />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -425,8 +428,8 @@ import canetaImg from '../assets/caneta.png';
     <!-- Ambient Physics Background Canvas -->
     <canvas id="ambient-canvas" aria-hidden="true"></canvas>
 
-    <!-- Hidden Video Source for Buffer Decoding (Hero 3D Visualizer) -->
-    <video id="pen-video-source" preload="auto" muted playsinline webkit-playsinline class="hidden" style="display:none;">
+    <!-- Hidden Video Source for Buffer Decoding (Hero 3D Visualizer - 100% Muted) -->
+    <video id="pen-video-source" preload="auto" muted playsinline webkit-playsinline class="hidden" style="display:none;" volume="0">
         <source src="./assets/video/video2.mp4" type="video/mp4" />
     </video>
 
@@ -440,7 +443,7 @@ import canetaImg from '../assets/caneta.png';
             <div class="hidden md:block md:col-span-3 h-full"></div>
         </div>
 
-        <Header />
+        <Header transition:persist />
 
 
         <!-- ============================================================
@@ -463,15 +466,6 @@ import canetaImg from '../assets/caneta.png';
                     <!-- Ambient Radial Glow Backdrop atrás da caneta -->
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
                         <div class="w-[500px] sm:w-[900px] h-[500px] sm:h-[900px] rounded-full bg-stone-300/40 dark:bg-stone-800/40 blur-3xl animate-pulse-glow"></div>
-                    </div>
-
-                    <!-- Loading Skeleton & Preload Progress Meter -->
-                    <div id="video-loader" class="absolute inset-0 flex flex-col items-center justify-center bg-[#EAEAE5]/95 dark:bg-[#10100E]/95 backdrop-blur-md z-40 transition-opacity duration-500">
-                        <div class="w-12 h-12 rounded-full border-2 border-stone-400 border-t-stone-900 dark:border-t-teal-500 animate-spin mb-3"></div>
-                        <span id="loader-status-text" class="text-xs font-mono uppercase tracking-widest text-stone-800 dark:text-stone-300 font-semibold">Calibrando frames (1.0s+)...</span>
-                        <div class="w-44 h-1 bg-stone-300 dark:bg-stone-800 rounded-full mt-3 overflow-hidden">
-                            <div id="loader-progress-bar" class="h-full bg-stone-950 dark:bg-teal-400 w-1/4 transition-all duration-200"></div>
-                        </div>
                     </div>
 
                     <!-- The High-Performance Canvas Element -->
@@ -670,7 +664,23 @@ import canetaImg from '../assets/caneta.png';
                         <h2 data-reveal-text class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold font-display tracking-tight text-[#1C1917] dark:text-white leading-[0.94]">
                             Artools<br/>
                             <span class="font-normal font-display">Pigmentum</span><br/>
-                            <span class="font-serif italic font-light text-[#8C827A] dark:text-stone-400">Swiss Caliber</span>
+                            <span class="font-serif italic font-light text-[#8C827A] dark:text-teal-400 inline-block min-h-[1.1em]">
+                                <TextType 
+                                    text={[
+                                        "Swiss Caliber", 
+                                        "Precisão Cirúrgica", 
+                                        "Nanomolecular 0.1", 
+                                        "Calibração ±0.002mm"
+                                    ]}
+                                    typingSpeed={65}
+                                    pauseDuration={2000}
+                                    deletingSpeed={35}
+                                    showCursor={true}
+                                    cursorCharacter="|"
+                                    cursorClassName="text-teal-500 font-sans"
+                                    startOnVisible={true}
+                                />
+                            </span>
                         </h2>
                     </div>
 
@@ -1214,11 +1224,9 @@ import canetaImg from '../assets/caneta.png';
             // -------------------------------------------------------------
             // Canvas & Video Elements for Hero 3D Spatial Canvas
             // -------------------------------------------------------------
+            // Canvas & Video Elements for Hero 3D Spatial Canvas (100% Muted, Zero Audio)
             const canvas = document.getElementById('pen-canvas');
             const video = document.getElementById('pen-video-source');
-            const videoLoader = document.getElementById('video-loader');
-            const loaderProgressBar = document.getElementById('loader-progress-bar');
-            const loaderStatusText = document.getElementById('loader-status-text');
             const telemetryPercentage = document.getElementById('telemetry-percentage');
             const coralProgressLine = document.getElementById('coral-progress-line');
             const verticalScrollTick = document.getElementById('vertical-scroll-tick');
@@ -1230,21 +1238,21 @@ import canetaImg from '../assets/caneta.png';
 
             if (!canvas || !video) return;
 
+            // Strict Audio Muting
+            video.muted = true;
+            video.defaultMuted = true;
+            video.volume = 0;
+            video.pause();
+
             const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
             let canvasWidth = 0;
             let canvasHeight = 0;
             let videoAspect = 16 / 9;
 
-            // Frame Cache Array & 1-Second Start Offset
-            const framesCache = [];
-            const TOTAL_BUFFER_FRAMES = 36;
             const VIDEO_START_OFFSET = 1.0; // Pula o primeiro 1.0s do vídeo da Hero
-            let isCachingComplete = false;
             let videoDuration = 3.5;
             let targetProgress = 0;
             let currentProgress = 0;
-
-            // Direct Seek Queue State Machine
             let isSeeking = false;
             let pendingSeekTime = null;
             let lastDrawnTime = -1;
@@ -1255,7 +1263,7 @@ import canetaImg from '../assets/caneta.png';
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
                 canvasWidth = canvas.width = rect.width * dpr;
                 canvasHeight = canvas.height = rect.height * dpr;
-                drawCurrentFrame();
+                renderFrameToCanvas(video);
             }
             window.addEventListener('resize', resizeCanvas);
 
@@ -1287,23 +1295,6 @@ import canetaImg from '../assets/caneta.png';
                 ctx.drawImage(source, offsetX, offsetY, drawWidth, drawHeight);
             }
 
-            // Draw based on currentProgress
-            function drawCurrentFrame() {
-                if (isCachingComplete && framesCache.length > 0) {
-                    const frameIndex = Math.min(
-                        Math.max(0, Math.floor(currentProgress * (framesCache.length - 1))),
-                        framesCache.length - 1
-                    );
-                    if (framesCache[frameIndex]) {
-                        renderFrameToCanvas(framesCache[frameIndex]);
-                        return;
-                    }
-                }
-                if (video && video.readyState >= 2) {
-                    renderFrameToCanvas(video);
-                }
-            }
-
             // Non-blocking seek queue for video decoder
             function safeSeekVideo(time) {
                 if (isSeeking) {
@@ -1328,70 +1319,21 @@ import canetaImg from '../assets/caneta.png';
                 }
             });
 
-            function hideLoaderImmediately() {
-                if (videoLoader && videoLoader.style.display !== 'none') {
-                    videoLoader.style.opacity = '0';
-                    setTimeout(() => {
-                        videoLoader.style.display = 'none';
-                    }, 250);
-                }
-            }
-
-            // Fast Background In-Memory Frame Extractor (Non-blocking starting at 1.0s)
-            async function extractVideoFramesInBackground() {
-                videoDuration = video.duration || 3.5;
-                const offscreen = document.createElement('canvas');
-                const offCtx = offscreen.getContext('2d', { alpha: false });
-                
-                offscreen.width = Math.min(video.videoWidth || 1280, 1280);
-                offscreen.height = Math.min(video.videoHeight || 720, 720);
-
-                const startTime = Math.min(VIDEO_START_OFFSET, Math.max(0, videoDuration - 1.0));
-                const endTime = videoDuration - 0.05;
-                const effectiveRange = Math.max(0.5, endTime - startTime);
-
-                for (let i = 0; i < TOTAL_BUFFER_FRAMES; i++) {
-                    const time = startTime + (i / (TOTAL_BUFFER_FRAMES - 1)) * effectiveRange;
-                    
-                    await new Promise((resolve) => {
-                        const onSeek = async () => {
-                            video.removeEventListener('seeked', onSeek);
-                            try {
-                                offCtx.drawImage(video, 0, 0, offscreen.width, offscreen.height);
-                                if ('createImageBitmap' in window) {
-                                    const bitmap = await createImageBitmap(offscreen);
-                                    framesCache[i] = bitmap;
-                                } else {
-                                    const img = new Image();
-                                    img.src = offscreen.toDataURL('image/jpeg', 0.85);
-                                    framesCache[i] = img;
-                                }
-                            } catch (e) {}
-                            resolve();
-                        };
-                        video.addEventListener('seeked', onSeek, { once: true });
-                        video.currentTime = time;
-                    });
-                }
-
-                isCachingComplete = true;
-                drawCurrentFrame();
-            }
-
             // Setup GSAP ScrollTrigger for Hero
             function initEngine() {
-                resizeCanvas();
+                video.muted = true;
+                video.volume = 0;
+                video.pause();
+                
                 videoDuration = video.duration || 3.5;
-
-                // Mostra o vídeo a partir de 1.0s
-                hideLoaderImmediately();
+                resizeCanvas();
                 safeSeekVideo(VIDEO_START_OFFSET);
 
                 ScrollTrigger.create({
                     trigger: '#scroll-hero-section',
                     start: 'top top',
                     end: 'bottom bottom',
-                    scrub: 0.3,
+                    scrub: 0.2,
                     onUpdate: (self) => {
                         targetProgress = self.progress;
 
@@ -1440,9 +1382,6 @@ import canetaImg from '../assets/caneta.png';
                         }
                     }
                 });
-
-                // Start async background frame extractor without blocking
-                setTimeout(extractVideoFramesInBackground, 200);
             }
 
             if (video.readyState >= 1) {
@@ -1454,30 +1393,28 @@ import canetaImg from '../assets/caneta.png';
                 video.load();
             }
 
-            // Fallback: se o loader ainda estiver visível após 300ms, fecha imediatamente
-            setTimeout(hideLoaderImmediately, 300);
-
             // 60-120 FPS Native RAF Render Loop with Damped Subpixel Lerp
             let isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             function renderLoop() {
                 if (!isReducedMotion) {
-                    currentProgress += (targetProgress - currentProgress) * 0.16;
+                    currentProgress += (targetProgress - currentProgress) * 0.2;
 
-                    if (!isCachingComplete && videoDuration > 0) {
+                    if (videoDuration > 0) {
                         const startTime = Math.min(VIDEO_START_OFFSET, Math.max(0, videoDuration - 1.0));
                         const effectiveRange = Math.max(0.5, videoDuration - startTime);
                         const targetTime = startTime + (currentProgress * effectiveRange);
-                        if (Math.abs(targetTime - lastDrawnTime) > 0.03) {
+                        if (Math.abs(targetTime - lastDrawnTime) > 0.02) {
                             lastDrawnTime = targetTime;
                             safeSeekVideo(targetTime);
                         }
-                    } else if (isCachingComplete) {
-                        drawCurrentFrame();
                     }
                 } else {
                     currentProgress = targetProgress;
-                    drawCurrentFrame();
+                    if (videoDuration > 0) {
+                        const targetTime = VIDEO_START_OFFSET + (currentProgress * Math.max(0.5, videoDuration - VIDEO_START_OFFSET));
+                        safeSeekVideo(targetTime);
+                    }
                 }
 
                 requestAnimationFrame(renderLoop);
@@ -1486,14 +1423,26 @@ import canetaImg from '../assets/caneta.png';
 
 
             // -------------------------------------------------------------
-            // 3. Second Fold Luxury Interactive Handlers & Media Switcher
+            // 3. Second Fold Luxury Interactive Handlers & Media Switcher (Strictly Muted)
             // -------------------------------------------------------------
             const photoContainer = document.getElementById('media-photo-container');
             const videoContainer = document.getElementById('media-video-container');
             const btnShowPhoto = document.getElementById('btn-show-photo');
             const btnShowVideo = document.getElementById('btn-show-video');
             const secondaryVideo = document.getElementById('secondary-video');
+            const glowVideo = document.getElementById('glow-bg-video');
             const luxuryStageCard = document.getElementById('luxury-stage-card');
+
+            if (secondaryVideo) {
+                secondaryVideo.muted = true;
+                secondaryVideo.defaultMuted = true;
+                secondaryVideo.volume = 0;
+            }
+            if (glowVideo) {
+                glowVideo.muted = true;
+                glowVideo.defaultMuted = true;
+                glowVideo.volume = 0;
+            }
 
             window.switchMediaMode = function(mode) {
                 if (mode === 'video') {

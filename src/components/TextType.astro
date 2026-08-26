@@ -1,0 +1,221 @@
+---
+// TextType.astro - Componente nativo em Astro inspirado no TextType do React Bits
+interface Props {
+  text: string | string[];
+  as?: string;
+  typingSpeed?: number;
+  initialDelay?: number;
+  pauseDuration?: number;
+  deletingSpeed?: number;
+  loop?: boolean;
+  className?: string;
+  showCursor?: boolean;
+  hideCursorWhileTyping?: boolean;
+  cursorCharacter?: string;
+  cursorBlinkDuration?: number;
+  cursorClassName?: string;
+  textColors?: string[];
+  startOnVisible?: boolean;
+  reverseMode?: boolean;
+}
+
+const {
+  text,
+  as: Component = 'span',
+  typingSpeed = 65,
+  initialDelay = 200,
+  pauseDuration = 1800,
+  deletingSpeed = 35,
+  loop = true,
+  className = '',
+  showCursor = true,
+  hideCursorWhileTyping = false,
+  cursorCharacter = '|',
+  cursorBlinkDuration = 0.5,
+  cursorClassName = '',
+  textColors = [],
+  startOnVisible = true,
+  reverseMode = false,
+} = Astro.props;
+
+const textList = Array.isArray(text) ? text : [text];
+const config = JSON.stringify({
+  textArray: textList,
+  typingSpeed,
+  initialDelay,
+  pauseDuration,
+  deletingSpeed,
+  loop,
+  showCursor,
+  hideCursorWhileTyping,
+  cursorBlinkDuration,
+  textColors,
+  startOnVisible,
+  reverseMode
+});
+---
+
+<Component 
+  class={`text-type inline-block select-none ${className}`} 
+  data-texttype-config={config}
+>
+  <span class="text-type__content">{textList[0]}</span>{showCursor && (
+    <span class={`text-type__cursor inline-block ml-1 font-mono font-normal opacity-100 ${cursorClassName}`} data-cursor>
+      {cursorCharacter}
+    </span>
+  )}
+</Component>
+
+<style>
+  .text-type {
+    display: inline-block;
+    white-space: pre-wrap;
+  }
+  .text-type__cursor {
+    margin-left: 0.15rem;
+    display: inline-block;
+    vertical-align: baseline;
+    animation: texttype-blink 0.8s infinite ease-in-out;
+  }
+  .text-type__cursor--hidden {
+    display: none !important;
+  }
+
+  @keyframes texttype-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+</style>
+
+<script is:inline>
+  function initTextTypeInstances() {
+    const elements = document.querySelectorAll('[data-texttype-config]');
+
+    elements.forEach((container) => {
+      if (container._textTypeInitialized) return;
+      container._textTypeInitialized = true;
+
+      const rawConfig = container.getAttribute('data-texttype-config');
+      if (!rawConfig) return;
+
+      let config;
+      try {
+        config = JSON.parse(rawConfig);
+      } catch (e) {
+        return;
+      }
+
+      const contentEl = container.querySelector('.text-type__content');
+      const cursorEl = container.querySelector('[data-cursor]');
+
+      if (!contentEl) return;
+
+      const textArray = config.textArray || [];
+      if (textArray.length === 0) return;
+
+      // Animação de piscar com GSAP se disponível
+      if (window.gsap && config.showCursor && cursorEl) {
+        window.gsap.to(cursorEl, {
+          opacity: 0,
+          duration: config.cursorBlinkDuration || 0.5,
+          repeat: -1,
+          yoyo: true,
+          ease: 'power2.inOut'
+        });
+      }
+
+      let currentTextIndex = 0;
+      let currentCharIndex = 0;
+      let isDeleting = false;
+      let displayedText = '';
+      let isVisible = !config.startOnVisible;
+      let timer = null;
+
+      const updateColor = () => {
+        if (config.textColors && config.textColors.length > 0) {
+          const color = config.textColors[currentTextIndex % config.textColors.length];
+          contentEl.style.color = color;
+        }
+      };
+
+      const startTypingLoop = () => {
+        if (!isVisible) return;
+
+        const currentSentence = textArray[currentTextIndex];
+        const processedText = config.reverseMode 
+          ? currentSentence.split('').reverse().join('') 
+          : currentSentence;
+
+        updateColor();
+
+        const step = () => {
+          if (isDeleting) {
+            if (displayedText === '') {
+              isDeleting = false;
+              if (currentTextIndex === textArray.length - 1 && !config.loop) {
+                return;
+              }
+              currentTextIndex = (currentTextIndex + 1) % textArray.length;
+              currentCharIndex = 0;
+              updateColor();
+              timer = setTimeout(step, 250);
+            } else {
+              displayedText = displayedText.slice(0, -1);
+              contentEl.textContent = displayedText;
+              timer = setTimeout(step, config.deletingSpeed || 35);
+            }
+          } else {
+            if (currentCharIndex < processedText.length) {
+              displayedText += processedText[currentCharIndex];
+              contentEl.textContent = displayedText;
+              currentCharIndex++;
+              
+              if (config.hideCursorWhileTyping && cursorEl) {
+                cursorEl.classList.add('text-type__cursor--hidden');
+              }
+
+              timer = setTimeout(step, config.typingSpeed || 65);
+            } else {
+              if (config.hideCursorWhileTyping && cursorEl) {
+                cursorEl.classList.remove('text-type__cursor--hidden');
+              }
+
+              if (!config.loop && currentTextIndex === textArray.length - 1) return;
+
+              timer = setTimeout(() => {
+                isDeleting = true;
+                step();
+              }, config.pauseDuration || 1800);
+            }
+          }
+        };
+
+        contentEl.textContent = '';
+        displayedText = '';
+        currentCharIndex = 0;
+        timer = setTimeout(step, config.initialDelay || 200);
+      };
+
+      if (config.startOnVisible && ('IntersectionObserver' in window)) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !isVisible) {
+              isVisible = true;
+              startTypingLoop();
+              observer.disconnect();
+            }
+          });
+        }, { threshold: 0.15 });
+
+        observer.observe(container);
+      } else {
+        startTypingLoop();
+      }
+    });
+  }
+
+  // Inicializa em todos os ciclos de carregamento
+  initTextTypeInstances();
+  document.addEventListener('DOMContentLoaded', initTextTypeInstances);
+  document.addEventListener('astro:page-load', initTextTypeInstances);
+</script>

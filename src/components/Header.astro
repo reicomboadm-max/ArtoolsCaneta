@@ -6,7 +6,7 @@ const isCatalogo = pathname.startsWith('/pagina2');
 const isProduto = pathname.startsWith('/produto');
 ---
 
-<header id="main-header" class="relative z-50 border-b border-stone-300 dark:border-stone-800 sticky top-0 bg-[#EAEAE5]/95 dark:bg-[#10100E]/95 backdrop-blur-md transition-all duration-300">
+<header id="main-header" transition:persist class="relative z-50 border-b border-stone-300 dark:border-stone-800 sticky top-0 bg-[#EAEAE5]/95 dark:bg-[#10100E]/95 backdrop-blur-md transition-all duration-300">
     <div class="flex justify-between items-center px-4 sm:px-6 md:px-10 py-3 md:py-3.5">
         
         <!-- Left: Logo Minimalista (Ícone + Nome) -->
@@ -22,41 +22,59 @@ const isProduto = pathname.startsWith('/produto');
             </span>
         </a>
 
-        <!-- Center: Links Desktop (Opcional em telas grandes para acesso direto) -->
-        <nav class="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Navegação Principal">
+        <!-- Center: Links Desktop Centrais com Destaque Dinâmico -->
+        <nav class="hidden lg:flex items-center gap-6 xl:gap-8" aria-label="Navegação Principal" id="main-desktop-nav">
+            <!-- 01. Início -->
             <a 
                 href="/" 
-                class={`text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
+                data-nav-path="/"
+                class={`desktop-nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
                     isHome 
                     ? 'text-stone-950 dark:text-teal-400 font-bold' 
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
                 }`}
             >
-                <span class={`w-1.5 h-1.5 rounded-full ${isHome ? 'bg-stone-900 dark:bg-teal-400' : 'bg-stone-400'}`}></span>
+                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
+                    isHome 
+                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
+                    : 'bg-stone-400 dark:bg-stone-600'
+                }`}></span>
                 01. Início
             </a>
 
+            <!-- 02. Catálogo -->
             <a 
                 href="/pagina2" 
-                class={`text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
+                data-nav-path="/pagina2"
+                class={`desktop-nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
                     isCatalogo 
                     ? 'text-stone-950 dark:text-teal-400 font-bold' 
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
                 }`}
             >
-                <span class={`w-1.5 h-1.5 rounded-full ${isCatalogo ? 'bg-stone-900 dark:bg-teal-400' : 'bg-stone-400'}`}></span>
+                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
+                    isCatalogo 
+                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
+                    : 'bg-stone-400 dark:bg-stone-600'
+                }`}></span>
                 02. Catálogo
             </a>
 
+            <!-- 03. Detalhes -->
             <a 
                 href="/produto" 
-                class={`text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
+                data-nav-path="/produto"
+                class={`desktop-nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
                     isProduto 
                     ? 'text-stone-950 dark:text-teal-400 font-bold' 
                     : 'text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400'
                 }`}
             >
-                <span class={`w-1.5 h-1.5 rounded-full ${isProduto ? 'bg-stone-900 dark:bg-teal-400' : 'bg-stone-400'}`}></span>
+                <span class={`nav-dot w-1.5 h-1.5 rounded-full transition-colors ${
+                    isProduto 
+                    ? 'bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30' 
+                    : 'bg-stone-400 dark:bg-stone-600'
+                }`}></span>
                 03. Detalhes
             </a>
         </nav>
@@ -111,11 +129,12 @@ const isProduto = pathname.startsWith('/produto');
             </div>
 
             <!-- Lista de Opções de Menu -->
-            <div class="space-y-1">
+            <div class="space-y-1" id="dropdown-menu-list">
                 <!-- Opção 1: Início -->
                 <a 
                     href="/" 
-                    class={`group block p-2.5 rounded-md transition-colors ${
+                    data-dropdown-path="/"
+                    class={`dropdown-nav-item group block p-2.5 rounded-md transition-colors ${
                         isHome 
                         ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs' 
                         : 'text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800/70'
@@ -124,7 +143,7 @@ const isProduto = pathname.startsWith('/produto');
                 >
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-mono tracking-wider flex items-center gap-2">
-                            <span class={`w-1.5 h-1.5 rounded-full ${isHome ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
+                            <span class={`dropdown-dot w-1.5 h-1.5 rounded-full ${isHome ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
                             01. Início
                         </span>
                         <span class="text-[10px] font-mono opacity-70">Visão Geral →</span>
@@ -134,7 +153,8 @@ const isProduto = pathname.startsWith('/produto');
                 <!-- Opção 2: Catálogo -->
                 <a 
                     href="/pagina2" 
-                    class={`group block p-2.5 rounded-md transition-colors ${
+                    data-dropdown-path="/pagina2"
+                    class={`dropdown-nav-item group block p-2.5 rounded-md transition-colors ${
                         isCatalogo 
                         ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs' 
                         : 'text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800/70'
@@ -143,7 +163,7 @@ const isProduto = pathname.startsWith('/produto');
                 >
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-mono tracking-wider flex items-center gap-2">
-                            <span class={`w-1.5 h-1.5 rounded-full ${isCatalogo ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
+                            <span class={`dropdown-dot w-1.5 h-1.5 rounded-full ${isCatalogo ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
                             02. Catálogo
                         </span>
                         <span class="text-[10px] font-mono opacity-70">09 Canetas →</span>
@@ -153,7 +173,8 @@ const isProduto = pathname.startsWith('/produto');
                 <!-- Opção 3: Detalhes -->
                 <a 
                     href="/produto" 
-                    class={`group block p-2.5 rounded-md transition-colors ${
+                    data-dropdown-path="/produto"
+                    class={`dropdown-nav-item group block p-2.5 rounded-md transition-colors ${
                         isProduto 
                         ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs' 
                         : 'text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800/70'
@@ -162,7 +183,7 @@ const isProduto = pathname.startsWith('/produto');
                 >
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-mono tracking-wider flex items-center gap-2">
-                            <span class={`w-1.5 h-1.5 rounded-full ${isProduto ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
+                            <span class={`dropdown-dot w-1.5 h-1.5 rounded-full ${isProduto ? 'bg-teal-400 dark:bg-teal-500' : 'bg-stone-400'}`}></span>
                             03. Detalhes
                         </span>
                         <span class="text-[10px] font-mono opacity-70">Ficha Técnica →</span>
@@ -204,6 +225,61 @@ const isProduto = pathname.startsWith('/produto');
         if (btn) btn.setAttribute('aria-expanded', 'false');
         if (arrow) arrow.style.transform = 'rotate(0deg)';
     };
+
+    // Atualiza com precisão todos os marcadores visuais da página ativa
+    function syncActivePageIndicators() {
+        const rawPath = window.location.pathname.replace(/\/$/, '') || '/';
+        const isHome = rawPath === '/' || rawPath === '/index.html';
+        const isCatalogo = rawPath.startsWith('/pagina2');
+        const isProduto = rawPath.startsWith('/produto');
+
+        // 1. Sincroniza os links do Menu Desktop Central
+        document.querySelectorAll('#main-desktop-nav .desktop-nav-link').forEach(link => {
+            const targetPath = link.getAttribute('data-nav-path');
+            const dot = link.querySelector('.nav-dot');
+            const isActive = (targetPath === '/' && isHome) || (targetPath === '/pagina2' && isCatalogo) || (targetPath === '/produto' && isProduto);
+
+            if (isActive) {
+                link.className = 'desktop-nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 text-stone-950 dark:text-teal-400 font-bold';
+                if (dot) {
+                    dot.className = 'nav-dot w-1.5 h-1.5 rounded-full transition-colors bg-stone-900 dark:bg-teal-400 ring-2 ring-stone-900/20 dark:ring-teal-400/30';
+                }
+            } else {
+                link.className = 'desktop-nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 text-stone-600 dark:text-stone-400 hover:text-stone-950 dark:hover:text-teal-400';
+                if (dot) {
+                    dot.className = 'nav-dot w-1.5 h-1.5 rounded-full transition-colors bg-stone-400 dark:bg-stone-600';
+                }
+            }
+        });
+
+        // 2. Sincroniza os links dentro do Dropdown Menu
+        document.querySelectorAll('#dropdown-menu-list .dropdown-nav-item').forEach(link => {
+            const targetPath = link.getAttribute('data-dropdown-path');
+            const dot = link.querySelector('.dropdown-dot');
+            const isActive = (targetPath === '/' && isHome) || (targetPath === '/pagina2' && isCatalogo) || (targetPath === '/produto' && isProduto);
+
+            if (isActive) {
+                link.className = 'dropdown-nav-item group block p-2.5 rounded-md transition-colors bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs';
+                if (dot) {
+                    dot.className = 'dropdown-dot w-1.5 h-1.5 rounded-full bg-teal-400 dark:bg-teal-500';
+                }
+            } else {
+                link.className = 'dropdown-nav-item group block p-2.5 rounded-md transition-colors text-stone-800 dark:text-stone-200 hover:bg-stone-100 dark:hover:bg-stone-800/70';
+                if (dot) {
+                    dot.className = 'dropdown-dot w-1.5 h-1.5 rounded-full bg-stone-400';
+                }
+            }
+        });
+
+        window.closeNavDropdown();
+    }
+
+    // Executa em todos os ciclos de vida do Astro ClientRouter e navegação nativa
+    syncActivePageIndicators();
+    document.addEventListener('DOMContentLoaded', syncActivePageIndicators);
+    document.addEventListener('astro:page-load', syncActivePageIndicators);
+    document.addEventListener('astro:after-swap', syncActivePageIndicators);
+    window.addEventListener('popstate', syncActivePageIndicators);
 
     // Fechar ao clicar fora
     document.addEventListener('click', (e) => {
