@@ -468,8 +468,8 @@ import { ClientRouter } from 'astro:transitions';
                         <div class="w-[500px] sm:w-[900px] h-[500px] sm:h-[900px] rounded-full bg-stone-300/40 dark:bg-stone-800/40 blur-3xl animate-pulse-glow"></div>
                     </div>
 
-                    <!-- The High-Performance Canvas Element -->
-                    <canvas id="pen-canvas" aria-label="Visualizador 3D fluido de alta performance da caneta ARTOOLS Pigmentum"></canvas>
+                    <!-- The High-Performance Canvas Element with Instant Fallback -->
+                    <canvas id="pen-canvas" data-fallback-src={canetaImg.src} aria-label="Visualizador 3D fluido de alta performance da caneta ARTOOLS Pigmentum"></canvas>
 
                     <!-- ========================================================
                          DYNAMIC HOTSPOT CALLOUTS (Aparecem durante o scroll)
@@ -1189,7 +1189,7 @@ import { ClientRouter } from 'astro:transitions';
     <!-- ============================================================
          APPLE-GRADE DUAL-BUFFER CANVAS SCROLL ENGINE (60-120 FPS)
     ============================================================ -->
-    <script is:inline>
+    <script is:inline data-astro-rerun>
         let indexLenis = null;
         let indexRafId = null;
 
@@ -1263,6 +1263,12 @@ import { ClientRouter } from 'astro:transitions';
 
             if (!canvas || !video) return;
 
+            // Strict Audio Muting
+            video.muted = true;
+            video.defaultMuted = true;
+            video.volume = 0;
+            video.pause();
+
             const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
             let canvasWidth = 0;
             let canvasHeight = 0;
@@ -1276,6 +1282,19 @@ import { ClientRouter } from 'astro:transitions';
             let pendingSeekTime = null;
             let lastDrawnTime = -1;
 
+            // Fallback Image instant preload
+            const fallbackSrc = canvas.getAttribute('data-fallback-src');
+            let fallbackImage = null;
+            if (fallbackSrc) {
+                fallbackImage = new Image();
+                fallbackImage.src = fallbackSrc;
+                fallbackImage.onload = () => {
+                    if (video.readyState < 2) {
+                        renderFrameToCanvas(fallbackImage);
+                    }
+                };
+            }
+
             // Resize Canvas with HiDPI support
             function resizeCanvas() {
                 if (!canvas) return;
@@ -1283,18 +1302,24 @@ import { ClientRouter } from 'astro:transitions';
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
                 canvasWidth = canvas.width = rect.width * dpr;
                 canvasHeight = canvas.height = rect.height * dpr;
-                renderFrameToCanvas(video);
+                if (video.readyState >= 2) {
+                    renderFrameToCanvas(video);
+                } else if (fallbackImage && fallbackImage.complete) {
+                    renderFrameToCanvas(fallbackImage);
+                }
             }
             window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
 
             // Draw a frame centered
             function renderFrameToCanvas(source) {
-                if (!source || !ctx || canvasWidth === 0 || !source.videoWidth) return;
+                if (!source || !ctx || canvasWidth === 0) return;
+
+                const srcWidth = source.videoWidth || source.naturalWidth || source.width || 1920;
+                const srcHeight = source.videoHeight || source.naturalHeight || source.height || 1080;
+                if (srcWidth === 0 || srcHeight === 0) return;
 
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
-                const srcWidth = source.videoWidth || 1920;
-                const srcHeight = source.videoHeight || 1080;
                 videoAspect = srcWidth / srcHeight;
 
                 const canvasAspect = canvasWidth / canvasHeight;
