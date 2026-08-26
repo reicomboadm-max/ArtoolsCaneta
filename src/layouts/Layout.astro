@@ -121,9 +121,25 @@ const { title = "ARTOOLS Pigmentum", description = "Instrumentos de desenho téc
             }
         }
 
+        function silenceAllMedia() {
+            document.querySelectorAll('video, audio').forEach(el => {
+                el.muted = true;
+                el.defaultMuted = true;
+                el.volume = 0;
+            });
+        }
+
         setupTheme();
-        document.addEventListener('DOMContentLoaded', setupTheme);
-        document.addEventListener('astro:page-load', setupTheme);
+        silenceAllMedia();
+        document.addEventListener('DOMContentLoaded', () => {
+            setupTheme();
+            silenceAllMedia();
+        });
+        document.addEventListener('astro:page-load', () => {
+            setupTheme();
+            silenceAllMedia();
+        });
+        document.addEventListener('astro:after-swap', silenceAllMedia);
     </script>
 </body>
 </html>

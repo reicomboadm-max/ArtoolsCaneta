@@ -1190,41 +1190,66 @@ import { ClientRouter } from 'astro:transitions';
          APPLE-GRADE DUAL-BUFFER CANVAS SCROLL ENGINE (60-120 FPS)
     ============================================================ -->
     <script is:inline>
-        document.addEventListener('DOMContentLoaded', () => {
-            
+        let indexLenis = null;
+        let indexRafId = null;
+
+        function cleanupIndexPage() {
+            if (indexRafId) {
+                cancelAnimationFrame(indexRafId);
+                indexRafId = null;
+            }
+            if (window.ScrollTrigger) {
+                ScrollTrigger.getAll().forEach(t => t.kill());
+            }
+            if (indexLenis) {
+                try { indexLenis.destroy(); } catch (e) {}
+                indexLenis = null;
+            }
+        }
+
+        function initIndexPage() {
+            // Garante silêncio absoluto em todos os elementos de mídia
+            document.querySelectorAll('video, audio').forEach(el => {
+                el.muted = true;
+                el.defaultMuted = true;
+                el.volume = 0;
+            });
+
+            cleanupIndexPage();
+
             // Register GSAP Plugin
-            gsap.registerPlugin(ScrollTrigger);
+            if (window.gsap && window.ScrollTrigger) {
+                gsap.registerPlugin(ScrollTrigger);
+            }
 
-            // -------------------------------------------------------------
             // 1. Lenis Smooth Scroll Setup with GSAP Synchronization
-            // -------------------------------------------------------------
-            let lenis = null;
             try {
-                lenis = new Lenis({
-                    duration: 1.1,
-                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                    direction: 'vertical',
-                    gestureDirection: 'vertical',
-                    smooth: true,
-                    smoothTouch: false,
-                    touchMultiplier: 1.8,
-                });
+                if (window.Lenis) {
+                    indexLenis = new Lenis({
+                        duration: 1.1,
+                        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                        direction: 'vertical',
+                        gestureDirection: 'vertical',
+                        smooth: true,
+                        smoothTouch: false,
+                        touchMultiplier: 1.8,
+                    });
 
-                lenis.on('scroll', ScrollTrigger.update);
+                    indexLenis.on('scroll', ScrollTrigger.update);
 
-                gsap.ticker.add((time) => {
-                    lenis.raf(time * 1000);
-                });
+                    gsap.ticker.add((time) => {
+                        if (indexLenis) indexLenis.raf(time * 1000);
+                    });
 
-                gsap.ticker.lagSmoothing(0);
+                    gsap.ticker.lagSmoothing(0);
+                }
             } catch (err) {
                 console.warn('Lenis scroll running in standard mode:', err);
             }
 
             // -------------------------------------------------------------
-            // Canvas & Video Elements for Hero 3D Spatial Canvas
+            // Canvas & Video Elements for Hero 3D Spatial Canvas (100% Muted)
             // -------------------------------------------------------------
-            // Canvas & Video Elements for Hero 3D Spatial Canvas (100% Muted, Zero Audio)
             const canvas = document.getElementById('pen-canvas');
             const video = document.getElementById('pen-video-source');
             const telemetryPercentage = document.getElementById('telemetry-percentage');
@@ -1238,18 +1263,12 @@ import { ClientRouter } from 'astro:transitions';
 
             if (!canvas || !video) return;
 
-            // Strict Audio Muting
-            video.muted = true;
-            video.defaultMuted = true;
-            video.volume = 0;
-            video.pause();
-
             const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true });
             let canvasWidth = 0;
             let canvasHeight = 0;
             let videoAspect = 16 / 9;
 
-            const VIDEO_START_OFFSET = 1.0; // Pula o primeiro 1.0s do vídeo da Hero
+            const VIDEO_START_OFFSET = 1.0; 
             let videoDuration = 3.5;
             let targetProgress = 0;
             let currentProgress = 0;
@@ -1259,6 +1278,7 @@ import { ClientRouter } from 'astro:transitions';
 
             // Resize Canvas with HiDPI support
             function resizeCanvas() {
+                if (!canvas) return;
                 const rect = canvas.getBoundingClientRect();
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
                 canvasWidth = canvas.width = rect.width * dpr;
@@ -1269,12 +1289,12 @@ import { ClientRouter } from 'astro:transitions';
 
             // Draw a frame centered
             function renderFrameToCanvas(source) {
-                if (!source || !ctx || canvasWidth === 0) return;
+                if (!source || !ctx || canvasWidth === 0 || !source.videoWidth) return;
 
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-                const srcWidth = source.videoWidth || source.width || 1920;
-                const srcHeight = source.videoHeight || source.height || 1080;
+                const srcWidth = source.videoWidth || 1920;
+                const srcHeight = source.videoHeight || 1080;
                 videoAspect = srcWidth / srcHeight;
 
                 const canvasAspect = canvasWidth / canvasHeight;
@@ -1329,11 +1349,13 @@ import { ClientRouter } from 'astro:transitions';
                 resizeCanvas();
                 safeSeekVideo(VIDEO_START_OFFSET);
 
+                if (!window.ScrollTrigger) return;
+
                 ScrollTrigger.create({
                     trigger: '#scroll-hero-section',
                     start: 'top top',
                     end: 'bottom bottom',
-                    scrub: 0.2,
+                    scrub: 0.15,
                     onUpdate: (self) => {
                         targetProgress = self.progress;
 
@@ -1384,13 +1406,36 @@ import { ClientRouter } from 'astro:transitions';
                 });
             }
 
-            if (video.readyState >= 1) {
-                initEngine();
+            // Pré-carrega o vídeo em Blob URL para navegação ultra-fluida em 60-120fps sem gargalo de rede
+            if (!video._hasBlobSource) {
+                video._hasBlobSource = true;
+                fetch('./assets/video/video2.mp4')
+                    .then(res => {
+                        if (res.ok) return res.blob();
+                        throw new Error('Fallback direct');
+                    })
+                    .then(blob => {
+                        video.src = URL.createObjectURL(blob);
+                        video.muted = true;
+                        video.volume = 0;
+                        video.pause();
+                        initEngine();
+                    })
+                    .catch(() => {
+                        if (video.readyState >= 1) {
+                            initEngine();
+                        } else {
+                            video.addEventListener('loadedmetadata', initEngine, { once: true });
+                            video.load();
+                        }
+                    });
             } else {
-                video.addEventListener('loadedmetadata', initEngine, { once: true });
-                video.addEventListener('loadeddata', initEngine, { once: true });
-                video.addEventListener('canplay', initEngine, { once: true });
-                video.load();
+                if (video.readyState >= 1) {
+                    initEngine();
+                } else {
+                    video.addEventListener('loadedmetadata', initEngine, { once: true });
+                    video.load();
+                }
             }
 
             // 60-120 FPS Native RAF Render Loop with Damped Subpixel Lerp
@@ -1398,7 +1443,7 @@ import { ClientRouter } from 'astro:transitions';
 
             function renderLoop() {
                 if (!isReducedMotion) {
-                    currentProgress += (targetProgress - currentProgress) * 0.2;
+                    currentProgress += (targetProgress - currentProgress) * 0.25;
 
                     if (videoDuration > 0) {
                         const startTime = Math.min(VIDEO_START_OFFSET, Math.max(0, videoDuration - 1.0));
@@ -1417,9 +1462,9 @@ import { ClientRouter } from 'astro:transitions';
                     }
                 }
 
-                requestAnimationFrame(renderLoop);
+                indexRafId = requestAnimationFrame(renderLoop);
             }
-            requestAnimationFrame(renderLoop);
+            indexRafId = requestAnimationFrame(renderLoop);
 
 
             // -------------------------------------------------------------
@@ -1432,17 +1477,6 @@ import { ClientRouter } from 'astro:transitions';
             const secondaryVideo = document.getElementById('secondary-video');
             const glowVideo = document.getElementById('glow-bg-video');
             const luxuryStageCard = document.getElementById('luxury-stage-card');
-
-            if (secondaryVideo) {
-                secondaryVideo.muted = true;
-                secondaryVideo.defaultMuted = true;
-                secondaryVideo.volume = 0;
-            }
-            if (glowVideo) {
-                glowVideo.muted = true;
-                glowVideo.defaultMuted = true;
-                glowVideo.volume = 0;
-            }
 
             window.switchMediaMode = function(mode) {
                 if (mode === 'video') {
@@ -1498,11 +1532,12 @@ import { ClientRouter } from 'astro:transitions';
             }
 
             // Automatic Playback Observers for video3 and background glow video
-            const glowBgVideo = document.getElementById('glow-bg-video');
             const videoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     const videoEl = entry.target.tagName === 'VIDEO' ? entry.target : entry.target.querySelector('video');
                     if (videoEl) {
+                        videoEl.muted = true;
+                        videoEl.volume = 0;
                         if (entry.isIntersecting) {
                             videoEl.play().catch(() => {});
                         } else {
@@ -1512,14 +1547,19 @@ import { ClientRouter } from 'astro:transitions';
                 });
             }, { threshold: 0.1 });
 
-            if (luxuryStageCard || secondaryVideo) videoObserver.observe(luxuryStageCard || secondaryVideo);
-            if (glowBgVideo) videoObserver.observe(glowBgVideo);
+            if (luxuryStageCard) videoObserver.observe(luxuryStageCard);
+            if (secondaryVideo) videoObserver.observe(secondaryVideo);
+            if (glowVideo) videoObserver.observe(glowVideo);
 
             // Helper: Scroll to Video Section
             window.scrollToVideoSection = function() {
                 const target = document.getElementById('video-showcase-section');
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    if (indexLenis) {
+                        indexLenis.scrollTo(target, { offset: 0, duration: 1.4 });
+                    } else {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
                 }
             };
 
@@ -1959,8 +1999,13 @@ import { ClientRouter } from 'astro:transitions';
                 const heroTitle = document.getElementById('hero-title');
                 if (heroTitle) heroTitle.classList.add('reveal-active');
             }, 250);
+        }
 
-        });
+        // Executa no carregamento inicial e a cada troca de página com ClientRouter
+        initIndexPage();
+        document.addEventListener('DOMContentLoaded', initIndexPage);
+        document.addEventListener('astro:page-load', initIndexPage);
+        document.addEventListener('astro:before-swap', cleanupIndexPage);
     </script>
 </body>
 </html>
