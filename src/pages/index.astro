@@ -428,10 +428,17 @@ import { ClientRouter } from 'astro:transitions';
     <!-- Ambient Physics Background Canvas -->
     <canvas id="ambient-canvas" aria-hidden="true"></canvas>
 
-    <!-- Hidden Video Source for Buffer Decoding (Hero 3D Visualizer - 100% Muted) -->
-    <video id="pen-video-source" preload="auto" muted playsinline webkit-playsinline class="hidden" style="display:none;" volume="0">
-        <source src="/assets/video/video2.mp4" type="video/mp4" />
-    </video>
+    <!-- Hidden Video Source for Buffer Decoding (Hero 3D Visualizer - 100% Muted, Offscreen Active) -->
+    <video 
+        id="pen-video-source" 
+        src="/assets/video/video2.mp4" 
+        preload="auto" 
+        muted 
+        playsinline 
+        webkit-playsinline 
+        aria-hidden="true" 
+        style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;"
+    ></video>
 
     <!-- Main Architectural Frame Wrapper -->
     <div class="max-w-[1536px] mx-auto border-x border-stone-300 dark:border-stone-800 relative bg-[#EAEAE5]/95 dark:bg-[#10100E]/95 shadow-2xl z-10 transition-colors duration-400">
@@ -1289,9 +1296,7 @@ import { ClientRouter } from 'astro:transitions';
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
                 canvasWidth = canvas.width = rect.width * dpr;
                 canvasHeight = canvas.height = rect.height * dpr;
-                if (video && video.videoWidth) {
-                    renderFrameToCanvas(video);
-                }
+                renderFrameToCanvas(video);
             }
             window.addEventListener('resize', resizeCanvas);
             resizeCanvas();
@@ -1302,7 +1307,6 @@ import { ClientRouter } from 'astro:transitions';
 
                 const srcWidth = source.videoWidth || source.width || 1920;
                 const srcHeight = source.videoHeight || source.height || 1080;
-                if (srcWidth === 0 || srcHeight === 0) return;
 
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
                 videoAspect = srcWidth / srcHeight;
@@ -1322,7 +1326,9 @@ import { ClientRouter } from 'astro:transitions';
                     offsetY = (canvasHeight - drawHeight) / 2;
                 }
 
-                ctx.drawImage(source, offsetX, offsetY, drawWidth, drawHeight);
+                try {
+                    ctx.drawImage(source, offsetX, offsetY, drawWidth, drawHeight);
+                } catch (e) {}
             }
 
             // Non-blocking seek queue for video decoder
@@ -1352,7 +1358,14 @@ import { ClientRouter } from 'astro:transitions';
             video.addEventListener('loadeddata', () => {
                 renderFrameToCanvas(video);
             });
+            video.addEventListener('loadedmetadata', () => {
+                videoDuration = video.duration || 3.5;
+                renderFrameToCanvas(video);
+            });
             video.addEventListener('canplay', () => {
+                renderFrameToCanvas(video);
+            });
+            video.addEventListener('timeupdate', () => {
                 renderFrameToCanvas(video);
             });
 
@@ -1421,16 +1434,12 @@ import { ClientRouter } from 'astro:transitions';
                         }
                     }
                 });
+
+                ScrollTrigger.refresh();
             }
 
-            // Carregamento do vídeo 3D com caminho absoluto para funcionar em qualquer rota SPA
-            if (!video.src || video.src === '') {
-                video.src = '/assets/video/video2.mp4';
-            }
-            if (video.readyState >= 1) {
-                initEngine();
-            } else {
-                video.addEventListener('loadedmetadata', initEngine, { once: true });
+            initEngine();
+            if (video.readyState < 2) {
                 video.load();
             }
 
