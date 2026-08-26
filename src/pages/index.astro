@@ -430,7 +430,7 @@ import { ClientRouter } from 'astro:transitions';
 
     <!-- Hidden Video Source for Buffer Decoding (Hero 3D Visualizer - 100% Muted) -->
     <video id="pen-video-source" preload="auto" muted playsinline webkit-playsinline class="hidden" style="display:none;" volume="0">
-        <source src="./assets/video/video2.mp4" type="video/mp4" />
+        <source src="/assets/video/video2.mp4" type="video/mp4" />
     </video>
 
     <!-- Main Architectural Frame Wrapper -->
@@ -468,8 +468,8 @@ import { ClientRouter } from 'astro:transitions';
                         <div class="w-[500px] sm:w-[900px] h-[500px] sm:h-[900px] rounded-full bg-stone-300/40 dark:bg-stone-800/40 blur-3xl animate-pulse-glow"></div>
                     </div>
 
-                    <!-- The High-Performance Canvas Element with Instant Fallback -->
-                    <canvas id="pen-canvas" data-fallback-src={canetaImg.src} aria-label="Visualizador 3D fluido de alta performance da caneta ARTOOLS Pigmentum"></canvas>
+                    <!-- The High-Performance Canvas Element -->
+                    <canvas id="pen-canvas" aria-label="Visualizador 3D fluido de alta performance da caneta ARTOOLS Pigmentum"></canvas>
 
                     <!-- ========================================================
                          DYNAMIC HOTSPOT CALLOUTS (Aparecem durante o scroll)
@@ -1282,19 +1282,6 @@ import { ClientRouter } from 'astro:transitions';
             let pendingSeekTime = null;
             let lastDrawnTime = -1;
 
-            // Fallback Image instant preload
-            const fallbackSrc = canvas.getAttribute('data-fallback-src');
-            let fallbackImage = null;
-            if (fallbackSrc) {
-                fallbackImage = new Image();
-                fallbackImage.src = fallbackSrc;
-                fallbackImage.onload = () => {
-                    if (video.readyState < 2) {
-                        renderFrameToCanvas(fallbackImage);
-                    }
-                };
-            }
-
             // Resize Canvas with HiDPI support
             function resizeCanvas() {
                 if (!canvas) return;
@@ -1302,10 +1289,8 @@ import { ClientRouter } from 'astro:transitions';
                 const dpr = Math.min(window.devicePixelRatio || 1, 2);
                 canvasWidth = canvas.width = rect.width * dpr;
                 canvasHeight = canvas.height = rect.height * dpr;
-                if (video.readyState >= 2) {
+                if (video && video.videoWidth) {
                     renderFrameToCanvas(video);
-                } else if (fallbackImage && fallbackImage.complete) {
-                    renderFrameToCanvas(fallbackImage);
                 }
             }
             window.addEventListener('resize', resizeCanvas);
@@ -1315,8 +1300,8 @@ import { ClientRouter } from 'astro:transitions';
             function renderFrameToCanvas(source) {
                 if (!source || !ctx || canvasWidth === 0) return;
 
-                const srcWidth = source.videoWidth || source.naturalWidth || source.width || 1920;
-                const srcHeight = source.videoHeight || source.naturalHeight || source.height || 1080;
+                const srcWidth = source.videoWidth || source.width || 1920;
+                const srcHeight = source.videoHeight || source.height || 1080;
                 if (srcWidth === 0 || srcHeight === 0) return;
 
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -1362,6 +1347,13 @@ import { ClientRouter } from 'astro:transitions';
                     pendingSeekTime = null;
                     safeSeekVideo(nextTime);
                 }
+            });
+
+            video.addEventListener('loadeddata', () => {
+                renderFrameToCanvas(video);
+            });
+            video.addEventListener('canplay', () => {
+                renderFrameToCanvas(video);
             });
 
             // Setup GSAP ScrollTrigger for Hero
@@ -1431,36 +1423,15 @@ import { ClientRouter } from 'astro:transitions';
                 });
             }
 
-            // Pré-carrega o vídeo em Blob URL para navegação ultra-fluida em 60-120fps sem gargalo de rede
-            if (!video._hasBlobSource) {
-                video._hasBlobSource = true;
-                fetch('./assets/video/video2.mp4')
-                    .then(res => {
-                        if (res.ok) return res.blob();
-                        throw new Error('Fallback direct');
-                    })
-                    .then(blob => {
-                        video.src = URL.createObjectURL(blob);
-                        video.muted = true;
-                        video.volume = 0;
-                        video.pause();
-                        initEngine();
-                    })
-                    .catch(() => {
-                        if (video.readyState >= 1) {
-                            initEngine();
-                        } else {
-                            video.addEventListener('loadedmetadata', initEngine, { once: true });
-                            video.load();
-                        }
-                    });
+            // Carregamento do vídeo 3D com caminho absoluto para funcionar em qualquer rota SPA
+            if (!video.src || video.src === '') {
+                video.src = '/assets/video/video2.mp4';
+            }
+            if (video.readyState >= 1) {
+                initEngine();
             } else {
-                if (video.readyState >= 1) {
-                    initEngine();
-                } else {
-                    video.addEventListener('loadedmetadata', initEngine, { once: true });
-                    video.load();
-                }
+                video.addEventListener('loadedmetadata', initEngine, { once: true });
+                video.load();
             }
 
             // 60-120 FPS Native RAF Render Loop with Damped Subpixel Lerp
