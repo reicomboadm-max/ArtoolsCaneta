@@ -173,7 +173,7 @@ const pens = [
                         </div>
 
                         <!-- Área da Imagem Otimizada com <Image /> -->
-                        <a href={`/produto?calibre=${pen.id}`} class="flex-1 my-1 w-full flex items-center justify-center cursor-pointer p-2 overflow-hidden">
+                        <a href={`/produtos/${pen.id}`} class="flex-1 my-1 w-full flex items-center justify-center cursor-pointer p-2 overflow-hidden">
                             <Image 
                                 src={pen.image} 
                                 alt={pen.alt}
@@ -195,7 +195,7 @@ const pens = [
                         <div class="space-y-1.5 text-left">
                             <div class="flex items-baseline justify-between gap-2">
                                 <h3 class="text-base font-bold font-display text-[#1C1917] dark:text-white tracking-tight">
-                                    <a href={`/produto?calibre=${pen.id}`} class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
+                                    <a href={`/produtos/${pen.id}`} class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
                                         {pen.title}
                                     </a>
                                 </h3>
@@ -209,10 +209,10 @@ const pens = [
                             </p>
                         </div>
 
-                        <!-- Botão com Link Direto para a Página 3 (Detalhes do Produto) -->
+                        <!-- Botão com Link Direto para a Página de Detalhes do Produto -->
                         <div class="pt-2">
                             <Button 
-                                href={`/produto?calibre=${pen.id}`}
+                                href={`/produtos/${pen.id}`}
                                 variant="primary"
                                 shape="square"
                                 size="sm"

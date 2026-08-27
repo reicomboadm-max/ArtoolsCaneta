@@ -1,35 +1,48 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Button from '../components/Button.astro';
+import Layout from '../../layouts/Layout.astro';
+import Button from '../../components/Button.astro';
 import { Image } from 'astro:assets';
 
-import pen005Img from '../assets/artools-pigmentum-005.png';
-import pen010Img from '../assets/artools-pigmentum-010.png';
-import pen020Img from '../assets/artools-pigmentum-020.png';
-import pen030BlueImg from '../assets/artools-pigmentum-030-azul.png';
-import pen050BlackImg from '../assets/artools-pigmentum-050-black.jpg';
-import pen080DarkImg from '../assets/artools-pigmentum-080-dark.png';
-import pen100Img from '../assets/artools-pigmentum-100.png';
-import penBrushImg from '../assets/artools-pigmentum-brush.jpg';
-import penChiselImg from '../assets/artools-pigmentum-chisel.png';
+import pen005Img from '../../assets/artools-pigmentum-005.png';
+import pen010Img from '../../assets/artools-pigmentum-010.png';
+import pen020Img from '../../assets/artools-pigmentum-020.png';
+import pen030BlueImg from '../../assets/artools-pigmentum-030-azul.png';
+import pen050BlackImg from '../../assets/artools-pigmentum-050-black.jpg';
+import pen080DarkImg from '../../assets/artools-pigmentum-080-dark.png';
+import pen100Img from '../../assets/artools-pigmentum-100.png';
+import penBrushImg from '../../assets/artools-pigmentum-brush.jpg';
+import penChiselImg from '../../assets/artools-pigmentum-chisel.png';
 
-// Dados dos calibres da linha ARTOOLS Pigmentum
-const variants = [
-  { id: '0.05', name: '0.05 mm', tag: 'Micro', stock: 'Poucas Unidades', price: 'R$ 38,90', image: pen005Img.src, desc: 'Microponta cirúrgica para hachuras microscópicas e nanodetalhes de precisão.', tip: '0.05mm', code: 'ART-PGM-005' },
-  { id: '0.1', name: '0.10 mm', tag: 'Mais Vendida', stock: 'Em Estoque', price: 'R$ 38,90', image: pen010Img.src, desc: 'O padrão internacional para plantas baixas, cotas e linework de arquitetura.', tip: '0.10mm', code: 'ART-PGM-010' },
-  { id: '0.2', name: '0.20 mm', tag: 'Precisão', stock: 'Em Estoque', price: 'R$ 38,90', image: pen020Img.src, desc: 'Linha guia e estruturação técnica com fluxo contínuo e sem sangramento.', tip: '0.20mm', code: 'ART-PGM-020' },
-  { id: '0.3', name: '0.30 mm', tag: 'Azul Cobalto', stock: 'Edição Especial', price: 'R$ 44,90', image: pen030BlueImg.src, desc: 'Edição especial azul cobalto. Perfeita para rendering, concept design e documentação técnica.', tip: '0.30mm', code: 'ART-PGM-030-BLU' },
-  { id: '0.5', name: '0.50 mm', tag: 'Obsidian', stock: 'Em Estoque', price: 'R$ 44,90', image: pen050BlackImg.src, desc: 'Acabamento premium preto obsidiana com linhas mestras de alto impacto visual.', tip: '0.50mm', code: 'ART-PGM-050-BLK' },
-  { id: '0.8', name: '0.80 mm', tag: 'Dark Slate', stock: 'Últimas 8 un.', price: 'R$ 42,90', image: pen080DarkImg.src, desc: 'Ponta de precisão em base escura. Preto profundo 2.4 DMAX para silhuetas dramáticas.', tip: '0.80mm', code: 'ART-PGM-080' },
-  { id: '1.0', name: '1.00 mm', tag: 'Seção Pesada', stock: 'Em Estoque', price: 'R$ 42,90', image: pen100Img.src, desc: 'Espessura máxima linear para pranchas executivas de grande formato.', tip: '1.00mm', code: 'ART-PGM-100' },
-  { id: 'br', name: 'Brush (BR)', tag: 'Pincel', stock: 'Lote Especial', price: 'R$ 49,90', image: penBrushImg.src, desc: 'Cerdas sintéticas japonesas com memória elástica para modulação dinâmica.', tip: '0.2-3.5mm', code: 'ART-PGM-BR' },
-  { id: 'ch', name: 'Chisel (CH)', tag: 'Chanfrada', stock: 'Edição Especial', price: 'R$ 49,90', image: penChiselImg.src, desc: 'Ponta chanfrada de 2.0mm para caligrafia arquitetônica e lettering técnico.', tip: '2.00mm', code: 'ART-PGM-CH' },
+// Dados completos de todos os calibres da linha ARTOOLS Pigmentum
+export const variants = [
+  { id: '0.05', slug: '0.05', name: '0.05 mm', title: 'ARTOOLS Pigmentum 0.05', tag: 'Micro', stock: 'Poucas Unidades', price: 'R$ 38,90', image: pen005Img, desc: 'Microponta cirúrgica para hachuras microscópicas e nanodetalhes de precisão.', tip: '0.05mm', code: 'ART-PGM-005' },
+  { id: '0.1', slug: '0.1', name: '0.10 mm', title: 'ARTOOLS Pigmentum 0.1', tag: 'Mais Vendida', stock: 'Em Estoque', price: 'R$ 38,90', image: pen010Img, desc: 'O padrão internacional para plantas baixas, cotas e linework de arquitetura.', tip: '0.10mm', code: 'ART-PGM-010' },
+  { id: '0.2', slug: '0.2', name: '0.20 mm', title: 'ARTOOLS Pigmentum 0.2', tag: 'Precisão', stock: 'Em Estoque', price: 'R$ 38,90', image: pen020Img, desc: 'Linha guia e estruturação técnica com fluxo contínuo e sem sangramento.', tip: '0.20mm', code: 'ART-PGM-020' },
+  { id: '0.3', slug: '0.3', name: '0.30 mm', title: 'ARTOOLS Pigmentum 0.3 Blue', tag: 'Azul Cobalto', stock: 'Edição Especial', price: 'R$ 44,90', image: pen030BlueImg, desc: 'Edição especial azul cobalto. Perfeita para rendering, concept design e documentação técnica.', tip: '0.30mm', code: 'ART-PGM-030-BLU' },
+  { id: '0.5', slug: '0.5', name: '0.50 mm', title: 'ARTOOLS Pigmentum 0.5 Black', tag: 'Obsidian', stock: 'Em Estoque', price: 'R$ 44,90', image: pen050BlackImg, desc: 'Acabamento premium preto obsidiana com linhas mestras de alto impacto visual.', tip: '0.50mm', code: 'ART-PGM-050-BLK' },
+  { id: '0.8', slug: '0.8', name: '0.80 mm', title: 'ARTOOLS Pigmentum 0.8 Slate', tag: 'Dark Slate', stock: 'Últimas 8 un.', price: 'R$ 42,90', image: pen080DarkImg, desc: 'Ponta de precisão em base escura. Preto profundo 2.4 DMAX para silhuetas dramáticas.', tip: '0.80mm', code: 'ART-PGM-080' },
+  { id: '1.0', slug: '1.0', name: '1.00 mm', title: 'ARTOOLS Pigmentum 1.0', tag: 'Seção Pesada', stock: 'Em Estoque', price: 'R$ 42,90', image: pen100Img, desc: 'Espessura máxima linear para pranchas executivas de grande formato.', tip: '1.00mm', code: 'ART-PGM-100' },
+  { id: 'br', slug: 'br', name: 'Brush (BR)', title: 'ARTOOLS Pigmentum Brush', tag: 'Pincel', stock: 'Lote Especial', price: 'R$ 49,90', image: penBrushImg, desc: 'Cerdas sintéticas japonesas com memória elástica para modulação dinâmica.', tip: '0.2-3.5mm', code: 'ART-PGM-BR' },
+  { id: 'ch', slug: 'ch', name: 'Chisel (CH)', title: 'ARTOOLS Pigmentum Chisel', tag: 'Chanfrada', stock: 'Edição Especial', price: 'R$ 49,90', image: penChiselImg, desc: 'Ponta chanfrada de 2.0mm para caligrafia arquitetônica e lettering técnico.', tip: '2.00mm', code: 'ART-PGM-CH' },
 ];
+
+export function getStaticPaths() {
+  return variants.map((item) => ({
+    params: { slug: item.slug },
+    props: { currentVariant: item },
+  }));
+}
+
+const { slug } = Astro.params;
+const { currentVariant } = Astro.props;
+
+const pageTitle = `${currentVariant.title} — Especificações Técnicas & Avise-me`;
+const pageDesc = `Conheça a caneta técnica ${currentVariant.title} (${currentVariant.name}). ${currentVariant.desc} Cadastre-se para receber aviso do próximo lote.`;
 ---
 
 <Layout 
-    title="ARTOOLS Pigmentum 0.1 — Detalhes Técnicos & Avise-me Quando Disponível" 
-    description="Conheça todos os detalhes da caneta técnica ARTOOLS Pigmentum 0.1. Cadastre-se no formulário exclusivo para ser avisado em primeira mão sobre a reposição do próximo lote."
+    title={pageTitle}
+    description={pageDesc}
     image="/images/og-produto.png"
 >
     
@@ -41,11 +54,11 @@ const variants = [
             </li>
             <li>/</li>
             <li>
-                <a href="/pagina2" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">02. CATÁLOGO</a>
+                <a href="/catalogo" class="hover:text-[#1C1917] dark:hover:text-white transition-colors">02. CATÁLOGO</a>
             </li>
             <li>/</li>
             <li class="text-[#1C1917] dark:text-teal-400 font-semibold" aria-current="page">
-                03. ESPECIFICAÇÕES & AVISO
+                03. {currentVariant.name.toUpperCase()}
             </li>
         </ol>
     </nav>
@@ -73,8 +86,8 @@ const variants = [
                     <!-- Imagem Principal Otimizada (Above the fold: Eager + High Priority) -->
                     <Image 
                         id="main-product-image"
-                        src={pen010Img} 
-                        alt="ARTOOLS Pigmentum Caneta Técnica"
+                        src={currentVariant.image} 
+                        alt={currentVariant.title}
                         loading="eager"
                         fetchpriority="high"
                         class="max-h-72 sm:max-h-80 object-contain drop-shadow-md transition-all duration-300 group-hover:scale-105"
@@ -92,32 +105,40 @@ const variants = [
                     <button 
                         type="button"
                         onclick={`changeGalleryImage('${pen010Img.src}', this)`}
-                        class="gallery-thumb active-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border-2 border-stone-900 dark:border-teal-400 p-2 flex items-center justify-center overflow-hidden transition-all"
-                        aria-label="Ver imagem frontal"
+                        class={`gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] p-2 flex items-center justify-center overflow-hidden transition-all ${
+                            currentVariant.id === '0.1' ? 'active-thumb border-2 border-stone-900 dark:border-teal-400' : 'border border-stone-300 dark:border-stone-800 hover:border-stone-900'
+                        }`}
+                        aria-label="Ver imagem 0.10mm linework"
                     >
                         <Image src={pen010Img} alt="Miniatura 0.10mm linework" class="max-h-full object-contain" />
                     </button>
                     <button 
                         type="button"
                         onclick={`changeGalleryImage('${pen005Img.src}', this)`}
-                        class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
-                        aria-label="Ver perfil lateral"
+                        class={`gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] p-2 flex items-center justify-center overflow-hidden transition-all ${
+                            currentVariant.id === '0.05' ? 'active-thumb border-2 border-stone-900 dark:border-teal-400' : 'border border-stone-300 dark:border-stone-800 hover:border-stone-900'
+                        }`}
+                        aria-label="Ver perfil lateral 0.05mm"
                     >
                         <Image src={pen005Img} alt="Miniatura 0.05mm microponta" class="max-h-full object-contain" />
                     </button>
                     <button 
                         type="button"
-                        onclick={`changeGalleryImage('${pen020Img.src}', this)`}
-                        class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
-                        aria-label="Ver render técnico"
+                        onclick={`changeGalleryImage('${pen030BlueImg.src}', this)`}
+                        class={`gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] p-2 flex items-center justify-center overflow-hidden transition-all ${
+                            currentVariant.id === '0.3' ? 'active-thumb border-2 border-stone-900 dark:border-teal-400' : 'border border-stone-300 dark:border-stone-800 hover:border-stone-900'
+                        }`}
+                        aria-label="Ver edição azul cobalto"
                     >
-                        <Image src={pen020Img} alt="Miniatura 0.20mm traço técnico" class="max-h-full object-contain" />
+                        <Image src={pen030BlueImg} alt="Miniatura edição especial azul" class="max-h-full object-contain" />
                     </button>
                     <button 
                         type="button"
                         onclick={`changeGalleryImage('${penBrushImg.src}', this)`}
-                        class="gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] border border-stone-300 dark:border-stone-800 p-2 flex items-center justify-center overflow-hidden transition-all hover:border-stone-900"
-                        aria-label="Ver foto macro"
+                        class={`gallery-thumb relative h-20 rounded-md bg-white dark:bg-[#181816] p-2 flex items-center justify-center overflow-hidden transition-all ${
+                            currentVariant.id === 'br' ? 'active-thumb border-2 border-stone-900 dark:border-teal-400' : 'border border-stone-300 dark:border-stone-800 hover:border-stone-900'
+                        }`}
+                        aria-label="Ver ponta pincel"
                     >
                         <Image src={penBrushImg} alt="Miniatura foto macro" class="max-h-full object-contain" />
                     </button>
@@ -151,25 +172,25 @@ const variants = [
                 <div class="space-y-2.5 border-b border-stone-300 dark:border-stone-800 pb-5">
                     <div class="flex items-center justify-between">
                         <span class="text-[11px] font-mono uppercase tracking-widest text-[#78716C] dark:text-stone-400 font-bold" id="product-sku">
-                            COD: ART-PGM-010
+                            COD: {currentVariant.code}
                         </span>
                         <span id="product-stock-badge" class="px-2 py-0.5 rounded-sm bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 text-[10px] font-mono border border-emerald-500/30 font-semibold">
-                            Em Estoque
+                            {currentVariant.stock}
                         </span>
                     </div>
 
                     <h1 id="product-title" class="text-2xl sm:text-3xl font-bold font-display tracking-tight text-[#1C1917] dark:text-white">
-                        ARTOOLS Pigmentum 0.1
+                        {currentVariant.title}
                     </h1>
 
                     <p id="product-short-desc" class="text-[#57534E] dark:text-stone-400 text-xs sm:text-sm leading-relaxed font-sans">
-                        O padrão internacional para plantas baixas, cotas e linework de arquitetura. Forjada com ponta em aço cirúrgico e núcleo capilar suíço.
+                        {currentVariant.desc} Forjada com ponta em aço cirúrgico e núcleo capilar suíço.
                     </p>
 
                     <!-- Preço -->
                     <div class="pt-1 flex items-baseline gap-3 font-mono">
                         <span id="product-price" class="text-2xl font-bold text-[#1C1917] dark:text-white">
-                            R$ 38,90
+                            {currentVariant.price}
                         </span>
                         <span class="text-xs text-stone-500">
                             unidade avulsa
@@ -181,24 +202,23 @@ const variants = [
                 <div class="space-y-2.5">
                     <div class="flex items-center justify-between text-xs font-mono">
                         <h2 class="font-bold text-[#1C1917] dark:text-white">Calibre Selecionado:</h2>
-                        <span id="selected-calibre-label" class="text-stone-500 dark:text-teal-400 font-semibold">0.10 mm (Mais Vendida)</span>
+                        <span id="selected-calibre-label" class="text-stone-500 dark:text-teal-400 font-semibold">{currentVariant.name} ({currentVariant.tag})</span>
                     </div>
 
                     <div class="grid grid-cols-3 gap-2">
                         {variants.map((v) => (
-                            <button
-                                type="button"
+                            <a
+                                href={`/produtos/${v.slug}`}
                                 class={`variant-btn px-3 py-2 rounded-md border text-xs font-mono text-left transition-all ${
-                                    v.id === '0.1' 
+                                    v.slug === currentVariant.slug 
                                     ? 'bg-[#1C1917] text-white border-[#1C1917] dark:bg-white dark:text-stone-950 dark:border-white shadow-sm' 
                                     : 'bg-white dark:bg-[#181816] text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-800 hover:border-stone-900 dark:hover:border-stone-500'
                                 }`}
                                 data-calibre-id={v.id}
-                                onclick={`selectCalibre('${v.id}', '${v.name}', '${v.tag}', '${v.stock}', '${v.price}', '${v.image}', '${v.desc}', '${v.code}')`}
                             >
                                 <div class="font-bold">{v.name}</div>
                                 <div class="text-[10px] opacity-70 truncate">{v.tag}</div>
-                            </button>
+                            </a>
                         ))}
                     </div>
                 </div>
@@ -223,7 +243,7 @@ const variants = [
                         </Button>
 
                         <Button
-                            href="/pagina2"
+                            href="/catalogo"
                             variant="outline"
                             shape="square"
                             size="sm"
@@ -243,7 +263,7 @@ const variants = [
                     <div class="rounded-md border border-stone-300 dark:border-stone-800 divide-y divide-stone-200 dark:divide-stone-800 text-xs font-mono bg-white dark:bg-[#141412]">
                         <div class="p-2.5 px-3.5 flex justify-between">
                             <span class="text-stone-500">Núcleo / Ponta:</span>
-                            <span class="font-bold text-[#1C1917] dark:text-white">Aço Cirúrgico DIN 15</span>
+                            <span class="font-bold text-[#1C1917] dark:text-white">Aço Cirúrgico DIN 15 ({currentVariant.tip})</span>
                         </div>
                         <div class="p-2.5 px-3.5 flex justify-between">
                             <span class="text-stone-500">Tinta:</span>
@@ -277,13 +297,13 @@ const variants = [
                         Avise-me quando chegar
                     </h2>
                 </div>
-                <button onclick="closeNotifyModal()" class="text-stone-500 hover:text-stone-900 dark:hover:text-white text-sm font-mono p-1" aria-label="Fechar formulário">
+                <button onclick="closeNotifyModal()" class="text-stone-500 hover:text-stone-900 dark:hover:text-white text-sm font-mono p-1 cursor-pointer" aria-label="Fechar formulário">
                     [X]
                 </button>
             </div>
 
             <p class="text-xs text-[#57534E] dark:text-stone-400 leading-relaxed font-sans">
-                Informe seus dados para receber notificação assim que o lote de <strong id="notify-pen-name" class="text-[#1C1917] dark:text-white">ARTOOLS Pigmentum 0.1</strong> estiver disponível.
+                Informe seus dados para receber notificação assim que o lote de <strong id="notify-pen-name" class="text-[#1C1917] dark:text-white">{currentVariant.title}</strong> estiver disponível.
             </p>
 
             <form id="notify-form" onsubmit="handleNotifySubmit(event)" class="space-y-3">
@@ -330,7 +350,7 @@ const variants = [
                         variant="primary" 
                         size="sm" 
                         shape="square" 
-                        class="w-full justify-center font-mono text-xs uppercase font-bold"
+                        class="w-full justify-center font-mono text-xs uppercase font-bold cursor-pointer"
                     >
                         Confirmar Cadastro
                     </Button>
@@ -339,7 +359,7 @@ const variants = [
                         variant="outline" 
                         size="sm" 
                         shape="square" 
-                        class="w-24 justify-center font-mono text-xs uppercase"
+                        class="w-24 justify-center font-mono text-xs uppercase cursor-pointer"
                         onclick="closeNotifyModal()"
                     >
                         Fechar
@@ -351,8 +371,8 @@ const variants = [
     </div>
 
     <!-- Scripts de Controle -->
-    <script is:inline>
-        let currentPenName = 'ARTOOLS Pigmentum 0.1';
+    <script is:inline define:vars={{ currentTitle: currentVariant.title }}>
+        let currentPenName = currentTitle;
 
         function changeGalleryImage(src, buttonElement) {
             const mainImg = document.getElementById('main-product-image');
@@ -365,58 +385,15 @@ const variants = [
             }
 
             document.querySelectorAll('.gallery-thumb').forEach(el => {
-                el.classList.remove('border-stone-900', 'dark:border-teal-400', 'border-2');
+                el.classList.remove('border-stone-900', 'dark:border-teal-400', 'border-2', 'active-thumb');
                 el.classList.add('border', 'border-stone-300', 'dark:border-stone-800');
             });
 
             if (buttonElement) {
                 buttonElement.classList.remove('border', 'border-stone-300', 'dark:border-stone-800');
-                buttonElement.classList.add('border-2', 'border-stone-900', 'dark:border-teal-400');
+                buttonElement.classList.add('border-2', 'border-stone-900', 'dark:border-teal-400', 'active-thumb');
             }
         }
-
-        function selectCalibre(id, name, tag, stock, price, image, desc, code) {
-            currentPenName = `ARTOOLS Pigmentum ${name}`;
-            
-            const titleEl = document.getElementById('product-title');
-            const priceEl = document.getElementById('product-price');
-            const descEl = document.getElementById('product-short-desc');
-            const stockEl = document.getElementById('product-stock-badge');
-            const labelEl = document.getElementById('selected-calibre-label');
-            const skuEl = document.getElementById('product-sku');
-            const notifyNameEl = document.getElementById('notify-pen-name');
-
-            if (titleEl) titleEl.textContent = `ARTOOLS Pigmentum ${name}`;
-            if (priceEl) priceEl.textContent = price;
-            if (descEl) descEl.textContent = desc;
-            if (stockEl) stockEl.textContent = stock;
-            if (labelEl) labelEl.textContent = `${name} (${tag})`;
-            if (skuEl && code) skuEl.textContent = `COD: ${code}`;
-            if (notifyNameEl) notifyNameEl.textContent = `ARTOOLS Pigmentum ${name}`;
-
-            if (image) changeGalleryImage(image);
-
-            document.querySelectorAll('.variant-btn').forEach(btn => {
-                btn.className = 'variant-btn px-3 py-2 rounded-md border text-xs font-mono text-left transition-all bg-white dark:bg-[#181816] text-stone-700 dark:text-stone-300 border-stone-300 dark:border-stone-800 hover:border-stone-900 dark:hover:border-stone-500';
-            });
-
-            const activeBtn = document.querySelector(`[data-calibre-id="${id}"]`);
-            if (activeBtn) {
-                activeBtn.className = 'variant-btn px-3 py-2 rounded-md border text-xs font-mono text-left transition-all bg-[#1C1917] text-white border-[#1C1917] dark:bg-white dark:text-stone-950 dark:border-white shadow-sm';
-            }
-        }
-
-        // Leitura automática do query param ?calibre=...
-        document.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const calibreParam = urlParams.get('calibre');
-            if (calibreParam) {
-                const targetBtn = document.querySelector(`[data-calibre-id="${calibreParam}"]`);
-                if (targetBtn) {
-                    targetBtn.click();
-                }
-            }
-        });
 
         function openNotifyModal() {
             const modal = document.getElementById('notify-modal');

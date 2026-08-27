@@ -2,8 +2,8 @@
 // Header.astro
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/';
 const isHome = pathname === '/';
-const isCatalogo = pathname.startsWith('/pagina2');
-const isProduto = pathname.startsWith('/produto');
+const isCatalogo = pathname.startsWith('/catalogo');
+const isProduto = pathname.startsWith('/produtos') || pathname.startsWith('/produto');
 ---
 
 <header id="main-header" transition:persist class="relative z-50 border-b border-stone-300 dark:border-stone-800 sticky top-0 bg-[#EAEAE5]/95 dark:bg-[#10100E]/95 backdrop-blur-md transition-all duration-300">
@@ -44,8 +44,8 @@ const isProduto = pathname.startsWith('/produto');
 
             <!-- 02. Catálogo -->
             <a 
-                href="/pagina2" 
-                data-nav-path="/pagina2"
+                href="/catalogo" 
+                data-nav-path="/catalogo"
                 class={`desktop-nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
                     isCatalogo 
                     ? 'text-stone-950 dark:text-teal-400 font-bold' 
@@ -62,8 +62,8 @@ const isProduto = pathname.startsWith('/produto');
 
             <!-- 03. Detalhes -->
             <a 
-                href="/produto" 
-                data-nav-path="/produto"
+                href="/produtos/0.1" 
+                data-nav-path="/produtos"
                 class={`desktop-nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 ${
                     isProduto 
                     ? 'text-stone-950 dark:text-teal-400 font-bold' 
@@ -152,8 +152,8 @@ const isProduto = pathname.startsWith('/produto');
 
                 <!-- Opção 2: Catálogo -->
                 <a 
-                    href="/pagina2" 
-                    data-dropdown-path="/pagina2"
+                    href="/catalogo" 
+                    data-dropdown-path="/catalogo"
                     class={`dropdown-nav-item group block p-2.5 rounded-md transition-colors ${
                         isCatalogo 
                         ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs' 
@@ -172,8 +172,8 @@ const isProduto = pathname.startsWith('/produto');
 
                 <!-- Opção 3: Detalhes -->
                 <a 
-                    href="/produto" 
-                    data-dropdown-path="/produto"
+                    href="/produtos/0.1" 
+                    data-dropdown-path="/produtos"
                     class={`dropdown-nav-item group block p-2.5 rounded-md transition-colors ${
                         isProduto 
                         ? 'bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs' 
@@ -230,14 +230,14 @@ const isProduto = pathname.startsWith('/produto');
     function syncActivePageIndicators() {
         const rawPath = window.location.pathname.replace(/\/$/, '') || '/';
         const isHome = rawPath === '/' || rawPath === '/index.html';
-        const isCatalogo = rawPath.startsWith('/pagina2');
-        const isProduto = rawPath.startsWith('/produto');
+        const isCatalogo = rawPath.startsWith('/catalogo') || rawPath.startsWith('/pagina2');
+        const isProduto = rawPath.startsWith('/produtos') || rawPath.startsWith('/produto');
 
         // 1. Sincroniza os links do Menu Desktop Central
         document.querySelectorAll('#main-desktop-nav .desktop-nav-link').forEach(link => {
             const targetPath = link.getAttribute('data-nav-path');
             const dot = link.querySelector('.nav-dot');
-            const isActive = (targetPath === '/' && isHome) || (targetPath === '/pagina2' && isCatalogo) || (targetPath === '/produto' && isProduto);
+            const isActive = (targetPath === '/' && isHome) || (targetPath === '/catalogo' && isCatalogo) || (targetPath === '/produtos' && isProduto);
 
             if (isActive) {
                 link.className = 'desktop-nav-link text-xs font-mono tracking-widest uppercase transition-colors flex items-center gap-1.5 focus:outline-none rounded-sm px-1.5 py-0.5 text-stone-950 dark:text-teal-400 font-bold';
@@ -256,7 +256,7 @@ const isProduto = pathname.startsWith('/produto');
         document.querySelectorAll('#dropdown-menu-list .dropdown-nav-item').forEach(link => {
             const targetPath = link.getAttribute('data-dropdown-path');
             const dot = link.querySelector('.dropdown-dot');
-            const isActive = (targetPath === '/' && isHome) || (targetPath === '/pagina2' && isCatalogo) || (targetPath === '/produto' && isProduto);
+            const isActive = (targetPath === '/' && isHome) || (targetPath === '/catalogo' && isCatalogo) || (targetPath === '/produtos' && isProduto);
 
             if (isActive) {
                 link.className = 'dropdown-nav-item group block p-2.5 rounded-md transition-colors bg-stone-900 text-white dark:bg-white dark:text-stone-950 font-bold shadow-xs';
