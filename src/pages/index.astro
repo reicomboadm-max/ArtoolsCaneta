@@ -471,6 +471,8 @@ import { ClientRouter } from 'astro:transitions';
 
         <Header transition:persist />
 
+        <!-- Main Landmark Element para Acessibilidade Semântica WCAG -->
+        <main id="main-content">
 
         <!-- ============================================================
              DOBRA PRINCIPAL: HERO FULLSCREEN COM TEXTO COMPACTO À ESQUERDA
@@ -813,6 +815,7 @@ import { ClientRouter } from 'astro:transitions';
                                     aria-label="Vídeo em movimento da caneta ARTOOLS"
                                 >
                                     <source src="./assets/video/video3.mp4" type="video/mp4" />
+                                    <track kind="captions" src="data:text/vtt;charset=utf-8,WEBVTT%0A%0A00:00.000%20-->%2000:10.000%0AVisualiza%C3%A7%C3%A3o%20em%20v%C3%ADdeo%20da%20caneta%20ARTOOLS" srclang="pt" label="Português" default />
                                 </video>
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent rounded-xl pointer-events-none"></div>
                             </div>
@@ -1153,7 +1156,7 @@ import { ClientRouter } from 'astro:transitions';
 
             </div>
         </section>
-
+        </main>
 
         <Footer />
 
@@ -1163,10 +1166,10 @@ import { ClientRouter } from 'astro:transitions';
     <!-- ============================================================
          CHECKOUT / QUICK ORDER MODAL
     ============================================================ -->
-    <div id="order-modal" class="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4" aria-hidden="true" role="dialog" aria-modal="true">
+    <div id="order-modal" class="fixed inset-0 z-50 bg-stone-950/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 flex items-center justify-center p-4 hidden" role="dialog" aria-modal="true" aria-labelledby="order-modal-title">
         <div class="bg-stone-900 border border-white/20 rounded-2xl max-w-lg w-full p-6 sm:p-8 text-white relative shadow-2xl scale-95 transition-transform duration-300" id="order-modal-box">
             
-            <button onclick="closeOrderModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-stone-400 hover:text-white hover:border-white transition-colors" aria-label="Fechar Modal">
+            <button onclick="closeOrderModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-stone-400 hover:text-white hover:border-white transition-colors cursor-pointer" aria-label="Fechar Modal">
                 <iconify-icon icon="solar:close-circle-linear" class="text-xl"></iconify-icon>
             </button>
 
@@ -1175,7 +1178,7 @@ import { ClientRouter } from 'astro:transitions';
                 Reserva Direta // ARTOOLS Pigmentum
             </div>
 
-            <h3 class="text-2xl font-bold font-display tracking-tight mb-2">Adquirir ARTOOLS 0.1</h3>
+            <h3 id="order-modal-title" class="text-2xl font-bold font-display tracking-tight mb-2">Adquirir ARTOOLS 0.1</h3>
             <p class="text-xs sm:text-sm text-stone-300 leading-relaxed mb-6">
                 Garanta o lote exclusivo com frete expresso e estojo de proteção em acrílico fosco.
             </p>
@@ -1197,14 +1200,14 @@ import { ClientRouter } from 'astro:transitions';
 
             <form onsubmit="event.preventDefault(); alert('Pedido de demonstração registrado com sucesso!'); closeOrderModal();" class="space-y-3">
                 <div>
-                    <label class="text-[11px] font-mono text-stone-300 uppercase block mb-1 font-semibold">Seu Nome Completo</label>
-                    <input type="text" required placeholder="Digite seu nome..." class="w-full px-4 py-2.5 bg-stone-950 border border-stone-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-stone-400" />
+                    <label for="order-user-name" class="text-[11px] font-mono text-stone-300 uppercase block mb-1 font-semibold">Seu Nome Completo</label>
+                    <input id="order-user-name" type="text" required placeholder="Digite seu nome..." class="w-full px-4 py-2.5 bg-stone-950 border border-stone-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-stone-400" />
                 </div>
                 <div>
-                    <label class="text-[11px] font-mono text-stone-300 uppercase block mb-1 font-semibold">Email para Envio</label>
-                    <input type="email" required placeholder="seuemail@dominio.com" class="w-full px-4 py-2.5 bg-stone-950 border border-stone-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-stone-400" />
+                    <label for="order-user-email" class="text-[11px] font-mono text-stone-300 uppercase block mb-1 font-semibold">Email para Envio</label>
+                    <input id="order-user-email" type="email" required placeholder="seuemail@dominio.com" class="w-full px-4 py-2.5 bg-stone-950 border border-stone-700 rounded-xl text-xs sm:text-sm text-white focus:outline-none focus:border-stone-400" />
                 </div>
-                <button type="submit" class="w-full py-3.5 bg-white hover:bg-stone-200 text-stone-950 font-bold rounded-xl text-xs font-mono uppercase tracking-wider transition-colors shadow-lg mt-2">
+                <button type="submit" class="w-full py-3.5 bg-white hover:bg-stone-200 text-stone-950 font-bold rounded-xl text-xs font-mono uppercase tracking-wider transition-colors shadow-lg mt-2 cursor-pointer">
                     Finalizar Compra Segura
                 </button>
             </form>
@@ -2068,6 +2071,33 @@ import { ClientRouter } from 'astro:transitions';
                 if (heroTitle) heroTitle.classList.add('reveal-active');
             }, 250);
         }
+
+        // Funções do Modal de Pedido Seguro
+        window.openOrderModal = function() {
+            const modal = document.getElementById('order-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    modal.querySelector('#order-modal-box')?.classList.remove('scale-95');
+                }, 10);
+            }
+        };
+
+        window.closeOrderModal = function() {
+            const modal = document.getElementById('order-modal');
+            if (modal) {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.querySelector('#order-modal-box')?.classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') window.closeOrderModal?.();
+        });
 
         // Executa no carregamento inicial e a cada troca de página com ClientRouter
         if (!window._artoolsIndexEventsBound) {
