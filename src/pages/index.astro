@@ -13,9 +13,26 @@ import { ClientRouter } from 'astro:transitions';
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <!-- Primary Meta Tags -->
     <title>ARTOOLS Pigmentum — A Caneta Técnica Mais Tecnológica do Mundo | Precisão Absoluta</title>
+    <meta name="title" content="ARTOOLS Pigmentum — A Caneta Técnica Mais Tecnológica do Mundo | Precisão Absoluta" />
     <meta name="description" content="Conheça a ARTOOLS Pigmentum: a caneta técnica definitiva para arquitetura, engenharia e arte. Precisão cirúrgica de 0.1mm, tinta japonesa permanente e equilíbrio arquitetural perfeito." />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site || 'https://artools-caneta.vercel.app').href} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site || 'https://artools-caneta.vercel.app').href} />
+    <meta property="og:title" content="ARTOOLS Pigmentum — A Caneta Técnica Mais Tecnológica do Mundo | Precisão Absoluta" />
+    <meta property="og:description" content="Conheça a ARTOOLS Pigmentum: a caneta técnica definitiva para arquitetura, engenharia e arte. Precisão cirúrgica de 0.1mm, tinta japonesa permanente e equilíbrio arquitetural perfeito." />
+    <meta property="og:image" content={new URL('/images/og-index.jpg', Astro.site || 'https://artools-caneta.vercel.app').href} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={new URL(Astro.url.pathname, Astro.site || 'https://artools-caneta.vercel.app').href} />
+    <meta name="twitter:title" content="ARTOOLS Pigmentum — A Caneta Técnica Mais Tecnológica do Mundo | Precisão Absoluta" />
+    <meta name="twitter:description" content="Conheça a ARTOOLS Pigmentum: a caneta técnica definitiva para arquitetura, engenharia e arte. Precisão cirúrgica de 0.1mm, tinta japonesa permanente e equilíbrio arquitetural perfeito." />
+    <meta name="twitter:image" content={new URL('/images/og-index.jpg', Astro.site || 'https://artools-caneta.vercel.app').href} />
+
     <ClientRouter />
 
     <!-- Google Fonts -->
@@ -919,12 +936,12 @@ import { ClientRouter } from 'astro:transitions';
 
                         <!-- Core Monumental Message -->
                         <div class="space-y-4">
-                            <h3 data-reveal-text class="text-3xl sm:text-5xl md:text-6xl font-bold font-display tracking-tight text-white leading-[0.98]">
+                            <h2 data-reveal-text class="text-3xl sm:text-5xl md:text-6xl font-bold font-display tracking-tight text-white leading-[0.98]">
                                 Mais de 2.000 Metros de Traço.<br/>
                                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-cyan-200 to-emerald-300 font-display">
                                     100 Anos de Preservação.
                                 </span>
-                            </h3>
+                            </h2>
                             <p data-reveal-fade class="text-stone-300 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl font-sans font-light">
                                 Cada caneta ARTOOLS Pigmentum é submetida ao teste hidrostático de câmara vácua para garantir vazão uniforme até a última gota. 
                                 Nossos pigmentos minerais de alta densidade óptica (<strong>2.4 Dmax</strong>) nunca desbotam, nunca escorrem e resistem a lavagens de aquarela e solventes químicos.
@@ -935,19 +952,19 @@ import { ClientRouter } from 'astro:transitions';
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-white/10">
                             <div class="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md space-y-1">
                                 <div class="text-2xl sm:text-3xl font-bold font-display text-white">2.000 m</div>
-                                <span class="text-[11px] font-mono uppercase tracking-wider text-teal-400 font-bold block">Extensão Linear</span>
+                                <h3 class="text-[11px] font-mono uppercase tracking-wider text-teal-400 font-bold block">Extensão Linear</h3>
                                 <p class="text-[11px] text-stone-400 leading-tight">Autonomia equivalente a mais de 80 cadernos inteiros de esboços arquitetônicos.</p>
                             </div>
 
                             <div class="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md space-y-1">
                                 <div class="text-2xl sm:text-3xl font-bold font-display text-teal-300">0.4 seg</div>
-                                <span class="text-[11px] font-mono uppercase tracking-wider text-teal-400 font-bold block">Secagem Hiper-Rápida</span>
+                                <h3 class="text-[11px] font-mono uppercase tracking-wider text-teal-400 font-bold block">Secagem Hiper-Rápida</h3>
                                 <p class="text-[11px] text-stone-400 leading-tight">Permite que canhotos e ilustradores desenhem velozmente sem borrar a mão.</p>
                             </div>
 
                             <div class="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md space-y-1">
                                 <div class="text-2xl sm:text-3xl font-bold font-display text-white">100%</div>
-                                <span class="text-[11px] font-mono uppercase tracking-wider text-teal-400 font-bold block">Grau Arquivístico UV</span>
+                                <h3 class="text-[11px] font-mono uppercase tracking-wider text-teal-400 font-bold block">Grau Arquivístico UV</h3>
                                 <p class="text-[11px] text-stone-400 leading-tight">Certificação museológica contra amarelecimento e perda de contraste ao longo de 1 século.</p>
                             </div>
                         </div>

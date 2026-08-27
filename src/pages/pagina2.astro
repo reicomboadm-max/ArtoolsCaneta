@@ -107,6 +107,7 @@ const pens = [
 <Layout 
     title="Coleção Completa ARTOOLS Pigmentum — Todas as Pontas Técnicas" 
     description="Explore a coleção completa de canetas técnicas ARTOOLS Pigmentum. Graduações de 0.05mm a 1.0mm, Brush e Chanfrada com tinta japonesa à prova d'água e precisão cirúrgica."
+    image="/images/og-pagina2.png"
 >
     
     <!-- Header Minimalista com Padrão Arquitetônico Thiago Design System -->
@@ -128,6 +129,7 @@ const pens = [
 
     <!-- Grid Minimalista com Componente <Image /> do Astro -->
     <section class="py-12 sm:py-16 px-6 sm:px-12 md:px-16 max-w-7xl mx-auto">
+        <h2 class="sr-only">Graduações e Modelos Técnicos Disponíveis</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {pens.map((pen, index) => (
                 <article 
@@ -169,11 +171,11 @@ const pens = [
                     <div class="p-5 flex flex-col justify-between flex-grow space-y-4">
                         <div class="space-y-1.5 text-left">
                             <div class="flex items-baseline justify-between gap-2">
-                                <h2 class="text-base font-bold font-display text-[#1C1917] dark:text-white tracking-tight">
+                                <h3 class="text-base font-bold font-display text-[#1C1917] dark:text-white tracking-tight">
                                     <a href={`/produto?calibre=${pen.id}`} class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
                                         {pen.title}
                                     </a>
-                                </h2>
+                                </h3>
                                 <span class="text-xs font-mono font-bold text-[#1C1917] dark:text-white shrink-0">
                                     {pen.price}
                                 </span>

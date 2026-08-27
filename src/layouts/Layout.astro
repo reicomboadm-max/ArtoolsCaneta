@@ -7,13 +7,20 @@ interface Props {
   title?: string;
   description?: string;
   canonicalURL?: string;
+  image?: string;
 }
 
 const {
   title = 'ArtTools — Canetas técnicas para quem desenha a sério',
   description = 'Precisão, acabamento premium e traço constante.',
   canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://artools-caneta.vercel.app').href,
+  image = '/og-image.jpg',
 } = Astro.props;
+
+// Converte a imagem e URL em caminhos absolutos usando Astro.site ou fallback da aplicação
+const siteUrl = Astro.site || 'https://artools-caneta.vercel.app';
+const absoluteImageUrl = new URL(image, siteUrl).href;
+const currentUrl = canonicalURL || new URL(Astro.url.pathname, siteUrl).href;
 ---
 
 <!DOCTYPE html>
@@ -21,11 +28,29 @@ const {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    
+    <!-- Primary Meta Tags -->
     <title>{title}</title>
+    <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
+    <link rel="canonical" href={currentUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={currentUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteImageUrl} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={currentUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteImageUrl} />
+
     <ClientRouter />
 
     <!-- Google Fonts -->
