@@ -13,8 +13,9 @@ import { ClientRouter } from 'astro:transitions';
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <title>ARTOOLS Pigmentum // A caneta mais tecnológica do mundo</title>
-    <meta name="description" content="Descubra a ARTOOLS Pigmentum 0.1. A caneta mais tecnológica do mundo. Precisão cirúrgica, tinta pigmentada de alta fidelidade e ergonomia arquitetural." />
+    <title>ARTOOLS Pigmentum — A Caneta Técnica Mais Tecnológica do Mundo | Precisão Absoluta</title>
+    <meta name="description" content="Conheça a ARTOOLS Pigmentum: a caneta técnica definitiva para arquitetura, engenharia e arte. Precisão cirúrgica de 0.1mm, tinta japonesa permanente e equilíbrio arquitetural perfeito." />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site || 'https://artools-caneta.vercel.app').href} />
     <ClientRouter />
 
     <!-- Google Fonts -->
@@ -1200,6 +1201,10 @@ import { ClientRouter } from 'astro:transitions';
         let indexLenis = null;
         let indexRafId = null;
 
+        // Cache persistente de frames em memória RAM entre trocas de página SPA
+        window._penFramesCache = window._penFramesCache || [];
+        window._isExtractingFrames = window._isExtractingFrames || false;
+
         function cleanupIndexPage() {
             if (indexRafId) {
                 cancelAnimationFrame(indexRafId);
@@ -1214,7 +1219,77 @@ import { ClientRouter } from 'astro:transitions';
             }
         }
 
+        function extractFramesInMemory(videoUrl, startTime, endTime, frameCount) {
+            if (window._penFramesCache.length >= frameCount || window._isExtractingFrames) return;
+            window._isExtractingFrames = true;
+
+            const offVideo = document.createElement('video');
+            offVideo.src = videoUrl;
+            offVideo.muted = true;
+            offVideo.defaultMuted = true;
+            offVideo.volume = 0;
+            offVideo.playsInline = true;
+            offVideo.preload = 'auto';
+            offVideo.style.position = 'fixed';
+            offVideo.style.top = '-9999px';
+            offVideo.style.left = '-9999px';
+            offVideo.style.width = '1px';
+            offVideo.style.height = '1px';
+            offVideo.style.opacity = '0';
+            offVideo.style.pointerEvents = 'none';
+            document.body.appendChild(offVideo);
+
+            const duration = Math.max(0.5, endTime - startTime);
+            const step = duration / (frameCount - 1);
+            let currentIndex = 0;
+
+            const offCanvas = document.createElement('canvas');
+            const offCtx = offCanvas.getContext('2d', { alpha: true });
+
+            offVideo.addEventListener('loadedmetadata', () => {
+                offCanvas.width = offVideo.videoWidth || 1280;
+                offCanvas.height = offVideo.videoHeight || 720;
+                offVideo.currentTime = startTime;
+            }, { once: true });
+
+            offVideo.addEventListener('seeked', async () => {
+                if (offVideo.videoWidth && offCanvas.width === 0) {
+                    offCanvas.width = offVideo.videoWidth;
+                    offCanvas.height = offVideo.videoHeight;
+                }
+                
+                try {
+                    if (window.createImageBitmap) {
+                        const bmp = await createImageBitmap(offVideo);
+                        window._penFramesCache[currentIndex] = bmp;
+                    } else {
+                        offCtx.clearRect(0, 0, offCanvas.width, offCanvas.height);
+                        offCtx.drawImage(offVideo, 0, 0);
+                        const bmp = document.createElement('canvas');
+                        bmp.width = offCanvas.width;
+                        bmp.height = offCanvas.height;
+                        bmp.getContext('2d').drawImage(offCanvas, 0, 0);
+                        window._penFramesCache[currentIndex] = bmp;
+                    }
+                } catch (e) {}
+
+                currentIndex++;
+                if (currentIndex < frameCount) {
+                    offVideo.currentTime = startTime + (currentIndex * step);
+                } else {
+                    window._isExtractingFrames = false;
+                    try { offVideo.remove(); } catch (e) {}
+                }
+            });
+
+            offVideo.load();
+        }
+
         function initIndexPage() {
+            const canvas = document.getElementById('pen-canvas');
+            const video = document.getElementById('pen-video-source');
+            if (!canvas || !video) return;
+
             // Garante silêncio absoluto em todos os elementos de mídia
             document.querySelectorAll('video, audio').forEach(el => {
                 el.muted = true;
@@ -1257,8 +1332,6 @@ import { ClientRouter } from 'astro:transitions';
             // -------------------------------------------------------------
             // Canvas & Video Elements for Hero 3D Spatial Canvas (100% Muted)
             // -------------------------------------------------------------
-            const canvas = document.getElementById('pen-canvas');
-            const video = document.getElementById('pen-video-source');
             const telemetryPercentage = document.getElementById('telemetry-percentage');
             const coralProgressLine = document.getElementById('coral-progress-line');
             const verticalScrollTick = document.getElementById('vertical-scroll-tick');
@@ -1267,8 +1340,6 @@ import { ClientRouter } from 'astro:transitions';
             const hotspotInk = document.getElementById('hotspot-ink');
             const hotspotClip = document.getElementById('hotspot-clip');
             const heroLeftContent = document.getElementById('hero-left-content');
-
-            if (!canvas || !video) return;
 
             // Strict Audio Muting
             video.muted = true;
@@ -1285,21 +1356,10 @@ import { ClientRouter } from 'astro:transitions';
             let videoDuration = 3.5;
             let targetProgress = 0;
             let currentProgress = 0;
-            let isSeeking = false;
-            let pendingSeekTime = null;
-            let lastDrawnTime = -1;
+            let lastSeekTime = -1;
 
-            // Resize Canvas with HiDPI support
-            function resizeCanvas() {
-                if (!canvas) return;
-                const rect = canvas.getBoundingClientRect();
-                const dpr = Math.min(window.devicePixelRatio || 1, 2);
-                canvasWidth = canvas.width = rect.width * dpr;
-                canvasHeight = canvas.height = rect.height * dpr;
-                renderFrameToCanvas(video);
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
+            // Inicia extração de frames em segundo plano para RAM
+            extractFramesInMemory('/assets/video/video2.mp4', 1.0, 3.5, 60);
 
             // Draw a frame centered
             function renderFrameToCanvas(source) {
@@ -1331,43 +1391,22 @@ import { ClientRouter } from 'astro:transitions';
                 } catch (e) {}
             }
 
-            // Non-blocking seek queue for video decoder
-            function safeSeekVideo(time) {
-                if (isSeeking) {
-                    pendingSeekTime = time;
-                    return;
-                }
-                isSeeking = true;
-                if ('fastSeek' in video) {
-                    video.fastSeek(time);
+            // Resize Canvas with HiDPI support
+            function resizeCanvas() {
+                if (!canvas) return;
+                const rect = canvas.getBoundingClientRect();
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                canvasWidth = canvas.width = rect.width * dpr;
+                canvasHeight = canvas.height = rect.height * dpr;
+
+                if (window._penFramesCache && window._penFramesCache.length > 0) {
+                    renderFrameToCanvas(window._penFramesCache[0]);
                 } else {
-                    video.currentTime = time;
+                    renderFrameToCanvas(video);
                 }
             }
-
-            video.addEventListener('seeked', () => {
-                isSeeking = false;
-                renderFrameToCanvas(video);
-                if (pendingSeekTime !== null) {
-                    const nextTime = pendingSeekTime;
-                    pendingSeekTime = null;
-                    safeSeekVideo(nextTime);
-                }
-            });
-
-            video.addEventListener('loadeddata', () => {
-                renderFrameToCanvas(video);
-            });
-            video.addEventListener('loadedmetadata', () => {
-                videoDuration = video.duration || 3.5;
-                renderFrameToCanvas(video);
-            });
-            video.addEventListener('canplay', () => {
-                renderFrameToCanvas(video);
-            });
-            video.addEventListener('timeupdate', () => {
-                renderFrameToCanvas(video);
-            });
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
 
             // Setup GSAP ScrollTrigger for Hero
             function initEngine() {
@@ -1377,7 +1416,7 @@ import { ClientRouter } from 'astro:transitions';
                 
                 videoDuration = video.duration || 3.5;
                 resizeCanvas();
-                safeSeekVideo(VIDEO_START_OFFSET);
+                video.currentTime = VIDEO_START_OFFSET;
 
                 if (!window.ScrollTrigger) return;
 
@@ -1443,28 +1482,34 @@ import { ClientRouter } from 'astro:transitions';
                 video.load();
             }
 
-            // 60-120 FPS Native RAF Render Loop with Damped Subpixel Lerp
+            // 60-120 FPS Native RAF Render Loop with Continuous Memory Buffer Draw
             let isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             function renderLoop() {
                 if (!isReducedMotion) {
-                    currentProgress += (targetProgress - currentProgress) * 0.25;
-
-                    if (videoDuration > 0) {
-                        const startTime = Math.min(VIDEO_START_OFFSET, Math.max(0, videoDuration - 1.0));
-                        const effectiveRange = Math.max(0.5, videoDuration - startTime);
-                        const targetTime = startTime + (currentProgress * effectiveRange);
-                        if (Math.abs(targetTime - lastDrawnTime) > 0.02) {
-                            lastDrawnTime = targetTime;
-                            safeSeekVideo(targetTime);
-                        }
-                    }
+                    currentProgress += (targetProgress - currentProgress) * 0.22;
                 } else {
                     currentProgress = targetProgress;
-                    if (videoDuration > 0) {
-                        const targetTime = VIDEO_START_OFFSET + (currentProgress * Math.max(0.5, videoDuration - VIDEO_START_OFFSET));
-                        safeSeekVideo(targetTime);
+                }
+
+                const frames = window._penFramesCache;
+                if (frames && frames.length > 5) {
+                    const frameIdx = Math.min(frames.length - 1, Math.max(0, Math.floor(currentProgress * (frames.length - 1))));
+                    const frameObj = frames[frameIdx];
+                    if (frameObj) {
+                        renderFrameToCanvas(frameObj);
                     }
+                } else if (video && video.duration) {
+                    videoDuration = video.duration;
+                    const startTime = Math.min(VIDEO_START_OFFSET, Math.max(0, videoDuration - 1.0));
+                    const effectiveRange = Math.max(0.5, videoDuration - startTime);
+                    const targetTime = startTime + (currentProgress * effectiveRange);
+
+                    if (Math.abs(targetTime - lastSeekTime) > 0.03) {
+                        lastSeekTime = targetTime;
+                        try { video.currentTime = targetTime; } catch (e) {}
+                    }
+                    renderFrameToCanvas(video);
                 }
 
                 indexRafId = requestAnimationFrame(renderLoop);
@@ -2007,10 +2052,13 @@ import { ClientRouter } from 'astro:transitions';
         }
 
         // Executa no carregamento inicial e a cada troca de página com ClientRouter
+        if (!window._artoolsIndexEventsBound) {
+            window._artoolsIndexEventsBound = true;
+            document.addEventListener('DOMContentLoaded', initIndexPage);
+            document.addEventListener('astro:page-load', initIndexPage);
+            document.addEventListener('astro:before-swap', cleanupIndexPage);
+        }
         initIndexPage();
-        document.addEventListener('DOMContentLoaded', initIndexPage);
-        document.addEventListener('astro:page-load', initIndexPage);
-        document.addEventListener('astro:before-swap', cleanupIndexPage);
     </script>
 </body>
 </html>
