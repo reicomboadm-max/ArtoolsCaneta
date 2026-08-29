@@ -8,6 +8,11 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Git & Auto-Deploy (Vercel)
+
+- Sempre que realizar alterações, correções ou novas implementações nos arquivos do projeto, faça `git add .`, `git commit -m "<descrição clara>"` e `git push origin main`.
+- O repositório está conectado ao Vercel para CI/CD automático, portanto cada push para `main` dispara o deploy em produção.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
