@@ -400,6 +400,23 @@ const pageDesc = `Conheça a caneta técnica ${currentVariant.title} (${currentV
             const notifyNameEl = document.getElementById('notify-pen-name');
             if (notifyNameEl) notifyNameEl.textContent = currentPenName;
 
+            // Medição de Evento no Google Analytics (GA4) e Google Tag Manager (GTM)
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_avise_me', {
+                    event_category: 'Lead & Conversão',
+                    event_label: currentPenName,
+                    pen_name: currentPenName,
+                    page_location: window.location.href
+                });
+            }
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    event: 'click_avise_me',
+                    pen_name: currentPenName,
+                    page_url: window.location.href
+                });
+            }
+
             if (modal) {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -423,6 +440,26 @@ const pageDesc = `Conheça a caneta técnica ${currentVariant.title} (${currentV
 
         function handleNotifySubmit(e) {
             e.preventDefault();
+
+            // Medição de Conversão / Lead no Google Analytics (GA4) e Google Tag Manager (GTM)
+            if (typeof gtag === 'function') {
+                gtag('event', 'generate_lead', {
+                    event_category: 'Lead / Avise-me',
+                    event_label: currentPenName,
+                    pen_name: currentPenName,
+                    value: 38.90,
+                    currency: 'BRL'
+                });
+            }
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    event: 'lead_avise_me_submitted',
+                    pen_name: currentPenName,
+                    currency: 'BRL',
+                    value: 38.90
+                });
+            }
+
             const successMsg = document.getElementById('notify-success-msg');
             if (successMsg) {
                 successMsg.classList.remove('hidden');

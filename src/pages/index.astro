@@ -2099,6 +2099,22 @@ import { ClientRouter } from 'astro:transitions';
         // Funções do Modal de Pedido Seguro
         window.openOrderModal = function() {
             const modal = document.getElementById('order-modal');
+
+            // Medição de Evento no Google Analytics (GA4) e Google Tag Manager (GTM)
+            if (typeof gtag === 'function') {
+                gtag('event', 'click_order_modal', {
+                    event_category: 'Lead & Conversão',
+                    event_label: 'ARTOOLS 0.1 Exclusivo',
+                    page_location: window.location.href
+                });
+            }
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    event: 'click_order_modal',
+                    page_url: window.location.href
+                });
+            }
+
             if (modal) {
                 modal.classList.remove('hidden');
                 setTimeout(() => {
